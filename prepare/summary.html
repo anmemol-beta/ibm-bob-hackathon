@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IBM Bob Hackathon — Full Summary</title>
+<style>
+  :root {
+    --purple: #6929c4;
+    --purple-light: #8a3ffc;
+    --bg: #f4f1fa;
+    --card: #ffffff;
+    --ink: #1c1b22;
+    --muted: #5b5870;
+    --border: #e3def0;
+    --danger: #da1e28;
+    --warn: #b28600;
+    --ok: #0e6027;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    line-height: 1.6;
+    padding-bottom: 60px;
+  }
+  header {
+    background: linear-gradient(135deg, var(--purple) 0%, var(--purple-light) 100%);
+    color: #fff;
+    padding: 38px 24px 30px;
+    text-align: center;
+  }
+  header h1 { font-size: 2rem; font-weight: 700; letter-spacing: -0.5px; }
+  header .tag { font-size: 1rem; opacity: 0.9; margin-top: 6px; font-style: italic; }
+  .facts {
+    display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-top: 20px;
+  }
+  .fact {
+    background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3);
+    border-radius: 10px; padding: 8px 14px; font-size: 0.85rem;
+  }
+  .fact b { display: block; font-size: 1.05rem; }
+
+  /* ---- Tab bar ---- */
+  .tabbar {
+    position: sticky; top: 0; z-index: 10;
+    background: var(--card); border-bottom: 1px solid var(--border);
+    box-shadow: 0 2px 12px rgba(105,41,196,0.06);
+  }
+  .tabbar-inner {
+    max-width: 920px; margin: 0 auto; display: flex; flex-wrap: wrap;
+    padding: 0 12px;
+  }
+  .tab-btn {
+    background: none; border: none; cursor: pointer;
+    padding: 14px 16px; font-size: 0.92rem; font-weight: 600;
+    color: var(--muted); border-bottom: 3px solid transparent;
+    font-family: inherit; transition: color .15s, border-color .15s;
+  }
+  .tab-btn:hover { color: var(--purple); }
+  .tab-btn.active { color: var(--purple); border-bottom-color: var(--purple); }
+
+  /* ---- Panels ---- */
+  .wrap { max-width: 920px; margin: 0 auto; padding: 26px 24px 0; }
+  .panel { display: none; animation: fade .2s ease; }
+  .panel.active { display: block; }
+  @keyframes fade { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+
+  .card {
+    background: var(--card); border: 1px solid var(--border); border-radius: 12px;
+    padding: 24px 26px; margin-bottom: 18px;
+  }
+  .card h2 { font-size: 1.3rem; color: var(--purple); margin-bottom: 12px; }
+  .card h3 { font-size: 1rem; margin: 18px 0 8px; }
+  p { margin-bottom: 10px; }
+  ul, ol { margin: 8px 0 12px 22px; }
+  li { margin-bottom: 5px; }
+  table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 0.92rem; }
+  th, td { text-align: left; padding: 9px 12px; border-bottom: 1px solid var(--border); }
+  th { background: #f0ebfa; color: var(--purple); font-weight: 600; }
+  tr:last-child td { border-bottom: none; }
+  .callout {
+    border-radius: 10px; padding: 14px 16px; margin: 14px 0;
+    font-size: 0.93rem; border-left: 4px solid;
+  }
+  .callout b { display: block; margin-bottom: 3px; }
+  .danger { background: #fff0f1; border-color: var(--danger); color: #5c1116; }
+  .warn   { background: #fff8e1; border-color: var(--warn);   color: #4d3a00; }
+  .tip    { background: #e8f5ec; border-color: var(--ok);     color: #08391a; }
+  code {
+    background: #f0ebfa; padding: 1px 6px; border-radius: 5px;
+    font-family: "SF Mono", Menlo, Consolas, monospace; font-size: 0.86em;
+  }
+  .pill {
+    display: inline-block; background: #f0ebfa; color: var(--purple);
+    border-radius: 20px; padding: 3px 12px; font-size: 0.82rem; margin: 3px 4px 3px 0;
+  }
+  a { color: var(--purple); }
+  .check { list-style: none; margin-left: 0; }
+  .check li::before { content: "☐ "; color: var(--purple); font-weight: 700; }
+  .navhint { text-align: center; color: var(--muted); font-size: 0.85rem; margin: 10px 0 30px; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>IBM Bob Hackathon</h1>
+  <div class="tag">"Your repo. Your rules. AI as your dev partner."</div>
+  <div class="facts">
+    <div class="fact"><b>May 15–17, 2026</b>48-hour online build</div>
+    <div class="fact"><b>$10,000</b>Prize pool</div>
+    <div class="fact"><b>May 17, 11:00 AM ET</b>Submission deadline</div>
+    <div class="fact"><b>Solo or team</b>Participation</div>
+  </div>
+</header>
+
+<nav class="tabbar">
+  <div class="tabbar-inner" id="tabbar">
+    <button class="tab-btn active" data-tab="overview">Overview</button>
+    <button class="tab-btn" data-tab="timeline">Timeline</button>
+    <button class="tab-btn" data-tab="bob">IBM Bob</button>
+    <button class="tab-btn" data-tab="submission">Submission</button>
+    <button class="tab-btn" data-tab="sessions">Bob Sessions</button>
+    <button class="tab-btn" data-tab="judging">Judging &amp; Ideas</button>
+    <button class="tab-btn" data-tab="checklist">Checklist</button>
+  </div>
+</nav>
+
+<div class="wrap">
+
+  <!-- ===== OVERVIEW ===== -->
+  <div class="panel active" id="overview">
+    <div class="card">
+      <h2>Event Overview</h2>
+      <table>
+        <tr><th>Name</th><td>IBM Bob Hackathon</td></tr>
+        <tr><th>Theme</th><td>Build solutions that improve how software is built</td></tr>
+        <tr><th>Format</th><td>Fully online, 48-hour build</td></tr>
+        <tr><th>Platform</th><td>lablab.ai platform + lablab.ai Discord server</td></tr>
+        <tr><th>Dates</th><td>May 15–17, 2026</td></tr>
+        <tr><th>Hosts</th><td>lablab.ai · IBM · NativelyAI</td></tr>
+        <tr><th>Teams</th><td>Join a team or build solo</td></tr>
+        <tr><th>Prize pool</th><td>$10,000 — 🥇 $5,000 · 🥈 $3,000 · 🥉 $2,000</td></tr>
+      </table>
+      <p>Prize distribution may take up to 90 days. Submissions must be original and MIT-compliant.</p>
+    </div>
+    <div class="card">
+      <h2>The Challenge — "Turn idea into impact faster"</h2>
+      <p>Design and build a <b>proof-of-concept solution</b> using IBM Bob that speeds up
+      everyday development work. Suggested directions:</p>
+      <ul>
+        <li>Get up to speed on existing code quickly</li>
+        <li>Generate documentation and tests</li>
+        <li>Reduce effort spent on repetitive tasks that slow a team down</li>
+      </ul>
+      <div class="danger callout">
+        <b>⛔ Disqualification risk</b>
+        All submissions must clearly demonstrate meaningful use of IBM Bob. To be eligible
+        for judging, the solution must showcase <b>IBM Bob IDE as a core component</b> —
+        proven by the exported session reports.
+      </div>
+      <p>Any framework or technology may be used, as long as Bob IDE is central and product
+      usage policies are respected.</p>
+    </div>
+  </div>
+
+  <!-- ===== TIMELINE ===== -->
+  <div class="panel" id="timeline">
+    <div class="card">
+      <h2>Timeline (Eastern Daylight Time)</h2>
+      <table>
+        <tr><th>When</th><th>Event</th></tr>
+        <tr><td>May 15, 7:00 AM ET</td><td>Registration closed (1:00 PM CET)</td></tr>
+        <tr><td>May 15, 11:00 AM ET</td><td>Kick-off stream — Twitch (5:00 PM CET / 8:00 AM PDT)</td></tr>
+        <tr><td>May 15, 12:00 PM ET</td><td>Live Q&amp;A — Discord General Q&amp;A Stage</td></tr>
+        <tr><td>May 17, 11:00 AM ET</td><td><b>End of submissions</b></td></tr>
+      </table>
+      <div class="tip callout">
+        <b>💡 Time budget suggestion</b>
+        Idea + setup ~4h · Build ~30h · Demo, video, slides, session export ~10h · Buffer ~4h.
+        Never leave deliverables (video / slides / Bob report) to the last minute.
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== IBM BOB ===== -->
+  <div class="panel" id="bob">
+    <div class="card">
+      <h2>IBM Bob &amp; Bob IDE</h2>
+      <p>IBM Bob is an AI-powered development partner that works directly with the codebase
+      with full repository context — it understands intent, reads complete repo context,
+      explains logic, automates complex transformations, and streamlines multi-step work.</p>
+      <h3>Two ways to work</h3>
+      <ul>
+        <li><b>Bob IDE</b> — <b>Required.</b> Must be used; session reports are exported from it.</li>
+        <li><b>Bob Shell</b> — Optional. Brings Bob to the command line for automation.</li>
+      </ul>
+      <h3>Bob IDE features (useful building blocks)</h3>
+      <p>
+        <span class="pill">Chat interface</span>
+        <span class="pill">Modes: Plan / Code / Advanced / Ask / Orchestrator</span>
+        <span class="pill">Custom modes</span>
+        <span class="pill">Auto-approve</span>
+        <span class="pill">Custom instructions</span>
+        <span class="pill">MCP servers</span>
+        <span class="pill">Context mentions (@)</span>
+        <span class="pill">Bob tips</span>
+        <span class="pill">Code actions</span>
+        <span class="pill">Next Edit</span>
+        <span class="pill">Slash commands (/init → AGENTS.md, /create-pr, /review)</span>
+        <span class="pill">Checkpoints</span>
+        <span class="pill">Code reviews</span>
+        <span class="pill">Commit messages</span>
+        <span class="pill">Pull requests</span>
+        <span class="pill">Enhance prompt</span>
+        <span class="pill">Literate coding</span>
+        <span class="pill">Skills</span>
+      </p>
+      <h3>Account</h3>
+      <p>Use the <b>hackathon-provisioned Bob account</b> (team name <code>ibm-hackathon-xxx</code>,
+      Enterprise plan), not a personal account. An IBMid is required to sign in.</p>
+    </div>
+    <div class="card">
+      <h2>Bobcoins</h2>
+      <p>Every interaction with Bob's AI consumes <b>Bobcoins</b> (also called "BP Coins") —
+      the metered usage budget for the event.</p>
+      <table>
+        <tr><th>Allocation</th><td><b>40 Bobcoins per account</b> (per team member)</td></tr>
+        <tr><th>Consumption</th><td>Per AI interaction. Guide example: a small task ≈ <b>0.52 Bobcoins</b> of API cost</td></tr>
+        <tr><th>When 100% used</th><td>No additional Bobcoins — work &amp; submission can still continue; consider watsonx as fallback</td></tr>
+        <tr><th>Monitor</th><td>Bob IDE → Settings → General → Budget / Usage · or Bob admin portal → Teams</td></tr>
+      </table>
+      <div class="warn callout">
+        <b>⚠️ Manage usage carefully</b>
+        Plan task division with teammates. Heavy autonomous Plan + Code runs can consume coins
+        fast. If you run out and cannot export, your submission is at risk.
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== SUBMISSION ===== -->
+  <div class="panel" id="submission">
+    <div class="card">
+      <h2>Submission Requirements</h2>
+      <h3>Basic information</h3>
+      <table>
+        <tr><th>Field</th><th>Requirement</th></tr>
+        <tr><td>Submission title</td><td>Max 50 characters</td></tr>
+        <tr><td>Short description</td><td>Max 255 characters</td></tr>
+        <tr><td>Long description</td><td>Min 100 words</td></tr>
+        <tr><td>Main tracks</td><td>Categories listed on the hackathon page</td></tr>
+        <tr><td>Technologies</td><td>All technologies used (see lablab.ai/tech)</td></tr>
+      </table>
+      <h3>Media</h3>
+      <table>
+        <tr><th>Field</th><th>Requirement</th></tr>
+        <tr><td>Cover image</td><td>Recommended 16:9 ratio</td></tr>
+        <tr><td>Video presentation</td><td>≤ 5 minutes, ≤ 300 MB</td></tr>
+        <tr><td>Slide presentation</td><td>Required</td></tr>
+      </table>
+      <h3>Code &amp; hosting</h3>
+      <ul>
+        <li><b>Public GitHub repository</b> — private repos cannot be fully reviewed</li>
+        <li><b><code>bob_sessions/</code> folder</b> with exported Bob session reports + screenshots</li>
+        <li>Written statement</li>
+        <li>Demo application platform + live demo URL</li>
+        <li>Additional information for judges (e.g. how it could scale)</li>
+      </ul>
+      <div class="warn callout">
+        <b>⚠️ Deployment</b>
+        Hackathon-provisioned IBM Cloud accounts <b>do not support deployment</b>. Run the demo
+        locally or host it on your own platform (e.g. Vercel), then showcase it in the submission.
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== BOB SESSIONS ===== -->
+  <div class="panel" id="sessions">
+    <div class="card">
+      <h2>Exporting Bob Session Reports (required for judging)</h2>
+      <p><b>Each team member</b> must export and upload all relevant Bob task session reports
+      into the final code repository.</p>
+      <ol>
+        <li>Create a folder named <code>bob_sessions/</code> in the project repo.</li>
+        <li>Bob IDE chat → <b>Views and More Actions</b> → <b>History</b>.</li>
+        <li>Confirm the correct workspace (or select <b>All</b> for multiple workspaces).</li>
+        <li>Open a task → select the task header → the task session consumption summary appears.</li>
+        <li>Take a <b>screenshot</b> of the consumption summary.</li>
+        <li>Select <b>Export task history</b> → downloads the task history as a markdown file.</li>
+        <li>Repeat for every task related to the submission.</li>
+        <li>Upload all screenshots + exported markdown files into <code>bob_sessions/</code>.</li>
+      </ol>
+      <div class="danger callout">
+        <b>⛔ Before exporting</b>
+        Remove all credentials and API keys from the code. If IBM Bob or Cloud credentials are
+        detected in the public repo, the IBM Security team will deactivate account access.
+      </div>
+    </div>
+    <div class="card">
+      <h2>Security &amp; Data Rules</h2>
+      <ul>
+        <li><b>Never expose API keys / credentials</b> in the repo — IBM security scanners run
+        24/7 and will immediately deactivate access; the cloud account stays suspended until
+        the key is removed everywhere, rotated, and remediation is confirmed with support.</li>
+        <li>Keep the GitHub repository <b>public</b>.</li>
+      </ul>
+      <h3>Data set rules (bring your own data)</h3>
+      <ul>
+        <li>Teams are responsible for data compliance.</li>
+        <li>Public-website data is allowed only if terms permit commercial use — keep a list of sources.</li>
+        <li><b>Not allowed:</b> company-confidential data, client data, personal information (PI), social-media data.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ===== JUDGING & IDEAS ===== -->
+  <div class="panel" id="judging">
+    <div class="card">
+      <h2>Judging Criteria</h2>
+      <table>
+        <tr><th>Criterion</th><th>What it measures</th></tr>
+        <tr><td>Application of Technology</td><td>Completeness and thoughtfulness of the project, with clear application of IBM Bob</td></tr>
+        <tr><td>Presentation</td><td>Clarity and effectiveness of the project presentation</td></tr>
+        <tr><td>Business Value</td><td>Impact and practical value in addressing a high-priority issue</td></tr>
+        <tr><td>Originality</td><td>Uniqueness and creativity of the solution and the approach to applying Bob</td></tr>
+      </table>
+    </div>
+    <div class="card">
+      <h2>Official Example Use Cases</h2>
+      <p>The guide's appendix lists five example directions (you are not limited to these):</p>
+      <table>
+        <tr><th>#</th><th>Use case</th><th>Idea</th></tr>
+        <tr><td>1</td><td>Code understanding &amp; onboarding accelerator</td><td>Bob explains what code does, how components interact, where critical logic lives</td></tr>
+        <tr><td>2</td><td>Automated documentation &amp; test companion</td><td>Bob reviews logic and auto-generates documentation and relevant tests</td></tr>
+        <tr><td>3</td><td>Repetitive task &amp; boilerplate reduction assistant</td><td>Bob generates boilerplate, updates configs, refactors common patterns</td></tr>
+        <tr><td>4</td><td>Intelligent debugging &amp; issue insight solution</td><td>Bob explains execution flow, finds root causes, summarizes risky changes</td></tr>
+        <tr><td>5</td><td>Guided modernization &amp; improvement planner</td><td>Bob assesses code quality and suggests prioritized improvements</td></tr>
+      </table>
+      <div class="tip callout">
+        <b>💡 Strategy note</b>
+        These five are "safe" for the <i>Application of Technology</i> score, but many teams
+        will pick them — so for <i>Originality</i>, choose a category and attack it from an
+        angle competitors are not taking. Optional watsonx Orchestrate / watsonx.ai can extend the idea.
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== CHECKLIST ===== -->
+  <div class="panel" id="checklist">
+    <div class="card">
+      <h2>Critical Checklist</h2>
+      <ul class="check">
+        <li>Built with IBM Bob IDE as a core component</li>
+        <li>Bob used meaningfully and visibly throughout development</li>
+        <li>Bobcoin usage planned across team members</li>
+        <li>Public GitHub repo</li>
+        <li><code>bob_sessions/</code> folder with exported reports + consumption screenshots (each member)</li>
+        <li>All API keys / credentials removed before exporting and pushing</li>
+        <li>Title ≤ 50 chars · short desc ≤ 255 chars · long desc ≥ 100 words</li>
+        <li>Cover image (16:9)</li>
+        <li>Video ≤ 5 min and ≤ 300 MB</li>
+        <li>Slide presentation prepared</li>
+        <li>Written statement included</li>
+        <li>Demo deployed (locally / self-hosted) with a working demo URL</li>
+        <li>Main tracks + technology tags selected</li>
+        <li>Submitted before May 17, 11:00 AM ET</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h2>Links &amp; Notes</h2>
+      <ul>
+        <li>Event page — <a href="https://lablab.ai/ai-hackathons/ibm-bob-hackathon">lablab.ai/ai-hackathons/ibm-bob-hackathon</a></li>
+        <li>Hackathon guidelines article — <a href="https://lablab.ai/ai-articles/hackathon-guidelines">lablab.ai/ai-articles/hackathon-guidelines</a></li>
+        <li>Official guide PDF — saved in <code>prepare/Lablab-IBM-Bob-hackathon-guide-May-2026.pdf</code></li>
+        <li>Kick-off stream — <a href="https://www.twitch.tv/lablabai">twitch.tv/lablabai</a></li>
+        <li>Technologies list — <a href="https://lablab.ai/tech">lablab.ai/tech</a></li>
+      </ul>
+      <h3>Naming note</h3>
+      <p>Announcements use names interchangeably: "IBM Bob" / "Build on Bob (BoB)" for the
+      tool, and "Bobcoins" / "BP Coins" for the usage credits.</p>
+      <h3>Getting help</h3>
+      <p>Post questions in the Discord support channel and tag the mentor roles — do not DM
+      mentors; posting in the channel is the fastest route to an answer.</p>
+    </div>
+  </div>
+
+</div>
+
+<div class="navhint">Compiled from the event page, lablab.ai guidelines, Discord announcements, and the official guide PDF · temporary <code>prepare</code> branch</div>
+
+<script>
+  const bar = document.getElementById('tabbar');
+  const btns = bar.querySelectorAll('.tab-btn');
+  const panels = document.querySelectorAll('.panel');
+  bar.addEventListener('click', function (e) {
+    const btn = e.target.closest('.tab-btn');
+    if (!btn) return;
+    const tab = btn.dataset.tab;
+    btns.forEach(b => b.classList.toggle('active', b === btn));
+    panels.forEach(p => p.classList.toggle('active', p.id === tab));
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+</script>
+
+</body>
+</html>
