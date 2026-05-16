@@ -86,4 +86,23 @@ export interface HandoffListResponse {
   handoffs: Handoff[];
 }
 
+export interface ChatMessage {
+  id: string;
+  role: 'user' | 'assistant';
+  content: string;
+  timestamp: Date;
+}
+
+export interface StandinChatRequest {
+  question: string;
+  handoffId?: string;
+  repoPath?: string;
+}
+
+export interface StandinChatResponse {
+  answer: string;
+  messageId: string;
+  timestamp: Date;
+}
+
 // Made with Bob
