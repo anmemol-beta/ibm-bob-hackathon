@@ -1,0 +1,72 @@
+[
+  {
+    "id": "handoff-1715900000000-demo001",
+    "author": "Sarah Chen",
+    "timestamp": "2026-05-15T18:30:00.000Z",
+    "gitActivitySummary": "Implemented user authentication flow with JWT tokens and added password reset functionality. Refactored API middleware for better error handling. Updated database schema to support user roles and permissions.",
+    "scenarios": [
+      {
+        "id": "scenario-1715900000000-0",
+        "situation": "The password reset email template is hardcoded and needs to be made configurable. The current implementation sends a plain text email, but the product team wants HTML emails with branding.",
+        "suggestedApproach": "Create an email template system using a templating engine like Handlebars or EJS. Store templates in a /templates directory and add configuration for SMTP settings. Consider using a service like SendGrid or AWS SES for production."
+      },
+      {
+        "id": "scenario-1715900000000-1",
+        "situation": "The JWT token expiration is set to 24 hours, but there's no refresh token mechanism. Users will be logged out after 24 hours even if they're actively using the app.",
+        "suggestedApproach": "Implement a refresh token flow. Store refresh tokens in the database with an expiration of 30 days. Add a /api/auth/refresh endpoint that accepts a refresh token and returns a new access token. Update the frontend to automatically refresh tokens before they expire."
+      },
+      {
+        "id": "scenario-1715900000000-2",
+        "situation": "The user roles system is in place but not fully integrated. Admin users should have access to a dashboard at /admin, but the route protection middleware isn't checking roles yet.",
+        "suggestedApproach": "Extend the authentication middleware to check user roles from the JWT payload. Create a higher-order function or decorator that can be applied to routes requiring specific roles. Add role-based UI rendering in the frontend to hide/show admin features."
+      },
+      {
+        "id": "scenario-1715900000000-3",
+        "situation": "There are no tests for the authentication flow. The code works but needs test coverage before we can confidently deploy to production.",
+        "suggestedApproach": "Write integration tests for the auth endpoints using Jest and Supertest. Test successful login, failed login, password reset flow, and token validation. Add unit tests for the JWT utility functions. Aim for at least 80% coverage on the auth module."
+      }
+    ],
+    "metadata": {
+      "repoPath": "/projects/user-auth-service",
+      "branch": "feature/auth-implementation",
+      "commitCount": 12,
+      "developerNotes": "I've completed the core authentication functionality including login, registration, and password reset. The JWT implementation is working well, but we need to add refresh tokens for better UX. The role-based access control schema is ready but needs to be wired up to the actual routes. I started on email templates but ran out of time - they're currently just plain text. All the database migrations are in place and tested locally. The next person should focus on the refresh token flow and getting the admin dashboard protected properly."
+    },
+    "status": "pending"
+  },
+  {
+    "id": "handoff-1715800000000-demo002",
+    "author": "Marcus Rodriguez",
+    "timestamp": "2026-05-14T14:15:00.000Z",
+    "gitActivitySummary": "Built real-time notification system using WebSockets. Added notification preferences UI and backend API. Integrated with existing event system to trigger notifications on key actions.",
+    "scenarios": [
+      {
+        "id": "scenario-1715800000000-0",
+        "situation": "The WebSocket connection drops when users switch between tabs or their device goes to sleep. When they come back, they miss notifications until they refresh the page.",
+        "suggestedApproach": "Implement automatic reconnection logic with exponential backoff. Use the Page Visibility API to detect when users return to the tab and trigger a reconnection. Store a 'last seen' timestamp and fetch missed notifications via REST API on reconnect."
+      },
+      {
+        "id": "scenario-1715800000000-1",
+        "situation": "Notification preferences are saved but not being applied correctly. Users are still receiving notifications they've opted out of.",
+        "suggestedApproach": "Review the notification filtering logic in the WebSocket server. The preferences are stored correctly in the database, but the server-side filtering isn't checking them before sending notifications. Add a middleware function that checks user preferences before emitting events."
+      },
+      {
+        "id": "scenario-1715800000000-2",
+        "situation": "The notification bell icon shows a count, but it doesn't update in real-time when new notifications arrive. Users have to refresh to see the updated count.",
+        "suggestedApproach": "Connect the notification count component to the WebSocket event stream. When a new notification arrives, increment the count in the Redux store (or your state management solution). Make sure the component is subscribed to the relevant state slice."
+      },
+      {
+        "id": "scenario-1715800000000-3",
+        "situation": "There's no rate limiting on notifications. A bug in the event system could spam users with hundreds of notifications.",
+        "suggestedApproach": "Implement rate limiting on the notification service. Group similar notifications (e.g., 'You have 5 new messages' instead of 5 separate notifications). Add a debounce mechanism for high-frequency events. Consider implementing notification batching for non-urgent updates."
+      }
+    ],
+    "metadata": {
+      "repoPath": "/projects/notification-service",
+      "branch": "feature/websocket-notifications",
+      "commitCount": 8,
+      "developerNotes": "The WebSocket infrastructure is solid and working well in testing. I used Socket.io for the implementation which handles a lot of the complexity. The notification preferences UI is complete and looks good. However, I noticed the preferences aren't being respected by the server - that's a critical bug to fix. The reconnection logic is basic right now and needs to be more robust for production. I also think we should add some kind of notification grouping to prevent spam. The database schema supports marking notifications as read/unread which is working correctly."
+    },
+    "status": "pending"
+  }
+]
