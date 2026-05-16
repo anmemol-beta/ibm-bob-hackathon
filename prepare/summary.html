@@ -595,9 +595,11 @@
 │       ├─ scenarios/route.ts   시나리오 CRUD
 │       ├─ standin/route.ts     스탠드인 (watsonx)
 │       └─ repo/route.ts        git 커밋·diff 읽기
-├─ lib/      S0: types·utils·constants 스텁 → S1~S3에서 git.ts·llm.ts·scenarios.ts 추가
+├─ lib/      types·utils·constants·git·llm + S4.5: store.ts(핸드오프 파일 스토어)
+├─ cli/      S4.5: asyncpair CLI — init(post-commit 훅)·capture(커밋 인터뷰)
 ├─ components/   S3~S6에서 추가 (ScenarioCard·ScenarioForm·ChatInterface 등)
 ├─ data/seed.json   S7에서 추가 — 데모 시드 (읽기 전용)
+├─ .asyncpair/handoffs.json   CLI·웹앱 공유 핸드오프 (git 커밋 → 팀원 전달)
 ├─ public/
 + 설정  package.json · tsconfig.json · tailwind.config.ts · postcss.config.js · next.config.js
 + .gitignore · .bobignore  (.env 제외)</div>
@@ -614,11 +616,24 @@
         <tr><td>S2</td><td>watsonx.ai LLM 래퍼 (<code>lib/llm.ts</code>)</td></tr>
         <tr><td>S3</td><td>시나리오 생성 + <code>/author</code></td></tr>
         <tr><td>S4</td><td>핸드오프 모델 + <code>/handoff</code></td></tr>
+        <tr><td>S4.5</td><td><b>커밋 트리거 CLI + 공유 파일 스토어</b> — CLI 포착 ↔ 웹앱 검토</td></tr>
         <tr><td>S5</td><td>스탠드인 Q&amp;A + <code>/pairing</code></td></tr>
         <tr><td>S6</td><td>페어링 UI 마무리</td></tr>
         <tr><td>S7</td><td>시드 데이터 + 데모 + 배포</td></tr>
       </table>
       <p style="font-size:0.84rem;color:var(--muted)">두 사람이 단계를 <b>번갈아</b> 맡을 것 — 각자 Bob 세션 리포트를 export해야 하므로.</p>
+    </div>
+
+    <div class="card">
+      <h2>두 표면 — CLI로 포착, 웹앱으로 검토 <span class="badge">S4.5 설계</span></h2>
+      <p>CLI와 웹앱은 경쟁이 아니라 한 파이프의 양 끝. <b>공유 파일 <code>.asyncpair/handoffs.json</code></b>이 둘을 잇는 이음매다.</p>
+      <table>
+        <tr><th></th><th>CLI — 포착(capture)</th><th>웹앱 — 검토·소비(consume)</th></tr>
+        <tr><td>언제</td><td>커밋 직후, 컨텍스트가 뜨거운 순간</td><td>핸드오프를 다듬을 때 · 인수할 때 · 막혔을 때</td></tr>
+        <tr><td>무엇</td><td>post-commit 훅 → 짧은 인터뷰 → 핸드오프 초안</td><td><code>/author</code> 편집 · <code>/handoff</code> 인수 · <code>/pairing</code> 스탠드인 Q&amp;A</td></tr>
+        <tr><td>마찰</td><td>0 — 이미 터미널, 질문 1개·스킵 가능</td><td>대시보드 한 곳에서 전부</td></tr>
+      </table>
+      <p><b>smooth하게 둘 다:</b> 같은 머신·같은 repo에서 CLI와 웹앱이 <u>같은 <code>.asyncpair/handoffs.json</code></u>을 읽고 쓴다 → CLI가 포착한 핸드오프가 웹앱에 자동으로 뜬다. 이 파일은 <b>git에 커밋</b>되므로 A가 push → B가 pull하면 핸드오프가 코드와 함께 따라온다 — 별도 서버 없이 시차 너머로 전달. Vercel 데모는 <code>data/seed.json</code> 읽기 전용 폴백.</p>
     </div>
 
     <div class="card">
@@ -692,7 +707,7 @@ Task: propose a concrete, minimal folder and file structure for the MVP, with a 
       <p><b>검증 결과 (2026-05-16)</b> — <code>npm install</code> + <code>npm run build</code> 통과. 라우트 10개(<code>/</code> · <code>/author</code> · <code>/handoff</code> · <code>/pairing</code> + API 3개) 전부 빌드됨. ⚠️ S0 버그 1건 수정: <code>lib/utils.ts</code>가 <code>clsx</code>를 import하는데 package.json에 누락 → <code>clsx</code> 설치로 해결. 참고: <code>next@14.2.3</code>에 알려진 보안 취약점 경고 — POC엔 무방, 여유되면 버전 업.</p>
       <div class="warn callout">
         <b>📋 진행 현황 (팀 공유 — 중복 작업 방지)</b>
-        스모크 ✅ · S0 ✅ · S1 ✅ · S2 ✅ · S3 ✅ · <b>S4 ✅</b> · S5 ⬜ · S6 ⬜ · S7 ⬜<br>
+        스모크 ✅ · S0 ✅ · S1 ✅ · S2 ✅ · S3 ✅ · S4 ✅ · <b>S4.5 ⬜</b> · S5 ⬜ · S6 ⬜ · S7 ⬜<br>
         각 단계 시작·완료 시 여기에 표시하고 누가 맡았는지 적을 것.
       </div>
       <h3>스테이지 로그</h3>
@@ -724,6 +739,9 @@ Task: propose a concrete, minimal folder and file structure for the MVP, with a 
 
       <p class="pcap">S4 — 핸드오프 모델 + /handoff · Code &nbsp;<span style="color:var(--ok)">✅ 완료</span> — <code>Handoff</code> 모델 + <code>/api/handoff</code>(GET·POST·PUT·DELETE) + <code>/author</code> 저장 연동 + <code>/handoff</code> 리스트·상세·인수. tsc·build(라우트 11개)·test·API round-trip 검증, 1.98 Bobcoin (hunjun)</p>
       <div class="prompt">Implement the handoff data model and the /handoff page. A handoff bundles a git activity summary, the authored scenarios, and metadata (author, timestamp). The /handoff page clearly shows an incoming handoff for the developer picking it up.</div>
+
+      <p class="pcap">S4.5 — 커밋 트리거 CLI + 공유 스토어 · Plan → Code &nbsp;⬜ 미시작 — CLI가 핸드오프를 <b>포착</b>하고 웹앱이 <b>검토·Q&amp;A</b>. 공유 파일 <code>.asyncpair/handoffs.json</code>로 연결</p>
+      <div class="prompt">Add a command-line tool to AsyncPair and make it share handoff data with the web app.<br><br>Part 1 — shared store. Create lib/store.ts: a persistence layer for handoffs backed by a JSON file at .asyncpair/handoffs.json (overridable via an ASYNCPAIR_DATA env var). Provide getHandoffs(), getHandoff(id), addHandoff(), updateHandoff(), deleteHandoff(), all using the existing Handoff type from lib/types.ts. If the file is missing, seed from data/seed.json when present, otherwise an empty list. Refactor app/api/handoff/route.ts to use lib/store.ts instead of its in-memory array. If a write fails because the filesystem is read-only (for example on Vercel), degrade gracefully to in-memory and never crash.<br><br>Part 2 — the CLI. Create a Node/TypeScript CLI under cli/ with two commands:<br>- asyncpair init: install a git post-commit hook into the current repository that runs the capture command.<br>- asyncpair capture: read the most recent commit with lib/git.ts, ask the developer at most two short skippable questions in the terminal (such as "Anything the next developer should know about this commit? [Enter to skip]"), call lib/llm.ts to draft a short handoff note, and save a handoff via lib/store.ts.<br><br>The interview must be fast and must never block or fail the commit. Add a README section explaining asyncpair init. Keep all existing pages, tests, and the production build working.</div>
 
       <p class="pcap">S5 — 스탠드인 Q&amp;A + /pairing · Plan → Code &nbsp;⬜ 미시작</p>
       <div class="prompt">Implement the /api/standin endpoint and wire it into the /pairing page. When the working developer asks a question, build a prompt from the repo context plus the absent teammate's past activity, call lib/llm.ts, and return an answer phrased as that teammate would give it. Add a chat-style UI on /pairing.</div>
