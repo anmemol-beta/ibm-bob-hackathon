@@ -206,7 +206,7 @@
         <tr><th>팀</th><td>2인 — hunjun(대한민국) · Hyoungseo(보스턴), 13시간 시차. Bobcoin 40×2</td></tr>
         <tr><th>스택</th><td>Python · 웹(TS/JS) 양쪽 모두 가능</td></tr>
         <tr><th>Bob 셋업</th><td>완료 — 로그인 확인, 40.00 Bobcoin (100% 잔여), enterprise plan</td></tr>
-        <tr><th>아이디어</th><td>비동기 개발 미션 컨트롤 — 자기 전 명령 시퀀스를 Bob이 시차 갭 동안 자율 실행. Lv1 vs Lv2 결정 대기. "아이디어" 탭 참조</td></tr>
+        <tr><th>아이디어</th><td>비동기 페어 프로그래밍 — 시차 너머로 시나리오 기반 페어링. 코딩은 사람이, AI가 페어를 이어줌. "아이디어" 탭 참조</td></tr>
       </table>
     </div>
     <div class="card">
@@ -341,7 +341,7 @@
       <h3>확정된 것</h3>
       <ul>
         <li>방향: 개발자 생산성 도구 (해석 A)</li>
-        <li>컨셉: <b>비동기 개발 미션 컨트롤</b> — 자기 전 명령 시퀀스를 Bob이 시차 갭 동안 자율 실행 (NASA 고지연 제어 발상). 자세히는 "아이디어" 탭</li>
+        <li>컨셉: <b>비동기 페어 프로그래밍</b> — 시차 너머로 시나리오 기반 페어링 (코딩은 사람, AI가 페어를 이어줌). 자세히는 "아이디어" 탭</li>
         <li>구조: 엔진(Python) + 웹 데모 UI</li>
       </ul>
       <h3>아직 미정</h3>
@@ -369,8 +369,8 @@
         <h2>팀 &amp; 스토리</h2>
         <table>
           <tr><th>팀</th><td>2인 — hunjun (대한민국) · Hyoungseo (보스턴)</td></tr>
-          <tr><th>배경</th><td>보스턴에서 2년간 함께 개발 → 현재 13시간 시차로 분리</td></tr>
-          <tr><th>스토리 자산</th><td>"함께 살던 팀이 시차를 넘어 함께 개발한다" — 지어낸 게 아니라 실제로 사는 스토리</td></tr>
+          <tr><th>배경</th><td>보스턴에서 2년간 <b>나란히 페어로</b> 개발 → 현재 13시간 시차로 분리</td></tr>
+          <tr><th>스토리 자산</th><td>"옆에서 페어로 일하던 팀이 시차를 넘어 다시 페어로 일한다" — 지어낸 게 아니라 실제로 사는 스토리</td></tr>
         </table>
         <div class="tip callout">
           <b>💡 왜 강력한가</b>
@@ -379,99 +379,94 @@
       </div>
 
       <div class="card">
-        <h2>컨셉 — 비동기 개발 미션 컨트롤 <span class="badge">현재 방향</span></h2>
-        <p>단순 "아침 브리핑"은 <i>읽기만 하는 패시브 리포트</i>라 약하다. 발상을 바꾼다 — 자고 일어나 <b>읽는</b> 게 아니라, 자기 전에 <b>갭 속으로 명령을 쏜다.</b> 코드베이스가 둘 다 자는 동안 전진한다 = <b>"코드베이스의 야간 근무조."</b></p>
+        <h2>컨셉 — 비동기 페어 프로그래밍 <span class="badge">현재 방향</span></h2>
+        <p>13시간 시차라 둘이 동시에 온라인인 적이 없다. 그래서 <b>페어 프로그래밍을 비동기로</b> 한다 — 깨어 있는 사람이 팀의 작업을 이어가되, 혼자가 아니라 <b>상대가 옆에 있는 것처럼.</b></p>
+        <p>핵심 장치 = <b>시나리오.</b> A는 일하면서 "B가 이어받으면 마주칠 법한 상황"을 미리 시나리오로 적어둔다 — 자기 페어링 차례를 미리 녹음하는 셈. B는 그 시나리오를 따라 A와 페어링하듯 진행한다.</p>
         <div class="flow">
-          <div class="flow-step"><span class="ico">🌞</span><b>보스턴 작업</b><span>Hyoungseo</span></div>
+          <div class="flow-step"><span class="ico">🌞</span><b>A 작업 (보스턴)</b><span>진행하며 'B가 마주칠 상황'을 시나리오로 작성</span></div>
           <div class="flow-arrow">→</div>
-          <div class="flow-step"><span class="ico">📡</span><b>명령 시퀀스 전송</b><span>자기 전 핸드오프</span></div>
+          <div class="flow-step bob"><span class="ico">🤝</span><b>AI 페어 다리</b><span>시나리오 전달 · 맥락 보강 · 스탠드인</span></div>
           <div class="flow-arrow">→</div>
-          <div class="flow-step bob"><span class="ico">🤖</span><b>Bob 갭 실행</b><span>둘 다 자는 13시간</span></div>
-          <div class="flow-arrow">→</div>
-          <div class="flow-step"><span class="ico">🌏</span><b>한국 작업</b><span>Hunjun · 전진된 코드</span></div>
+          <div class="flow-step"><span class="ico">🌏</span><b>B 작업 (한국)</b><span>시나리오 따라 페어처럼 진행 + 자기도 작성</span></div>
           <div class="flow-arrow">↻</div>
         </div>
-        <p style="text-align:center;color:var(--muted);font-size:0.82rem">follow-the-sun — 해가 지지 않는 코드베이스</p>
+        <p style="text-align:center;color:var(--muted);font-size:0.82rem">코드를 짜는 건 늘 사람 — AI는 끊긴 페어를 잇는 다리</p>
       </div>
 
       <div class="card">
-        <h2>발상의 출처 — NASA 고지연 로봇 제어 <span class="src an">일반 지식</span></h2>
-        <p>화성 로버는 편도 4~24분 지연 → 실시간 조종 불가능. NASA가 쓰는 기법을 그대로 코드 도구로 가져온다.</p>
-        <table>
-          <tr><th>NASA 기법</th><th>코드 도구로 번역</th></tr>
-          <tr><td>Command sequencing — 하루치 명령 묶음 전송</td><td>패시브 노트 대신 실행 가능한 명령 시퀀스를 갭에 전송</td></tr>
-          <tr><td>Conditional commands — "If X then A" 미리 인코딩</td><td>"리뷰 통과하면 머지, 테스트 깨지면 이거 시도"</td></tr>
-          <tr><td>Onboard autonomy + safe mode</td><td>Bob이 안전한 건 자율 실행, 위험하면 멈추고 에스컬레이트</td></tr>
-          <tr><td>Digital twin / 시뮬레이션 검증</td><td>명령 전송 전 Bob이 repo에 대고 유효성·영향 검증</td></tr>
-          <tr><td>Predictive state</td><td>명령 도착 시점(13시간 뒤) 코드 상태를 겨냥</td></tr>
-        </table>
-      </div>
-
-      <div class="card">
-        <h2>작동 방식 — 명령 라이프사이클</h2>
+        <h2>작동 방식 — 시나리오 라이프사이클</h2>
         <div class="vflow">
-          <div class="vbox">① A가 명령 시퀀스 작성 (conditional 포함)</div>
+          <div class="vbox">① A가 작업 중 'B가 마주칠 상황'을 예측 → 시나리오 작성 (AI 보조)</div>
           <div class="varrow">↓</div>
-          <div class="vbox">② Bob 검증 — "13시간 뒤에도 유효한가?"</div>
-          <div class="varrow">↓ &nbsp; 갭 동안 Bob이 분기 처리</div>
+          <div class="vbox">② 핸드오프 — 시나리오를 동봉해 넘김</div>
+          <div class="varrow">↓ &nbsp; B가 작업하다 상황 발생 → AI가 분기</div>
           <div class="vbranch">
             <div class="vcol">
-              <div class="vbox ok">경계 명확한 작업</div>
+              <div class="vbox ok">시나리오에 있음</div>
               <div class="varrow">↓</div>
-              <div class="vbox ok">🤖 자율 실행</div>
+              <div class="vbox ok">🤝 A의 시나리오 제시 → 페어 받듯 진행</div>
             </div>
             <div class="vcol">
-              <div class="vbox bad">위험 / 애매한 작업</div>
+              <div class="vbox bad">시나리오에 없음</div>
               <div class="varrow">↓</div>
-              <div class="vbox bad">⚠️ safe mode 파킹</div>
+              <div class="vbox bad">🧠 repo+A 히스토리로 '<b>A라면?</b>' 스탠드인</div>
             </div>
           </div>
           <div class="varrow">↓ &nbsp; 합류</div>
-          <div class="vbox final">③ B가 깸 → ✅ 완료된 작업 + 📋 결정 큐</div>
+          <div class="vbox final">③ B의 작업이 다음 시나리오가 됨 → ①로 (끊김 없는 페어링 릴레이)</div>
         </div>
         <div class="tip callout">
           <b>🎬 데모 모먼트</b>
-          "Hyoungseo가 자기 전 명령 3개 남김 → Bob이 2개 실행, 3번째 갈림길에서 파킹 → Hunjun이 깨니 2개 완료 + 결정 1개 대기. 둘 다 자는데 코드가 전진했다." (데모에선 13시간을 압축 시연)
+          "Hyoungseo가 보스턴에서 작업하며 시나리오를 남김 → Hunjun이 한국에서 깨어 이어받음 → 막히는 순간마다 Hyoungseo의 시나리오가 떠서 '페어가 옆에 있는' 느낌 → 시나리오에 없던 문제엔 AI가 Hyoungseo 대신 답. 13시간 떨어졌는데 페어처럼 코딩했다."
         </div>
       </div>
 
       <div class="card">
-        <h2>야망 단계 — 어디까지 만들까</h2>
+        <h2>AI 페어 파트너의 3가지 역할</h2>
         <table>
-          <tr><th>레벨</th><th>범위</th><th>리스크</th></tr>
-          <tr><td>Lv1 (안전)</td><td>조건부 핸드오프 — 명령 시퀀스 작성 + Bob 검증 + 결정 트리 정리. 자율 실행 없음</td><td>낮음</td></tr>
-          <tr><td><b>Lv2 (추천)</b></td><td>Lv1 + Bob이 갭 동안 경계 명확한 작업 1~2개 자율 실행, 위험한 건 safe mode 파킹</td><td>중</td></tr>
-          <tr><td>Lv3 (야망)</td><td>풀 미션 컨트롤 — 시뮬레이션 게이트, 충돌 예측</td><td>높음 — 24시간엔 무리</td></tr>
+          <tr><th>역할</th><th>설명</th></tr>
+          <tr><td>① 시나리오 작성 보조</td><td>A가 'B가 뭘 마주칠지'를 예측·작성하는 걸 도움</td></tr>
+          <tr><td>② 시나리오 전달</td><td>B가 그 지점에 오면 맞는 시나리오를 <b>그 순간에</b> 제시</td></tr>
+          <tr><td>③ 스탠드인</td><td>시나리오에 없는 상황 → repo 컨텍스트 + A의 과거 작업으로 'A라면 뭐라 할지' 답변</td></tr>
         </table>
-        <p>Interstellar식 <b>컨텍스트 트리거 메시지</b>("이 코드 만질 때 이 영상 봐")는 감성 레이어로 곁들일 수 있음 — 코어는 아님.</p>
+      </div>
+
+      <div class="card">
+        <h2>이 제품에서 Bob / AI의 위치</h2>
+        <p>혼동 방지 — 두 층으로 나뉜다 (자세히는 "핵심 Q&amp;A" 탭의 축1/축2 항목):</p>
+        <table>
+          <tr><th>층</th><th>무엇</th></tr>
+          <tr><td>빌드 도구</td><td><b>Bob IDE로 이 제품을 만든다</b> — 해커톤 필수 요건, 세션 리포트로 증명</td></tr>
+          <tr><td>제품의 AI 두뇌</td><td>시나리오 생성·전달·스탠드인 = watsonx.ai 등 LLM이 담당</td></tr>
+          <tr><td>메타 연결고리</td><td>제품이 <b>Bob 세션 리포트를 입력</b>으로 씀 — A의 Bob 세션엔 A의 사고 과정이 담겨 시나리오·스탠드인의 좋은 재료가 됨</td></tr>
+        </table>
       </div>
 
       <div class="card">
         <h2>왜 심사 4축을 다 먹나</h2>
         <table>
           <tr><th>심사 축</th><th>근거</th></tr>
-          <tr><td>Application of Technology</td><td>Bob을 자율 에이전트로 정조준 — full-repo context로 갭 실행. Bob 세션 리포트도 입력으로 재활용 (메타)</td></tr>
-          <tr><td>Business Value</td><td>분산·원격 팀 + 큰 시차 = 거대하고 계속 커지는 시장</td></tr>
-          <tr><td>Originality</td><td>NASA 미션 컨트롤 발상 + 공식 5개 use case 어디에도 없음</td></tr>
-          <tr><td>Presentation</td><td>팀의 실제 스토리 + "코드가 밤새 전진" 데모 모먼트</td></tr>
+          <tr><td>Application of Technology</td><td>Bob IDE로 빌드(세션 리포트가 증거) + 제품이 Bob 세션을 데이터로 재활용 (메타)</td></tr>
+          <tr><td>Business Value</td><td>분산·원격 팀의 비동기 협업 — 페어 프로그래밍은 모두가 아는 실재 관행이라 가치 설득이 쉬움</td></tr>
+          <tr><td>Originality</td><td>"시차 너머 비동기 페어링" — 공식 5개 use case 어디에도 없음</td></tr>
+          <tr><td>Presentation</td><td>팀의 실제 스토리(보스턴 2년 페어 → 13시간 시차 페어)가 곧 데모</td></tr>
         </table>
       </div>
 
       <div class="card">
         <h2>실현성 &amp; 다음 할 일</h2>
         <ul>
-          <li>구조: 엔진(Python — git·세션 읽고 Bob 호출 + 명령 큐 처리) + 웹 UI(미션 컨트롤 대시보드)</li>
+          <li>구조: 엔진(Python — git·Bob 세션·시나리오 처리) + 웹 UI(페어링 화면)</li>
           <li>역할: 한 명 엔진, 한 명 UI</li>
-          <li>데모는 13시간 안 돌려도 됨 — 갭 실행을 압축 시연</li>
+          <li>실제 시차 팀이라 <b>진짜 비동기 페어링 세션을 데모로 찍을 수 있음</b> — 결정적 강점</li>
         </ul>
         <div class="warn callout">
           <b>⚠️ 좁히기 주의</b>
-          핵심 한 줄기 = <b>명령 시퀀스 → Bob 갭 실행 → 결정 큐</b>. 협업 플랫폼으로 번지지 말 것.
+          핵심 한 줄기 = <b>시나리오 작성 → 전달 → 스탠드인</b>. 협업 플랫폼으로 번지지 말 것. MVP = 시나리오 1왕복(A→B)이 돌아가게.
         </div>
         <h3>미정 / 결정 대기 <span class="badge">작성 중</span></h3>
         <ul>
-          <li>Lv1 vs Lv2 확정</li>
-          <li>최종 이름 (Groundlink · Sol · Nightshift · Relay …)</li>
+          <li>최종 이름 (Tandem · PairAhead · Slipstream …)</li>
           <li>MVP 범위 · 데모 호스팅 · 역할 분담 세부</li>
         </ul>
       </div>
@@ -505,7 +500,7 @@
             <td>낮음~중<br>(경쟁작 다수)</td><td>낮음</td>
           </tr>
         </table>
-        <p style="color:var(--muted);font-size:0.86rem">※ 선정된 미션 컨트롤이 Session-to-Knowledge의 메타 아이디어(Bob 세션 리포트 활용)를 흡수함.</p>
+        <p style="color:var(--muted);font-size:0.86rem">※ 선정된 비동기 페어링이 Session-to-Knowledge의 메타 아이디어(Bob 세션 리포트 활용)를 흡수함.</p>
       </div>
     </div>
 
@@ -524,7 +519,7 @@
         </table>
         <div class="tip callout">
           <b>💡 메모</b> <span class="src an">분석</span>
-          선정한 미션 컨트롤은 공식 5개 어디에도 안 들어감 → 독창성에서 유리.
+          선정한 비동기 페어 프로그래밍은 공식 5개 어디에도 안 들어감 → 독창성에서 유리.
         </div>
       </div>
     </div>
