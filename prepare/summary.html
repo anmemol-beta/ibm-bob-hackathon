@@ -620,9 +620,15 @@
     <div class="card">
       <h2>Stage 0 — Calibration (빈 레포 기준)</h2>
       <p>우리 레포는 거의 비어 있어(README만) "기존 코드 분석" 류 task는 불가. 빈 상태의 calibration은 두 단계로:</p>
-      <h3>① 스모크 테스트 — Bob 작동·인증 확인 (Ask mode, 거의 무료)</h3>
-      <p class="pcap">레포가 필요 없는 지식 질문 — 돌린 뒤 History에서 세션 1개를 export해 markdown 포맷 확인</p>
-      <div class="prompt">Explain the standard folder structure of a Next.js (App Router) + TypeScript project, and list the minimal files a brand-new app needs.</div>
+      <h3>① 스모크 테스트 — Plan mode (프로젝트 계획을 던지고 간단한 걸 시켜봄)</h3>
+      <p class="pcap">우리 프로젝트 컨텍스트 → MVP 파일 구조 제안 + 리스크 짚기. 결과는 S0에 그대로 활용. 돌린 뒤 History에서 세션 1개 export해 포맷·코인 확인</p>
+      <div class="prompt">We are building an async pair-programming web app.
+
+Concept: two developers separated by a 13-hour time zone gap take turns. While one works, they author short "scenarios" predicting what the other will face next. An AI delivers the right scenario at the right moment and, when something is not covered, stands in for the absent teammate using repo context.
+
+Planned stack: Next.js (App Router) + TypeScript, Tailwind CSS, watsonx.ai for LLM calls, simple-git for reading git history. Pages: /author, /handoff, /pairing. API routes: /api/scenarios, /api/standin, /api/repo.
+
+Task: propose a concrete, minimal folder and file structure for the MVP, with a one-line purpose for each file. Then point out the two biggest technical risks of building this in about 24 hours.</div>
       <h3>② S0 자체가 진짜 calibration</h3>
       <p>따로 throwaway task를 만들지 말 것 — Bobcoin 낭비. 아래 <b>S0(스캐폴드)을 첫 실작업</b>으로 돌리면서 History에서 <b>Bobcoin 비용</b> 확인 + 세션 <b>export</b>. 측정과 실제 진척을 동시에.</p>
       <p style="font-size:0.84rem;color:var(--muted)">→ S0 이후엔 프로젝트가 생기므로 S1부터는 일반 task. S0~S2의 코인 소비를 보고 1작업 단가를 잡으면 됨.</p>
