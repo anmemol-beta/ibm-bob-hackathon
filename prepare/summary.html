@@ -692,7 +692,7 @@ Task: propose a concrete, minimal folder and file structure for the MVP, with a 
       <p><b>검증 결과 (2026-05-16)</b> — <code>npm install</code> + <code>npm run build</code> 통과. 라우트 10개(<code>/</code> · <code>/author</code> · <code>/handoff</code> · <code>/pairing</code> + API 3개) 전부 빌드됨. ⚠️ S0 버그 1건 수정: <code>lib/utils.ts</code>가 <code>clsx</code>를 import하는데 package.json에 누락 → <code>clsx</code> 설치로 해결. 참고: <code>next@14.2.3</code>에 알려진 보안 취약점 경고 — POC엔 무방, 여유되면 버전 업.</p>
       <div class="warn callout">
         <b>📋 진행 현황 (팀 공유 — 중복 작업 방지)</b>
-        스모크 ✅ · S0 ✅ · S1 ✅ · S2 ✅ · <b>S3 ✅</b> · S4 ⬜ · S5 ⬜ · S6 ⬜ · S7 ⬜<br>
+        스모크 ✅ · S0 ✅ · S1 ✅ · S2 ✅ · S3 ✅ · <b>S4 ✅</b> · S5 ⬜ · S6 ⬜ · S7 ⬜<br>
         각 단계 시작·완료 시 여기에 표시하고 누가 맡았는지 적을 것.
       </div>
       <h3>스테이지 로그</h3>
@@ -702,6 +702,7 @@ Task: propose a concrete, minimal folder and file structure for the MVP, with a 
         <li><b>S1 — git.ts</b> ✅ — <code>lib/git.ts</code>(<code>getRecentCommits</code> + 타입 인터페이스 3종) + <code>git.test.ts</code> 6개. <code>npm test</code> <b>6/6 통과</b>(재확인 완료). simple-git·jest 설치. 비용 ~$0.34(세션 in-file).</li>
         <li><b>S2 — llm.ts</b> ✅ — <code>lib/llm.ts</code>(<code>generate</code>·<code>isLive</code>). tsc·<code>build</code> 통과, 목 폴백 결정적 동작 확인(<code>[MOCK MODE]</code> 라벨). 비용 <b>$0.04</b>. ⚠️ 실호출 미검증 — Bob이 원시 API 키를 Bearer로 사용 → watsonx는 IAM 토큰 교환 필요(<code>iam.cloud.ibm.com/identity/token</code>). 키 승인 후 수정.</li>
         <li><b>S3 — scenarios + /author</b> ✅ — <code>/api/scenarios</code> POST(git활동·노트→프롬프트→<code>generate()</code>→시나리오 파싱, JSON 실패 시 폴백) + <code>/author</code> 페이지(생성·인라인 편집·삭제) + <code>types.ts</code>에 <code>HandoffScenario</code> 등 3종. tsc·<code>build</code>·<code>test</code> 6/6 통과. 파일 쓰기 없음(Vercel 안전). 비용 <b>$0.68</b>. 참고: <code>/api/scenarios</code>의 GET·PUT·DELETE는 아직 스텁 — 영속화는 S4.</li>
+        <li><b>S4 — handoff 모델 + /handoff</b> ✅ — <code>lib/types.ts</code>에 <code>Handoff</code>·<code>CreateHandoffRequest</code>·<code>HandoffListResponse</code> 3종 + <code>/api/handoff</code>(GET·POST·PUT·DELETE, 인메모리) + <code>/author</code> 저장 연동 + <code>/handoff</code> 리스트·상세 뷰·인수 워크플로우 + <code>constants.ts</code>. tsc·<code>build</code>(라우트 11개)·<code>test</code> 6/6 통과, API round-trip(POST·GET·PUT) 실데이터 검증. 파일 쓰기 없음(Vercel 안전). 비용 <b>1.98 Bobcoin</b>. <code>/review</code> 7개 지적(전부 POC 비차단 — 스킵). 커밋 <code>103674b</code> (hunjun). ⚠️ 인메모리 저장이라 Vercel 배포 시 영속성 없음 — S7 seed로 보완.</li>
       </ul>
     </div>
 
@@ -721,7 +722,7 @@ Task: propose a concrete, minimal folder and file structure for the MVP, with a 
       <p class="pcap">S3 — 시나리오 생성 + /author · Plan → Code &nbsp;<span style="color:var(--ok)">✅ 완료</span> — <code>/api/scenarios</code> POST + <code>/author</code> 페이지. tsc·build·test 통과, 파일 쓰기 없음(Vercel 안전)</p>
       <div class="prompt">Implement the /api/scenarios endpoint and the /author page. The endpoint takes git activity and the developer's notes, builds a prompt, and calls lib/llm.ts to generate 3-5 handoff scenarios — each predicting a situation the next developer will likely face, with a suggested approach. The /author page lets a developer review and edit the generated scenarios.</div>
 
-      <p class="pcap">S4 — 핸드오프 모델 + /handoff · Code &nbsp;⬜ 미시작</p>
+      <p class="pcap">S4 — 핸드오프 모델 + /handoff · Code &nbsp;<span style="color:var(--ok)">✅ 완료</span> — <code>Handoff</code> 모델 + <code>/api/handoff</code>(GET·POST·PUT·DELETE) + <code>/author</code> 저장 연동 + <code>/handoff</code> 리스트·상세·인수. tsc·build(라우트 11개)·test·API round-trip 검증, 1.98 Bobcoin (hunjun)</p>
       <div class="prompt">Implement the handoff data model and the /handoff page. A handoff bundles a git activity summary, the authored scenarios, and metadata (author, timestamp). The /handoff page clearly shows an incoming handoff for the developer picking it up.</div>
 
       <p class="pcap">S5 — 스탠드인 Q&amp;A + /pairing · Plan → Code &nbsp;⬜ 미시작</p>
