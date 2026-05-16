@@ -677,30 +677,30 @@ Task: propose a concrete, minimal folder and file structure for the MVP, with a 
 
     <div class="card">
       <h2>단계별 Bob 프롬프트 (S0–S7)</h2>
-      <p>각 프롬프트를 Bob IDE에 붙여넣기. 큰 단계는 <b>Plan mode 먼저 → Code mode</b>. 커밋 전 <code>/review</code>. 프롬프트의 <code>&lt;NAME&gt;</code>은 정한 앱 이름으로 교체.</p>
+      <p>각 프롬프트를 Bob IDE에 붙여넣기. 큰 단계는 <b>Plan mode 먼저 → Code mode</b>. 커밋 전 <code>/review</code>. 프롬프트의 <code>&lt;NAME&gt;</code>은 <b>AsyncPair</b>로 교체. <span style="color:var(--ok)">✅ 완료</span>=재실행 금지 · ⬜ 미시작.</p>
 
-      <p class="pcap">S0 — 스캐폴드 · Plan → Code</p>
+      <p class="pcap">S0 — 스캐폴드 · Plan → Code &nbsp;<span style="color:var(--ok)">✅ 완료</span> — AsyncPair ~16파일, 빌드 통과(라우트 10개), clsx 누락 1건 수정</p>
       <div class="prompt">Plan, then scaffold a web app called &lt;NAME&gt;: an async pair-programming tool. Use Next.js with TypeScript (App Router) and Tailwind CSS. Create pages /author, /handoff, /pairing and API route stubs /api/scenarios, /api/standin, /api/repo, plus a lib/ folder. Add .gitignore and .bobignore that exclude .env.</div>
 
-      <p class="pcap">S1 — git 읽기 lib · Code</p>
+      <p class="pcap">S1 — git 읽기 lib · Code &nbsp;<span style="color:var(--ok)">✅ 완료</span> — <code>lib/git.ts</code> + 테스트 6/6 통과 (simple-git·jest 설치)</p>
       <div class="prompt">Implement lib/git.ts: given a local git repository path, return the recent commits with their messages, changed files, and diffs, using the simple-git npm package. Add a typed result interface and a unit test.</div>
 
-      <p class="pcap">S2 — LLM 래퍼 · Code</p>
+      <p class="pcap">S2 — LLM 래퍼 · Code &nbsp;⬜ 미시작</p>
       <div class="prompt">Implement lib/llm.ts: a wrapper around IBM watsonx.ai text generation, exposing one async function generate(prompt: string): Promise&lt;string&gt;. Read the API key, project ID, and endpoint URL from environment variables. Handle errors clearly. Never hardcode a secret.</div>
 
-      <p class="pcap">S3 — 시나리오 생성 + /author · Plan → Code</p>
+      <p class="pcap">S3 — 시나리오 생성 + /author · Plan → Code &nbsp;⬜ 미시작</p>
       <div class="prompt">Implement the /api/scenarios endpoint and the /author page. The endpoint takes git activity and the developer's notes, builds a prompt, and calls lib/llm.ts to generate 3-5 handoff scenarios — each predicting a situation the next developer will likely face, with a suggested approach. The /author page lets a developer review and edit the generated scenarios.</div>
 
-      <p class="pcap">S4 — 핸드오프 모델 + /handoff · Code</p>
+      <p class="pcap">S4 — 핸드오프 모델 + /handoff · Code &nbsp;⬜ 미시작</p>
       <div class="prompt">Implement the handoff data model and the /handoff page. A handoff bundles a git activity summary, the authored scenarios, and metadata (author, timestamp). The /handoff page clearly shows an incoming handoff for the developer picking it up.</div>
 
-      <p class="pcap">S5 — 스탠드인 Q&amp;A + /pairing · Plan → Code</p>
+      <p class="pcap">S5 — 스탠드인 Q&amp;A + /pairing · Plan → Code &nbsp;⬜ 미시작</p>
       <div class="prompt">Implement the /api/standin endpoint and wire it into the /pairing page. When the working developer asks a question, build a prompt from the repo context plus the absent teammate's past activity, call lib/llm.ts, and return an answer phrased as that teammate would give it. Add a chat-style UI on /pairing.</div>
 
-      <p class="pcap">S6 — 페어링 UI 마무리 · Code</p>
+      <p class="pcap">S6 — 페어링 UI 마무리 · Code &nbsp;⬜ 미시작</p>
       <div class="prompt">Polish the /pairing experience: when the developer reaches a point covered by a scenario, surface that scenario inline. Unify the visual design with Tailwind so the three pages feel like one coherent product. Add loading and empty states.</div>
 
-      <p class="pcap">S7 — 시드 + 데모 + 점검 · Code</p>
+      <p class="pcap">S7 — 시드 + 데모 + 점검 · Code &nbsp;⬜ 미시작</p>
       <div class="prompt">Create data/seed.json with a realistic demo handoff (git activity plus 4 scenarios) so the app can be demoed without a live repo. Then review the whole project, fix any type errors, and make sure it builds and runs.</div>
     </div>
 
