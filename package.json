@@ -2,9 +2,13 @@
   "name": "asyncpair",
   "version": "0.1.0",
   "private": true,
+  "bin": {
+    "asyncpair": "./dist/cli/index.js"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "build:cli": "tsc --project tsconfig.cli.json",
     "start": "next start",
     "lint": "next lint",
     "test": "jest",
@@ -12,6 +16,7 @@
   },
   "dependencies": {
     "clsx": "^2.1.1",
+    "commander": "^11.1.0",
     "next": "14.2.3",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",

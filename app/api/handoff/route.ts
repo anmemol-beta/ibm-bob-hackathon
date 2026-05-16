@@ -1,8 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { Handoff, CreateHandoffRequest, HandoffListResponse } from "@/lib/types";
-
-// In-memory storage for handoffs (replace with database in production)
-let handoffs: Handoff[] = [];
+import { getHandoffs, getHandoff, addHandoff, updateHandoff, deleteHandoff } from "@/lib/store";
 
 /**
  * GET /api/handoff - Retrieve all handoffs or a specific handoff by ID
@@ -14,7 +12,7 @@ export async function GET(request: NextRequest) {
 
     if (id) {
       // Get specific handoff
-      const handoff = handoffs.find(h => h.id === id);
+      const handoff = getHandoff(id);
       if (!handoff) {
         return NextResponse.json(
           { error: "Handoff not found" },
@@ -25,7 +23,8 @@ export async function GET(request: NextRequest) {
     }
 
     // Get all handoffs, sorted by timestamp (newest first)
-    const sortedHandoffs = [...handoffs].sort(
+    const allHandoffs = getHandoffs();
+    const sortedHandoffs = [...allHandoffs].sort(
       (a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
     );
 
@@ -69,9 +68,9 @@ export async function POST(request: NextRequest) {
       status: 'pending'
     };
 
-    handoffs.push(newHandoff);
+    const savedHandoff = addHandoff(newHandoff);
 
-    return NextResponse.json(newHandoff, { status: 201 });
+    return NextResponse.json(savedHandoff, { status: 201 });
   } catch (error) {
     console.error("Error creating handoff:", error);
     return NextResponse.json(
@@ -96,27 +95,26 @@ export async function PUT(request: NextRequest) {
       );
     }
 
-    const handoffIndex = handoffs.findIndex(h => h.id === id);
-    if (handoffIndex === -1) {
+    // Prepare updates
+    const updates: Partial<Handoff> = {};
+    
+    if (status) {
+      updates.status = status;
+    }
+    
+    if (acceptedBy && status === 'accepted') {
+      updates.acceptedBy = acceptedBy;
+      updates.acceptedAt = new Date();
+    }
+
+    const updatedHandoff = updateHandoff(id, updates);
+    
+    if (!updatedHandoff) {
       return NextResponse.json(
         { error: "Handoff not found" },
         { status: 404 }
       );
     }
-
-    // Update handoff
-    const updatedHandoff = { ...handoffs[handoffIndex] };
-    
-    if (status) {
-      updatedHandoff.status = status;
-    }
-    
-    if (acceptedBy && status === 'accepted') {
-      updatedHandoff.acceptedBy = acceptedBy;
-      updatedHandoff.acceptedAt = new Date();
-    }
-
-    handoffs[handoffIndex] = updatedHandoff;
 
     return NextResponse.json(updatedHandoff);
   } catch (error) {
@@ -143,15 +141,14 @@ export async function DELETE(request: NextRequest) {
       );
     }
 
-    const handoffIndex = handoffs.findIndex(h => h.id === id);
-    if (handoffIndex === -1) {
+    const deleted = deleteHandoff(id);
+    
+    if (!deleted) {
       return NextResponse.json(
         { error: "Handoff not found" },
         { status: 404 }
       );
     }
-
-    handoffs.splice(handoffIndex, 1);
 
     return NextResponse.json({ message: "Handoff deleted successfully" });
   } catch (error) {

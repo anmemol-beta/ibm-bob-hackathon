@@ -14,6 +14,7 @@ AsyncPair is a web application that enables asynchronous pair programming with A
 - **🤝 Handoff**: Assign scenarios to AI standin for async processing
 - **👥 Pairing**: Review AI-generated code changes with side-by-side diff view
 - **🔄 Workflow**: Seamless async collaboration between human and AI developers
+- **⚡ CLI Tool**: Automatically capture handoffs from git commits
 
 ## Tech Stack
 
@@ -33,14 +34,23 @@ asyncpair/
 │   ├── api/
 │   │   ├── scenarios/   # Scenario CRUD operations
 │   │   ├── standin/     # AI processing endpoints
+│   │   ├── handoff/     # Handoff CRUD operations
 │   │   └── repo/        # Repository operations
 │   ├── layout.tsx       # Root layout with navigation
 │   ├── page.tsx         # Landing page
 │   └── globals.css      # Global styles
+├── cli/
+│   ├── index.ts         # CLI entry point
+│   └── commands/
+│       ├── init.ts      # Install git hook
+│       └── capture.ts   # Capture handoff from commit
 ├── lib/
 │   ├── types.ts         # TypeScript interfaces
 │   ├── utils.ts         # Utility functions
-│   └── constants.ts     # App constants
+│   ├── constants.ts     # App constants
+│   ├── store.ts         # Handoff persistence layer
+│   ├── git.ts           # Git operations
+│   └── llm.ts           # LLM integration
 ├── public/              # Static assets
 └── [config files]       # Next.js, TypeScript, Tailwind configs
 ```
@@ -70,7 +80,81 @@ npm install
 npm run dev
 ```
 
-4. Open [http://localhost:3000](http://localhost:3000) in your browser
+4. Run the development server:
+```bash
+npm run dev
+```
+
+5. Open [http://localhost:3000](http://localhost:3000) in your browser
+
+### CLI Setup
+
+The AsyncPair CLI allows you to automatically capture handoffs from git commits.
+
+1. Build the CLI:
+```bash
+npm run build:cli
+```
+
+2. Link the CLI globally (optional):
+```bash
+npm link
+```
+
+3. Initialize AsyncPair in your git repository:
+```bash
+asyncpair init
+```
+
+This installs a post-commit hook that automatically captures handoffs after each commit.
+
+### CLI Commands
+
+#### `asyncpair init`
+
+Installs a git post-commit hook in the current repository. The hook automatically runs `asyncpair capture` after each commit to create handoff notes.
+
+```bash
+asyncpair init
+```
+
+**What it does:**
+- Checks if the current directory is a git repository
+- Creates a post-commit hook in `.git/hooks/`
+- Backs up any existing post-commit hook
+- Configures automatic handoff capture
+
+#### `asyncpair capture`
+
+Captures a handoff from the most recent git commit. Can be run manually or automatically via the git hook.
+
+```bash
+asyncpair capture
+```
+
+**Options:**
+- `--skip-questions`: Skip interactive questions (used by git hook)
+
+**Interactive mode** (manual run):
+1. Asks: "Anything the next developer should know about this commit?"
+2. Asks: "What should be worked on next?"
+3. Generates handoff scenarios using AI
+4. Saves the handoff to the shared store
+
+**Automatic mode** (via git hook):
+- Runs silently in the background
+- Never blocks or fails the commit
+- Uses AI to generate handoff scenarios from commit data
+
+### Data Storage
+
+Handoffs are stored in a JSON file at `~/.asyncpair/handoffs.json` by default. You can override this location with the `ASYNCPAIR_DATA` environment variable:
+
+```bash
+export ASYNCPAIR_DATA=/path/to/custom/location
+```
+
+The web app and CLI share the same data store, so handoffs captured via CLI are immediately visible in the web interface.
 
 ## Workflow
 
@@ -91,6 +175,12 @@ npm run dev
 ### `/api/standin`
 - `POST`: Trigger AI standin to process scenario
 - `GET`: Check standin processing status
+
+### `/api/handoff`
+- `GET`: List all handoffs or get specific handoff by ID
+- `POST`: Create new handoff
+- `PUT`: Update handoff (e.g., accept it)
+- `DELETE`: Remove handoff
 
 ### `/api/repo`
 - `GET`: Fetch repository state and changes
@@ -113,20 +203,23 @@ npm run dev
 
 ## Environment Variables
 
-Create a `.env` file in the root directory:
+Create a `.env.local` file in the root directory:
 
 ```env
-# Database
-DATABASE_URL="postgresql://..."
+# IBM watsonx.ai (optional - app works without credentials in mock mode)
+WATSONX_API_KEY="your-api-key"
+WATSONX_PROJECT_ID="your-project-id"
+WATSONX_URL="https://us-south.ml.cloud.ibm.com"
 
-# AI Service
-AI_API_KEY="your-api-key"
-AI_API_URL="https://api.example.com"
+# Data storage location (optional - defaults to ~/.asyncpair)
+ASYNCPAIR_DATA="/path/to/custom/location"
 
-# Authentication
+# Authentication (future)
 NEXTAUTH_SECRET="your-secret"
 NEXTAUTH_URL="http://localhost:3000"
 ```
+
+**Note**: The app gracefully degrades to mock mode if watsonx.ai credentials are not configured, allowing you to test the full workflow without API access.
 
 ## Contributing
 

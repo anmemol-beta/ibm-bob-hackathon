@@ -60,7 +60,7 @@ export async function generate(prompt: string): Promise<string> {
       );
     }
 
-    const data = await response.json();
+    const data: any = await response.json();
     
     // Extract generated text from response
     if (data.results && data.results.length > 0 && data.results[0].generated_text) {
