@@ -584,23 +584,24 @@
     </div>
 
     <div class="card">
-      <h2>아키텍처 <span class="badge">Bob 제안 반영</span></h2>
-      <div class="tree">ibm-bob-hackathon-main/   (Vercel 배포)
-└─ src/
-   ├─ app/
-   │   ├─ layout.tsx · page.tsx       루트 레이아웃 · 랜딩
-   │   ├─ author/page.tsx             A: 시나리오 작성
-   │   ├─ handoff/page.tsx            B: 핸드오프 인수
-   │   ├─ pairing/page.tsx            B: 작업 + 스탠드인
-   │   └─ api/
-   │       ├─ scenarios/route.ts      시나리오 CRUD
-   │       ├─ standin/route.ts        스탠드인 (watsonx)
-   │       └─ repo/route.ts           git 커밋·diff 읽기
-   ├─ components/   ScenarioCard · ScenarioForm · ChatInterface · RepoContext
-   ├─ lib/          git.ts · llm.ts(watsonx 래퍼) · scenarios.ts · types.ts
-   └─ data/seed.json   데모용 시드 (읽기 전용)
-+ 설정  package.json · tsconfig.json · tailwind.config.ts · next.config.js · .env.local</div>
-      <p style="font-size:0.84rem;color:var(--muted)">⚠️ 저장: 런타임 상태는 <b>인메모리</b>, seed JSON은 <b>읽기 전용</b> — Vercel은 런타임 파일 쓰기 불가.</p>
+      <h2>아키텍처 <span class="badge">S0 실제 반영</span></h2>
+      <div class="tree">ibm-bob-hackathon-main/   (= asyncpair, Vercel 배포)
+├─ app/                       ← root app/ (src/ 아님)
+│   ├─ layout.tsx · page.tsx · globals.css   레이아웃·랜딩·Tailwind
+│   ├─ author/page.tsx        A: 시나리오 작성
+│   ├─ handoff/page.tsx       B: 핸드오프 인수
+│   ├─ pairing/page.tsx       B: 작업 + 스탠드인
+│   └─ api/
+│       ├─ scenarios/route.ts   시나리오 CRUD
+│       ├─ standin/route.ts     스탠드인 (watsonx)
+│       └─ repo/route.ts        git 커밋·diff 읽기
+├─ lib/      S0: types·utils·constants 스텁 → S1~S3에서 git.ts·llm.ts·scenarios.ts 추가
+├─ components/   S3~S6에서 추가 (ScenarioCard·ScenarioForm·ChatInterface 등)
+├─ data/seed.json   S7에서 추가 — 데모 시드 (읽기 전용)
+├─ public/
++ 설정  package.json · tsconfig.json · tailwind.config.ts · postcss.config.js · next.config.js
++ .gitignore · .bobignore  (.env 제외)</div>
+      <p style="font-size:0.84rem;color:var(--muted)">S0 스캐폴드는 <b>root <code>app/</code></b> 레이아웃. 런타임 상태=인메모리, seed JSON=읽기 전용 (Vercel 런타임 파일 쓰기 불가). <code>.env.local</code>은 절대 커밋 금지.</p>
     </div>
 
     <div class="card">
@@ -658,11 +659,11 @@ Task: propose a concrete, minimal folder and file structure for the MVP, with a 
         <li>⚠️ 로컬 절대경로(username 포함)가 박힘 — 크리덴셜 아니라 OK. 단 코드 작업 세션 export 시엔 프롬프트·출력에 API 키 섞이지 않았는지 점검</li>
       </ul>
 
-      <h3>② S0 자체가 진짜 calibration ⬜ 미시작</h3>
-      <p>따로 throwaway task를 만들지 말 것. <b>S0(스캐폴드)을 첫 실작업</b>으로 돌리면서 History에서 <b>Bobcoin 비용</b> 확인 + 세션 <b>export</b>. 측정과 실제 진척을 동시에.</p>
+      <h3>② S0 자체가 진짜 calibration 🔶 진행 중</h3>
+      <p>S0(스캐폴드) 실행됨 — <b>1.54 Bobcoin</b>, ~16개 파일 생성(AsyncPair). Plan 분석(0.29)의 약 5배 = Code 스캐폴드 단가. ⚠️ <code>npm install</code>·실행 검증은 아직 안 됨 — 그것까지 해야 S0 완료.</p>
       <div class="warn callout">
         <b>📋 진행 현황 (팀 공유 — 중복 작업 방지)</b>
-        스모크 테스트 ✅ · S0 ⬜ · S1 ⬜ · S2 ⬜ · S3 ⬜ · S4 ⬜ · S5 ⬜ · S6 ⬜ · S7 ⬜<br>
+        스모크 테스트 ✅ · <b>S0 🔶</b>(파일 생성 완료 · npm install·실행 검증 대기) · S1 ⬜ · S2 ⬜ · S3 ⬜ · S4 ⬜ · S5 ⬜ · S6 ⬜ · S7 ⬜<br>
         각 단계 시작·완료 시 여기에 표시하고 누가 맡았는지 적을 것.
       </div>
     </div>
