@@ -664,9 +664,15 @@ Task: propose a concrete, minimal folder and file structure for the MVP, with a 
       <p><b>검증 결과 (2026-05-16)</b> — <code>npm install</code> + <code>npm run build</code> 통과. 라우트 10개(<code>/</code> · <code>/author</code> · <code>/handoff</code> · <code>/pairing</code> + API 3개) 전부 빌드됨. ⚠️ S0 버그 1건 수정: <code>lib/utils.ts</code>가 <code>clsx</code>를 import하는데 package.json에 누락 → <code>clsx</code> 설치로 해결. 참고: <code>next@14.2.3</code>에 알려진 보안 취약점 경고 — POC엔 무방, 여유되면 버전 업.</p>
       <div class="warn callout">
         <b>📋 진행 현황 (팀 공유 — 중복 작업 방지)</b>
-        스모크 테스트 ✅ · <b>S0 ✅</b>(빌드 검증 완료 · clsx 누락 수정) · S1 ⬜ · S2 ⬜ · S3 ⬜ · S4 ⬜ · S5 ⬜ · S6 ⬜ · S7 ⬜<br>
+        스모크 ✅ · S0 ✅ · <b>S1 ✅</b> · S2 ⬜ · S3 ⬜ · S4 ⬜ · S5 ⬜ · S6 ⬜ · S7 ⬜<br>
         각 단계 시작·완료 시 여기에 표시하고 누가 맡았는지 적을 것.
       </div>
+      <h3>스테이지 로그</h3>
+      <ul>
+        <li><b>스모크 테스트</b> ✅ — Plan 분석, 0.29 Bobcoin. 포맷·실력 확인.</li>
+        <li><b>S0 — 스캐폴드</b> ✅ — AsyncPair ~16파일, 1.54 Bobcoin. <code>npm install</code> + <code>build</code> 통과(라우트 10개). ⚠️ clsx 누락 1건 수정.</li>
+        <li><b>S1 — git.ts</b> ✅ — <code>lib/git.ts</code>(<code>getRecentCommits</code> + 타입 인터페이스 3종) + <code>git.test.ts</code> 6개. <code>npm test</code> <b>6/6 통과</b>(재확인 완료). simple-git·jest 설치. 비용 ~$0.34(세션 in-file).</li>
+      </ul>
     </div>
 
     <div class="card">
