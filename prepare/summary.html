@@ -608,6 +608,32 @@
       <p>개인 계정이 아닌 <b>해커톤 제공 Bob 계정</b>(팀명 <code>ibm-hackathon-xxx</code>, Enterprise 플랜) 사용. 로그인에 IBMid 필요.</p>
     </div>
     <div class="card">
+      <h2>Bob IDE 기능 — 공식 문서 조사 <span class="src">Bob 문서</span></h2>
+      <p>출처: <a href="https://bob.ibm.com/docs/ide">bob.ibm.com/docs/ide</a> (메인 · modes · skills 페이지)</p>
+      <h3>모드 5개 + 커스텀</h3>
+      <table>
+        <tr><th>모드</th><th>역할</th><th>접근 권한</th></tr>
+        <tr><td>💻 Code</td><td>기본 — 코드 작성·수정·리팩터링 (비용 효율적)</td><td>read + edit + command</td></tr>
+        <tr><td>❓ Ask</td><td>읽기 전용 — 코드 이해·분석·추천</td><td>read + browser + MCP (편집 없음)</td></tr>
+        <tr><td>📝 Plan</td><td>설계 — 시스템 설계·문제 분해·스펙 작성</td><td>read + markdown만 편집 + browser/MCP</td></tr>
+        <tr><td>🛠️ Advanced</td><td>무제한 — 복잡한 워크플로우</td><td>전체 툴</td></tr>
+        <tr><td>🔀 Orchestrator</td><td>조율 — 멀티스텝을 서브태스크로 쪼개 적절한 모드에 위임, 모드 자동 전환</td><td>직접 편집 없음, 위임</td></tr>
+        <tr><td>Custom modes</td><td>툴 접근·파일 권한·행동 지침을 직접 정의 — 팀 표준 강제 / 목적별 어시스턴트</td><td>정의하기 나름</td></tr>
+      </table>
+      <h3>Skills — 재사용 워크플로우 레시피</h3>
+      <ul>
+        <li>Bob에게 특정 작업을 일관되게 시키는 "레시피". 한 번 정의 → 여러 대화에서 재사용.</li>
+        <li><code>.bob/skills/</code>(프로젝트) 또는 <code>~/.bob/skills/</code>(글로벌)에 <code>SKILL.md</code> — YAML frontmatter(name·description) + 지침 + 보조 파일(템플릿·스크립트).</li>
+        <li>대화당 1회 로드. Bob이 요청 + description 보고 자동 활성화. <b>Advanced 모드 필요.</b></li>
+      </ul>
+      <h3>핵심 툴 &amp; 기능</h3>
+      <ul>
+        <li>툴: 파일 접근 · 명령 실행 · MCP 통합</li>
+        <li>기능: Chat · Auto-approve · Slash commands · Checkpoints · Code actions · Code reviews · Pull requests · Context mentions(@) · Bob tips · Next Edit · Enhance prompt · Literate coding · Bobalytics(사용량 추적) · Commit messages</li>
+        <li>설정: 키보드 단축키 · 커스텀 모드 · 커스텀 룰 · <code>.bobignore</code> · 텔레메트리 · MCP 서버 · 터미널 통합(Bob Shell)</li>
+      </ul>
+    </div>
+    <div class="card">
       <h2>Bobcoin</h2>
       <p>Bob AI와의 모든 상호작용은 <b>Bobcoin</b>("BP Coins" <span class="src">Discord</span>)을 소모. 이벤트용 사용량 예산.</p>
       <table>
@@ -782,6 +808,7 @@
         <tr><td><span class="src">이벤트</span></td><td>lablab.ai 이벤트 페이지 — <a href="https://lablab.ai/ai-hackathons/ibm-bob-hackathon">lablab.ai/ai-hackathons/ibm-bob-hackathon</a></td></tr>
         <tr><td><span class="src">가이드라인</span></td><td>lablab.ai 해커톤 가이드라인 글 — <a href="https://lablab.ai/ai-articles/hackathon-guidelines">lablab.ai/ai-articles/hackathon-guidelines</a></td></tr>
         <tr><td><span class="src">가이드 p#</span></td><td>공식 가이드 PDF 해당 페이지 — <code>prepare/Lablab-IBM-Bob-hackathon-guide-May-2026.pdf</code></td></tr>
+        <tr><td><span class="src">Bob 문서</span></td><td>Bob IDE 공식 문서 — <a href="https://bob.ibm.com/docs/ide">bob.ibm.com/docs/ide</a></td></tr>
         <tr><td><span class="src">Discord</span></td><td>lablab.ai Discord 공지 채널</td></tr>
         <tr><td><span class="src">메일</span></td><td>IBM이 보낸 메일 / IBM Cloud 신청 폼 화면</td></tr>
         <tr><td><span class="src an">분석</span></td><td>우리 해석·추정·전략 — <b>공식 출처 아님</b></td></tr>
