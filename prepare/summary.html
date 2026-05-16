@@ -622,6 +622,34 @@
     </div>
 
     <div class="card">
+      <h2>스테이지 진행 워크플로우 <span class="badge">팀 공통 절차</span></h2>
+      <p>S0–S7 <b>모든 단계가 아래 9스텝을 똑같이</b> 거친다. 누가 맡든 같은 방식 — 그래야 진행 상황을 한곳에서 추적하고 중복 실행을 막을 수 있다.</p>
+
+      <div class="tip callout">
+        <b>📂 작업 위치 — 레포 2개</b>
+        앱 코드 = <code>ibm-bob-hackathon-main/</code> (<code>main</code> 브랜치). 이 계획·진행 문서 = <code>ibm-bob-hackathon/</code> (<code>prepare</code> 브랜치). Bob IDE는 <code>-main</code> 폴더를 워크스페이스로 연다.
+      </div>
+
+      <h3>한 단계 = 9스텝</h3>
+      <ol>
+        <li><b>새 Bob 태스크 생성</b> — 단계마다 새 채팅. 컨텍스트 오염·비용 누적 방지. Bob이 "new task로 넘어갈까?"를 제안하면 <b>거절</b>하고 새 태스크를 직접 연다.</li>
+        <li><b>모드 선택</b> — 각 S# 프롬프트 제목에 적힌 모드를 따른다. <code>Plan → Code</code>면 Plan 모드로 설계를 먼저 받고 Code 모드로 구현, <code>Code</code>면 바로 구현.</li>
+        <li><b>프롬프트 붙여넣기</b> — 아래 "단계별 Bob 프롬프트"의 해당 S# 검은 박스를 <b>그대로</b> 복사. <code>&lt;NAME&gt;</code>은 <code>AsyncPair</code>로 교체.</li>
+        <li><b>Bob 작업 진행</b> — Auto-approve는 신중히. 작업이 끝나면 <code>attempt_completion</code> 요약이 뜬다.</li>
+        <li><b>커밋 전 <code>/review</code></b> — Bob 자체 코드 리뷰를 한 번 돌린다.</li>
+        <li><b>세션 export</b> — Bob 세션을 markdown(<code>.md</code>)으로 내보낸다 (절차 = "세션 &amp; 보안" 탭). 이 파일이 <b>심사 제출물</b>. 코드 세션은 export 전 프롬프트·출력에 API 키가 섞이지 않았는지 확인.</li>
+        <li><b>검증 의뢰</b> — export한 <code>.md</code> 경로를 팀원에게 전달해 점검받는다. 점검 = <code>-main</code> 폴더에서 새 의존성 있으면 <code>npm install</code> → <code>npm run build</code> → <code>npm test</code> → <code>npx tsc --noEmit</code>. 하나라도 깨지면 그 단계는 <b>미완료</b>로 두고 고친다.</li>
+        <li><b>진행 기록 (<code>prepare</code>)</b> — 검증 통과 시 이 빌드 탭을 갱신: ① 진행 보드(스모크·S0…) ② 스테이지 로그 ③ 해당 S# 프롬프트의 ✅ 표시 + 결과 한 줄. <code>prepare</code> 브랜치에 커밋·푸시.</li>
+        <li><b>앱 코드 커밋 (<code>main</code>)</b> — 검증된 코드를 <code>-main</code> 폴더에서 <code>main</code> 브랜치로 커밋·푸시. 세션 <code>.md</code>는 <code>bob_sessions/</code>에 함께 적재한다.</li>
+      </ol>
+
+      <div class="warn callout">
+        <b>철칙</b>
+        ✅로 표시된 단계는 <b>재실행 금지</b> — Bobcoin 낭비 + 결과 덮어쓰기. 시작 전 진행 보드를 먼저 확인. 세션 리포트엔 Bob이 <b>실제로 한 것만</b> 담는다 — 부풀리지 않는다.
+      </div>
+    </div>
+
+    <div class="card">
       <h2>Stage 0 — Calibration (빈 레포 기준)</h2>
       <p>우리 레포는 거의 비어 있어(README만) "기존 코드 분석" 류 task는 불가. 빈 상태의 calibration은 두 단계로:</p>
 
