@@ -308,8 +308,8 @@
       <h2>도구 분담 — Bob vs Claude Code <span class="src an">분석</span></h2>
       <p><b>원칙:</b> "풍부한 세션"은 연출이 아니라 <b>Bob이 실제로 의미 있는 일을 많이 한 결과</b>. 심사위원은 속 빈 세션을 바로 알아봄.</p>
       <div class="tip callout">
-        <b>💡 발상 전환 — Bob 사용은 비용이 아니라 연료</b>
-        우리 제품이 bob_session을 입력으로 먹음 → Bob을 진짜로 많이 쓰면 풍부한 세션 = 제출 요건 + 제품 데모 데이터. 일석이조.
+        <b>💡 발상 전환 — Bob 사용은 비용이 아니라 투자</b>
+        Bob을 코어 작업에 진짜로 쓰면 풍부한 세션 리포트가 자동으로 남음 = 심사 근거. 둔갑·연출 없이 점수가 나오는 정직한 길.
       </div>
       <h3>역할 분담</h3>
       <table>
@@ -330,7 +330,7 @@
       <h3>Bobcoin 현실</h3>
       <p>40×2 = <b>80 Bobcoin</b> (40/계정 <span class="src">가이드 p6</span>). 작은 task ≈ 0.52코인 <span class="src">가이드 p19</span> → 코어를 다 Bob으로 해도 넉넉하다는 게 우리 추정 <span class="src an">분석</span>.</p>
       <h3>📌 지금 당장</h3>
-      <p>Bob으로 작은 task 1개를 돌리고 <b>export</b> → markdown 구조 직접 확인. 세션 풍부함의 기준이자 동시에 우리 앱이 파싱할 입력 스펙. 미루지 말 것.</p>
+      <p>Bob으로 작은 task 1개를 돌리고 <b>export</b> → markdown 구조 + 소비량 직접 확인. 세션이 어떻게 생기는지 + 1작업 단가 캘리브레이션. 미루지 말 것.</p>
       <div class="warn callout">
         <b>⚠️ 자멸 패턴</b>
         Claude Code로 코어를 짜고 Bob은 구색만 맞추면 → 실격 위험 + 세션 빈약 + 데모 데이터 부족. 절대 금지.
@@ -433,20 +433,21 @@
 
       <div class="card">
         <h2>이 제품에서 Bob / AI의 위치</h2>
-        <p>혼동 방지 — 두 층으로 나뉜다 (자세히는 "핵심 Q&amp;A" 탭의 축1/축2 항목):</p>
+        <p>혼동 방지 — Bob과 우리 제품의 관계 (자세히는 "핵심 Q&amp;A" 탭의 축1/축2 항목):</p>
         <table>
-          <tr><th>층</th><th>무엇</th></tr>
+          <tr><th>구분</th><th>무엇</th></tr>
           <tr><td>빌드 도구</td><td><b>Bob IDE로 이 제품을 만든다</b> — 해커톤 필수 요건, 세션 리포트로 증명</td></tr>
           <tr><td>제품의 AI 두뇌</td><td>시나리오 생성·전달·스탠드인 = watsonx.ai 등 LLM이 담당</td></tr>
-          <tr><td>메타 연결고리</td><td>제품이 <b>Bob 세션 리포트를 입력</b>으로 씀 — A의 Bob 세션엔 A의 사고 과정이 담겨 시나리오·스탠드인의 좋은 재료가 됨</td></tr>
+          <tr><td>제품 입력</td><td>git 활동(commit·diff·코드) + 개발자가 쓴 시나리오</td></tr>
         </table>
+        <p style="font-size:0.83rem;color:var(--muted)">※ "제품이 Bob 세션 파일을 입력으로 쓴다"는 해커톤 요구사항이 아님 — 그런 메타 연결은 만들지 않음.</p>
       </div>
 
       <div class="card">
         <h2>왜 심사 4축을 다 먹나</h2>
         <table>
           <tr><th>심사 축</th><th>근거</th></tr>
-          <tr><td>Application of Technology</td><td>Bob IDE로 빌드(세션 리포트가 증거) + 제품이 Bob 세션을 데이터로 재활용 (메타)</td></tr>
+          <tr><td>Application of Technology</td><td>Bob IDE로 빌드 — Bob을 코어 작업에 의미 있게 쓴 세션 리포트가 증거</td></tr>
           <tr><td>Business Value</td><td>분산·원격 팀의 비동기 협업 — 페어 프로그래밍은 모두가 아는 실재 관행이라 가치 설득이 쉬움</td></tr>
           <tr><td>Originality</td><td>"시차 너머 비동기 페어링" — 공식 5개 use case 어디에도 없음</td></tr>
           <tr><td>Presentation</td><td>팀의 실제 스토리(보스턴 2년 페어 → 13시간 시차 페어)가 곧 데모</td></tr>
@@ -476,7 +477,7 @@
     <div class="subpanel" data-sub="candidates">
       <div class="card">
         <h2>초기 아이디어 후보 <span class="badge">참고용</span></h2>
-        <p>핸드오프 컴패니언으로 좁히기 전 검토한 후보들 — 기록 보존용.</p>
+        <p>비동기 페어 프로그래밍으로 좁히기 전 검토한 후보들 — 기록 보존용.</p>
         <table>
           <tr><th>후보</th><th>한 줄 설명</th><th>독창성</th><th>리스크</th></tr>
           <tr>
@@ -500,7 +501,7 @@
             <td>낮음~중<br>(경쟁작 다수)</td><td>낮음</td>
           </tr>
         </table>
-        <p style="color:var(--muted);font-size:0.86rem">※ 선정된 비동기 페어링이 Session-to-Knowledge의 메타 아이디어(Bob 세션 리포트 활용)를 흡수함.</p>
+        <p style="color:var(--muted);font-size:0.86rem">※ 위 후보들은 최종 컨셉(비동기 페어 프로그래밍) 이전 단계의 기록.</p>
       </div>
     </div>
 
@@ -585,10 +586,10 @@
     <div class="card">
       <h2>IBM Bob &amp; Bob IDE <span class="src">가이드 p2</span><span class="src">가이드 p8</span></h2>
       <p>IBM Bob은 코드베이스와 직접 작업하는 AI 개발 파트너. 전체 리포지토리 컨텍스트를 갖고 의도를 이해하고, 로직을 설명하고, 복잡한 변환을 자동화하고, 다단계 작업을 정리해줌.</p>
-      <h3>두 가지 작업 방식 <span class="src">가이드 p8</span></h3>
+      <h3>두 가지 작업 방식 <span class="src">가이드 p8</span><span class="src">가이드 p17</span></h3>
       <ul>
-        <li><b>Bob IDE</b> — <b>필수.</b> 반드시 사용; 세션 리포트를 여기서 export.</li>
-        <li><b>Bob Shell</b> — 선택. 커맨드라인용, 자동화에 유용.</li>
+        <li><b>Bob IDE</b> — <b>필수.</b> 반드시 사용; 심사용 세션 리포트를 여기서 export.</li>
+        <li><b>Bob Shell</b> — 선택. Bob의 <b>CLI 버전</b> — interactive + non-interactive(스크립트·배치) 세션. ⚠️ Bob IDE를 <b>대체하지 않음</b>: 심사 산출물인 세션 리포트는 Bob IDE 전용이라 핵심 작업은 IDE에서 할 것.</li>
       </ul>
       <h3>Bob IDE 주요 기능 <span class="src">가이드 p10–15</span></h3>
       <ul>
