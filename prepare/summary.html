@@ -299,7 +299,7 @@
       <h3>팀</h3>
       <ul>
         <li>구성 완료 → Bobcoin 40×인원, 역할 분담 가능 (예: 빌더 2명 / 데모·발표 1명).</li>
-        <li>Python·웹 양쪽 가능 → <b>엔진(Python/CLI) + 웹 데모 UI</b> 구조 권장.</li>
+        <li>구현 = <b>Next.js(TS) 웹앱 + asyncpair CLI</b> — 한 명이 CLI/엔진, 한 명이 웹 UI 식으로 분담 가능. 빌드 탭 참조.</li>
         <li>세션 리포트는 팀원 각자 export해야 하므로 <span class="src">가이드 p18</span>, 각자 Bob으로 의미 있는 작업을 분담.</li>
       </ul>
       <h3>시간 배분 (48시간)</h3>
@@ -396,24 +396,24 @@
       <div class="card">
         <h2>컨셉 — 비동기 페어 프로그래밍 <span class="badge">현재 방향</span></h2>
         <p>13시간 시차라 둘이 동시에 온라인인 적이 없다. 그래서 <b>페어 프로그래밍을 비동기로</b> 한다 — 깨어 있는 사람이 팀의 작업을 이어가되, 혼자가 아니라 <b>상대가 옆에 있는 것처럼.</b></p>
-        <p>핵심 장치 = <b>시나리오.</b> A는 일하면서 "B가 이어받으면 마주칠 법한 상황"을 미리 시나리오로 적어둔다 — 자기 페어링 차례를 미리 녹음하는 셈. B는 그 시나리오를 따라 A와 페어링하듯 진행한다.</p>
+        <p>핵심 장치 = <b>핸드오프.</b> A가 커밋할 때마다 CLI가 짧게 인터뷰해 "B가 이어받으면 마주칠 상황"을 핸드오프로 <b>자동 포착</b>한다 — 따로 앉아 적는 게 아니라 일한 흔적(커밋·diff)에서 뽑아낸다. A는 웹앱에서 잠깐 다듬고, B는 그 핸드오프를 따라 A와 페어링하듯 진행한다.</p>
         <div class="flow">
-          <div class="flow-step"><span class="ico">🌞</span><b>A 작업 (보스턴)</b><span>진행하며 'B가 마주칠 상황'을 시나리오로 작성</span></div>
+          <div class="flow-step"><span class="ico">🌞</span><b>A 작업 (보스턴)</b><span>커밋할 때마다 CLI가 핸드오프를 자동 포착</span></div>
           <div class="flow-arrow">→</div>
-          <div class="flow-step bob"><span class="ico">🤝</span><b>AI 페어 다리</b><span>시나리오 전달 · 맥락 보강 · 스탠드인</span></div>
+          <div class="flow-step bob"><span class="ico">🤝</span><b>AI 페어 다리</b><span>핸드오프 전달 · 맥락 보강 · 스탠드인</span></div>
           <div class="flow-arrow">→</div>
-          <div class="flow-step"><span class="ico">🌏</span><b>B 작업 (한국)</b><span>시나리오 따라 페어처럼 진행 + 자기도 작성</span></div>
+          <div class="flow-step"><span class="ico">🌏</span><b>B 작업 (한국)</b><span>핸드오프 따라 페어처럼 진행 + 자기 커밋도 포착됨</span></div>
           <div class="flow-arrow">↻</div>
         </div>
         <p style="text-align:center;color:var(--muted);font-size:0.82rem">코드를 짜는 건 늘 사람 — AI는 끊긴 페어를 잇는 다리</p>
       </div>
 
       <div class="card">
-        <h2>작동 방식 — 시나리오 라이프사이클</h2>
+        <h2>작동 방식 — 핸드오프 라이프사이클</h2>
         <div class="vflow">
-          <div class="vbox">① A가 작업 중 'B가 마주칠 상황'을 예측 → 시나리오 작성 (AI 보조)</div>
+          <div class="vbox">① A가 커밋 → CLI가 인터뷰 → 핸드오프(시나리오 포함) 자동 포착, A는 웹앱에서 다듬기만</div>
           <div class="varrow">↓</div>
-          <div class="vbox">② 핸드오프 — 시나리오를 동봉해 넘김</div>
+          <div class="vbox">② 전달 — 핸드오프가 <code>.asyncpair</code> 파일로 git에 실려 B에게 감</div>
           <div class="varrow">↓ &nbsp; B가 작업하다 상황 발생 → AI가 분기</div>
           <div class="vbranch">
             <div class="vcol">
@@ -428,7 +428,7 @@
             </div>
           </div>
           <div class="varrow">↓ &nbsp; 합류</div>
-          <div class="vbox final">③ B의 작업이 다음 시나리오가 됨 → ①로 (끊김 없는 페어링 릴레이)</div>
+          <div class="vbox final">③ B의 커밋이 다음 핸드오프가 됨 → ①로 (끊김 없는 페어링 릴레이)</div>
         </div>
         <div class="tip callout">
           <b>🎬 데모 모먼트</b>
@@ -440,7 +440,7 @@
         <h2>AI 페어 파트너의 3가지 역할</h2>
         <table>
           <tr><th>역할</th><th>설명</th></tr>
-          <tr><td>① 시나리오 작성 보조</td><td>A가 'B가 뭘 마주칠지'를 예측·작성하는 걸 도움</td></tr>
+          <tr><td>① 커밋 시점 자동 포착</td><td>A가 커밋할 때마다 CLI가 인터뷰 → 'B가 마주칠 상황'을 핸드오프 초안으로</td></tr>
           <tr><td>② 시나리오 전달</td><td>B가 그 지점에 오면 맞는 시나리오를 <b>그 순간에</b> 제시</td></tr>
           <tr><td>③ 스탠드인</td><td>시나리오에 없는 상황 → repo 컨텍스트 + A의 과거 작업으로 'A라면 뭐라 할지' 답변</td></tr>
         </table>
@@ -453,7 +453,7 @@
           <tr><th>구분</th><th>무엇</th></tr>
           <tr><td>빌드 도구</td><td><b>Bob IDE로 이 제품을 만든다</b> — 해커톤 필수 요건, 세션 리포트로 증명</td></tr>
           <tr><td>제품의 AI 두뇌</td><td>시나리오 생성·전달·스탠드인 = watsonx.ai 등 LLM이 담당</td></tr>
-          <tr><td>제품 입력</td><td>git 활동(commit·diff·코드) + 개발자가 쓴 시나리오</td></tr>
+          <tr><td>제품 입력</td><td>git 활동(commit·diff) + 커밋 인터뷰로 포착한 핸드오프</td></tr>
         </table>
         <p style="font-size:0.83rem;color:var(--muted)">※ "제품이 Bob 세션 파일을 입력으로 쓴다"는 해커톤 요구사항이 아님 — 그런 메타 연결은 만들지 않음.</p>
       </div>
@@ -464,14 +464,14 @@
         <div class="flow">
           <div class="flow-step"><span class="ico">🖥️</span><b>웹 UI</b><span>페어링 화면</span></div>
           <div class="flow-arrow">→</div>
-          <div class="flow-step"><span class="ico">⚙️</span><b>Python 백엔드</b><span>git 읽기 · 프롬프트 조립</span></div>
+          <div class="flow-step"><span class="ico">⚙️</span><b>Next.js API + CLI</b><span>git 읽기 · 프롬프트 조립</span></div>
           <div class="flow-arrow">→</div>
           <div class="flow-step bob"><span class="ico">🧠</span><b>watsonx.ai</b><span>시나리오 · 스탠드인 생성</span></div>
         </div>
         <h3>LLM 선택 — watsonx.ai 권장</h3>
         <ul>
           <li>IBM 해커톤이라 watsonx.ai를 쓰면 "Application of Technology" 점수에 유리. 가이드도 inference provider로 안내 <span class="src">가이드 p4</span>.</li>
-          <li>연동 순서: IBM Cloud 계정 → watsonx.ai 프로젝트 생성 → Granite 모델 선택 → <b>API key + project ID</b> 발급 → Python SDK <code>ibm-watsonx-ai</code>(또는 REST·Node SDK)로 호출.</li>
+          <li>연동 순서: IBM Cloud 계정 → watsonx.ai 프로젝트 생성 → Granite 모델 선택 → <b>API key + project ID</b> 발급 → REST API로 호출 (<code>lib/llm.ts</code>). ⚠️ watsonx는 원시 키가 아니라 IAM 토큰 필요.</li>
           <li>비용: RU 과금 ($0.0001/RU, 1000토큰 = 1RU), $80 크레딧 <span class="src">가이드 p44</span>. Bobcoin과 별개.</li>
           <li>Fallback: watsonx 셋업이 빡세면 다른 LLM API(본인 키)도 가능 — 제품 두뇌가 IBM이어야 한다는 규정은 없음.</li>
         </ul>
@@ -495,13 +495,13 @@
       <div class="card">
         <h2>실현성 &amp; 다음 할 일</h2>
         <ul>
-          <li>구조: 엔진(Python — git 읽기·프롬프트 조립·LLM 호출) + 웹 UI(페어링 화면)</li>
-          <li>역할: 한 명 엔진, 한 명 UI</li>
+          <li>구조: <code>asyncpair</code> CLI(커밋 포착) + Next.js 웹앱(검토·페어링) + <code>lib/</code>(git·llm·store) — 공유 파일 <code>.asyncpair/handoffs.json</code>로 연결</li>
+          <li>역할: 단계(S0–S7)를 둘이 번갈아 — 빌드 탭 참조</li>
           <li>실제 시차 팀이라 <b>진짜 비동기 페어링 세션을 데모로 찍을 수 있음</b> — 결정적 강점</li>
         </ul>
         <div class="warn callout">
           <b>⚠️ 좁히기 주의</b>
-          핵심 한 줄기 = <b>시나리오 작성 → 전달 → 스탠드인</b>. 협업 플랫폼으로 번지지 말 것. MVP = 시나리오 1왕복(A→B)이 돌아가게.
+          핵심 한 줄기 = <b>포착(CLI) → 전달(git) → 스탠드인</b>. 협업 플랫폼으로 번지지 말 것. MVP = 핸드오프 1왕복(A→B)이 돌아가게.
         </div>
         <h3>미정 / 결정 대기 <span class="badge">작성 중</span></h3>
         <ul>
@@ -588,7 +588,7 @@
       <div class="tree">ibm-bob-hackathon-main/   (= asyncpair, Vercel 배포)
 ├─ app/                       ← root app/ (src/ 아님)
 │   ├─ layout.tsx · page.tsx · globals.css   레이아웃·랜딩·Tailwind
-│   ├─ author/page.tsx        A: 시나리오 작성
+│   ├─ author/page.tsx        A: 핸드오프·시나리오 검토·편집
 │   ├─ handoff/page.tsx       B: 핸드오프 인수
 │   ├─ pairing/page.tsx       B: 작업 + 스탠드인
 │   └─ api/
