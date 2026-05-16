@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>IBM Bob Hackathon — Full Summary</title>
+<title>IBM Bob 해커톤 — 정리 &amp; 전략</title>
 <style>
   :root {
     --purple: #6929c4;
@@ -19,70 +19,71 @@
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
-    font-family: -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-family: -apple-system, "Apple SD Gothic Neo", "Segoe UI", Roboto, "Malgun Gothic", sans-serif;
     background: var(--bg);
     color: var(--ink);
-    line-height: 1.6;
+    line-height: 1.65;
     padding-bottom: 60px;
   }
   header {
     background: linear-gradient(135deg, var(--purple) 0%, var(--purple-light) 100%);
     color: #fff;
-    padding: 38px 24px 30px;
+    padding: 36px 24px 28px;
     text-align: center;
   }
-  header h1 { font-size: 2rem; font-weight: 700; letter-spacing: -0.5px; }
-  header .tag { font-size: 1rem; opacity: 0.9; margin-top: 6px; font-style: italic; }
+  header h1 { font-size: 1.9rem; font-weight: 700; letter-spacing: -0.5px; }
+  header .tag { font-size: 0.98rem; opacity: 0.9; margin-top: 6px; }
   .facts {
-    display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-top: 20px;
+    display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-top: 18px;
   }
   .fact {
     background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3);
-    border-radius: 10px; padding: 8px 14px; font-size: 0.85rem;
+    border-radius: 10px; padding: 8px 14px; font-size: 0.84rem;
   }
-  .fact b { display: block; font-size: 1.05rem; }
+  .fact b { display: block; font-size: 1rem; }
 
-  /* ---- Tab bar ---- */
+  /* ---- 탭 바 ---- */
   .tabbar {
     position: sticky; top: 0; z-index: 10;
     background: var(--card); border-bottom: 1px solid var(--border);
     box-shadow: 0 2px 12px rgba(105,41,196,0.06);
   }
   .tabbar-inner {
-    max-width: 920px; margin: 0 auto; display: flex; flex-wrap: wrap;
-    padding: 0 12px;
+    max-width: 940px; margin: 0 auto; display: flex; flex-wrap: wrap;
+    padding: 0 12px; align-items: center;
   }
   .tab-btn {
     background: none; border: none; cursor: pointer;
-    padding: 14px 16px; font-size: 0.92rem; font-weight: 600;
+    padding: 13px 14px; font-size: 0.9rem; font-weight: 600;
     color: var(--muted); border-bottom: 3px solid transparent;
     font-family: inherit; transition: color .15s, border-color .15s;
   }
   .tab-btn:hover { color: var(--purple); }
   .tab-btn.active { color: var(--purple); border-bottom-color: var(--purple); }
+  .tab-sep { width: 1px; height: 22px; background: var(--border); margin: 0 6px; }
 
-  /* ---- Panels ---- */
-  .wrap { max-width: 920px; margin: 0 auto; padding: 26px 24px 0; }
+  /* ---- 패널 ---- */
+  .wrap { max-width: 940px; margin: 0 auto; padding: 24px 24px 0; }
   .panel { display: none; animation: fade .2s ease; }
   .panel.active { display: block; }
   @keyframes fade { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
 
   .card {
     background: var(--card); border: 1px solid var(--border); border-radius: 12px;
-    padding: 24px 26px; margin-bottom: 18px;
+    padding: 22px 24px; margin-bottom: 16px;
   }
-  .card h2 { font-size: 1.3rem; color: var(--purple); margin-bottom: 12px; }
-  .card h3 { font-size: 1rem; margin: 18px 0 8px; }
-  p { margin-bottom: 10px; }
-  ul, ol { margin: 8px 0 12px 22px; }
+  .card h2 { font-size: 1.25rem; color: var(--purple); margin-bottom: 12px; }
+  .card h3 { font-size: 1rem; margin: 16px 0 7px; }
+  p { margin-bottom: 9px; }
+  ul, ol { margin: 7px 0 11px 22px; }
   li { margin-bottom: 5px; }
-  table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 0.92rem; }
-  th, td { text-align: left; padding: 9px 12px; border-bottom: 1px solid var(--border); }
+  table { width: 100%; border-collapse: collapse; margin: 11px 0; font-size: 0.9rem; }
+  th, td { text-align: left; padding: 9px 12px; border-bottom: 1px solid var(--border); vertical-align: top; }
   th { background: #f0ebfa; color: var(--purple); font-weight: 600; }
   tr:last-child td { border-bottom: none; }
   .callout {
-    border-radius: 10px; padding: 14px 16px; margin: 14px 0;
-    font-size: 0.93rem; border-left: 4px solid;
+    border-radius: 10px; padding: 13px 16px; margin: 13px 0;
+    font-size: 0.92rem; border-left: 4px solid;
   }
   .callout b { display: block; margin-bottom: 3px; }
   .danger { background: #fff0f1; border-color: var(--danger); color: #5c1116; }
@@ -90,96 +91,260 @@
   .tip    { background: #e8f5ec; border-color: var(--ok);     color: #08391a; }
   code {
     background: #f0ebfa; padding: 1px 6px; border-radius: 5px;
-    font-family: "SF Mono", Menlo, Consolas, monospace; font-size: 0.86em;
-  }
-  .pill {
-    display: inline-block; background: #f0ebfa; color: var(--purple);
-    border-radius: 20px; padding: 3px 12px; font-size: 0.82rem; margin: 3px 4px 3px 0;
+    font-family: "SF Mono", Menlo, Consolas, monospace; font-size: 0.85em;
   }
   a { color: var(--purple); }
   .check { list-style: none; margin-left: 0; }
   .check li::before { content: "☐ "; color: var(--purple); font-weight: 700; }
-  .navhint { text-align: center; color: var(--muted); font-size: 0.85rem; margin: 10px 0 30px; }
+  .badge {
+    display: inline-block; background: #f0ebfa; color: var(--purple);
+    border-radius: 6px; padding: 2px 9px; font-size: 0.72rem; font-weight: 700;
+    vertical-align: middle; margin-left: 8px;
+  }
+  .qa { border-left: 3px solid var(--purple); padding-left: 14px; margin: 14px 0; }
+  .qa .q { font-weight: 700; color: var(--purple); margin-bottom: 4px; }
+  .editnote {
+    font-size: 0.82rem; color: var(--muted); font-style: italic;
+    background: #faf8fd; border: 1px dashed var(--border); border-radius: 8px;
+    padding: 8px 12px; margin-bottom: 14px;
+  }
+  .navhint { text-align: center; color: var(--muted); font-size: 0.83rem; margin: 10px 0 0; }
 </style>
 </head>
 <body>
 
 <header>
-  <h1>IBM Bob Hackathon</h1>
+  <h1>IBM Bob 해커톤</h1>
   <div class="tag">"Your repo. Your rules. AI as your dev partner."</div>
   <div class="facts">
-    <div class="fact"><b>May 15–17, 2026</b>48-hour online build</div>
-    <div class="fact"><b>$10,000</b>Prize pool</div>
-    <div class="fact"><b>May 17, 11:00 AM ET</b>Submission deadline</div>
-    <div class="fact"><b>Solo or team</b>Participation</div>
+    <div class="fact"><b>2026.5.15–17</b>48시간 온라인 빌드</div>
+    <div class="fact"><b>$10,000</b>총 상금</div>
+    <div class="fact"><b>5/17 11AM ET</b>제출 마감</div>
+    <div class="fact"><b>솔로 / 팀</b>참가 형태</div>
   </div>
 </header>
 
 <nav class="tabbar">
   <div class="tabbar-inner" id="tabbar">
-    <button class="tab-btn active" data-tab="overview">Overview</button>
-    <button class="tab-btn" data-tab="timeline">Timeline</button>
+    <button class="tab-btn active" data-tab="qa">핵심 Q&amp;A</button>
+    <button class="tab-btn" data-tab="strategy">전략</button>
+    <button class="tab-btn" data-tab="ideas">아이디어</button>
+    <span class="tab-sep"></span>
+    <button class="tab-btn" data-tab="overview">개요</button>
+    <button class="tab-btn" data-tab="timeline">일정</button>
     <button class="tab-btn" data-tab="bob">IBM Bob</button>
-    <button class="tab-btn" data-tab="submission">Submission</button>
-    <button class="tab-btn" data-tab="sessions">Bob Sessions</button>
-    <button class="tab-btn" data-tab="judging">Judging &amp; Ideas</button>
-    <button class="tab-btn" data-tab="checklist">Checklist</button>
+    <button class="tab-btn" data-tab="submission">제출</button>
+    <button class="tab-btn" data-tab="sessions">세션 &amp; 보안</button>
+    <button class="tab-btn" data-tab="judging">심사 &amp; 체크리스트</button>
   </div>
 </nav>
 
 <div class="wrap">
 
-  <!-- ===== OVERVIEW ===== -->
-  <div class="panel active" id="overview">
+  <!-- ===== 핵심 Q&A ===== -->
+  <div class="panel active" id="qa">
     <div class="card">
-      <h2>Event Overview</h2>
+      <h2>지금 우리 상태</h2>
       <table>
-        <tr><th>Name</th><td>IBM Bob Hackathon</td></tr>
-        <tr><th>Theme</th><td>Build solutions that improve how software is built</td></tr>
-        <tr><th>Format</th><td>Fully online, 48-hour build</td></tr>
-        <tr><th>Platform</th><td>lablab.ai platform + lablab.ai Discord server</td></tr>
-        <tr><th>Dates</th><td>May 15–17, 2026</td></tr>
-        <tr><th>Hosts</th><td>lablab.ai · IBM · NativelyAI</td></tr>
-        <tr><th>Teams</th><td>Join a team or build solo</td></tr>
-        <tr><th>Prize pool</th><td>$10,000 — 🥇 $5,000 · 🥈 $3,000 · 🥉 $2,000</td></tr>
+        <tr><th>리포지토리</th><td>세팅 완료 — <code>main</code>(README), <code>prepare</code>(정보 노트 + 이 요약). <code>prepare</code>는 나중에 삭제 예정</td></tr>
+        <tr><th>정보 수집</th><td>이벤트 페이지 · 가이드라인 · Discord 공지 · 공식 가이드 PDF 정리 완료</td></tr>
+        <tr><th>팀</th><td>구성 완료 — Bobcoin 40×인원, 역할 분담 가능</td></tr>
+        <tr><th>스택</th><td>Python · 웹(TS/JS) 양쪽 모두 가능</td></tr>
+        <tr><th>아이디어</th><td><b>미정</b> — 다음 단계는 아이디어 1개 확정</td></tr>
       </table>
-      <p>Prize distribution may take up to 90 days. Submissions must be original and MIT-compliant.</p>
     </div>
     <div class="card">
-      <h2>The Challenge — "Turn idea into impact faster"</h2>
-      <p>Design and build a <b>proof-of-concept solution</b> using IBM Bob that speeds up
-      everyday development work. Suggested directions:</p>
-      <ul>
-        <li>Get up to speed on existing code quickly</li>
-        <li>Generate documentation and tests</li>
-        <li>Reduce effort spent on repetitive tasks that slow a team down</li>
-      </ul>
-      <div class="danger callout">
-        <b>⛔ Disqualification risk</b>
-        All submissions must clearly demonstrate meaningful use of IBM Bob. To be eligible
-        for judging, the solution must showcase <b>IBM Bob IDE as a core component</b> —
-        proven by the exported session reports.
+      <h2>핵심 Q&amp;A</h2>
+
+      <div class="qa">
+        <div class="q">Q. Bobcoin이 뭐임?</div>
+        <p>해커톤 동안 IBM Bob을 쓸 수 있는 <b>사용량 크레딧</b>입니다 (공지에선 "BP Coins"라고도 부름).</p>
+        <ul>
+          <li><b>계정당 40개</b> 지급 = 팀원 1인당 40개. 팀이면 총 40×인원.</li>
+          <li>Bob AI와 <b>상호작용할 때마다 차감</b>. 가이드 예시: 작은 작업 1개 ≈ API Cost <b>0.52 Bobcoin</b>.</li>
+          <li>100% 소진 시 추가 지급 없음. 단 그 후에도 작업·제출은 가능하고 watsonx를 fallback으로 안내.</li>
+          <li>잔액 확인: Bob IDE → Settings → General → Budget / Usage.</li>
+        </ul>
+        <p>→ 무거운 자동 실행(Plan+Code)은 코인을 빨리 먹음. 다 쓰면 export가 막혀 제출이 위험해질 수 있으니 계획적으로.</p>
       </div>
-      <p>Any framework or technology may be used, as long as Bob IDE is central and product
-      usage policies are respected.</p>
+
+      <div class="qa">
+        <div class="q">Q. 우리가 만드는 게 "개발을 빠르게 하는 도구"야?</div>
+        <p>원칙적으로 <b>그렇습니다.</b> 챌린지 제목이 "Turn idea into impact faster", 헤드라인이 "개발 방식 자체를 개선하라"입니다. 해석이 둘로 갈립니다:</p>
+        <ul>
+          <li><b>A (권장)</b> — 만드는 제품 자체가 <b>개발자 생산성 도구</b></li>
+          <li><b>B</b> — 아무거나 만들되, Bob을 개발에 썼다는 걸 보여줌 (실제 제출작 중에도 일반 앱 존재)</li>
+        </ul>
+        <p>A를 권장: 챌린지가 명시적으로 개발자 도구를 요구하고, Bob을 무겁고 눈에 띄게 쓰게 되어 심사(세션 리포트 기반)에 유리.</p>
+      </div>
+
+      <div class="qa">
+        <div class="q">Q. Bob IDE를 꼭 써야 해?</div>
+        <p>네. <b>Bob IDE는 필수</b>이고 심사 자격 조건입니다. 심사는 Bob IDE에서 export한 <b>세션 리포트</b>를 근거로 합니다. Bob Shell은 선택.</p>
+      </div>
+
+      <div class="qa">
+        <div class="q">Q. 데모는 어디에 배포해?</div>
+        <p>해커톤용 IBM Cloud 계정은 <b>배포를 지원하지 않음</b>. 데모는 <b>로컬에서 실행</b>하거나 <b>자체 호스팅</b>(Vercel 등)에 올린 뒤 제출에 보여줘야 합니다.</p>
+      </div>
+
+      <div class="qa">
+        <div class="q">Q. 세션 리포트가 뭐고 왜 중요해?</div>
+        <p>Bob IDE에서 한 작업 기록을 markdown + 소비 요약 스크린샷으로 export한 것. <b>팀원 각자</b>가 export해서 리포 <code>bob_sessions/</code> 폴더에 올려야 하며, 이게 곧 심사 근거입니다. (자세한 절차는 "세션 &amp; 보안" 탭)</p>
+      </div>
     </div>
   </div>
 
-  <!-- ===== TIMELINE ===== -->
-  <div class="panel" id="timeline">
+  <!-- ===== 전략 ===== -->
+  <div class="panel" id="strategy">
+    <div class="editnote">이 탭은 대화 진행에 따라 계속 업데이트됩니다.</div>
     <div class="card">
-      <h2>Timeline (Eastern Daylight Time)</h2>
+      <h2>전략 5원칙</h2>
+      <ol>
+        <li><b>심사 = Bob 세션 리포트.</b> 그냥 코딩하면 안 됨 — Bob에게 실제로 많이, 의미 있게 시키고 그 과정이 리포트에 남아야 점수가 나옴.</li>
+        <li><b>메타 시너지.</b> 챌린지가 "개발을 더 빠르게"라서, 프로젝트 자체가 개발자 도구면 "Bob으로 개발자 도구를 만든다"는 시너지가 생겨 독창성·기술적용에 유리.</li>
+        <li><b>Bobcoin 40개는 예산.</b> 초반 탕진 금지. 무거운 변환·생성 작업에 집중 투입하고 잡일은 직접.</li>
+        <li><b>48시간 = 작게.</b> 데모 가능한 기능 1개 완성이 미완성 기능 5개보다 훨씬 높은 점수.</li>
+        <li><b>제출물을 미루지 말 것.</b> 영상·슬라이드·세션 리포트 export를 마지막에 몰면 망함.</li>
+      </ol>
+    </div>
+    <div class="card">
+      <h2>팀 운영 &amp; 시간 배분</h2>
+      <h3>팀</h3>
+      <ul>
+        <li>구성 완료 → Bobcoin 40×인원, 역할 분담 가능 (예: 빌더 2명 / 데모·발표 1명).</li>
+        <li>Python·웹 양쪽 가능 → <b>엔진(Python/CLI) + 웹 데모 UI</b> 구조 권장.</li>
+        <li>세션 리포트는 팀원 각자 export해야 하므로, 각자 Bob으로 의미 있는 작업을 분담.</li>
+      </ul>
+      <h3>시간 배분 (48시간)</h3>
       <table>
-        <tr><th>When</th><th>Event</th></tr>
-        <tr><td>May 15, 7:00 AM ET</td><td>Registration closed (1:00 PM CET)</td></tr>
-        <tr><td>May 15, 11:00 AM ET</td><td>Kick-off stream — Twitch (5:00 PM CET / 8:00 AM PDT)</td></tr>
-        <tr><td>May 15, 12:00 PM ET</td><td>Live Q&amp;A — Discord General Q&amp;A Stage</td></tr>
-        <tr><td>May 17, 11:00 AM ET</td><td><b>End of submissions</b></td></tr>
+        <tr><th>구간</th><th>시간</th></tr>
+        <tr><td>아이디어 확정 + 셋업</td><td>~4h</td></tr>
+        <tr><td>빌드</td><td>~30h</td></tr>
+        <tr><td>데모 · 영상 · 슬라이드 · 세션 export</td><td>~10h</td></tr>
+        <tr><td>버퍼</td><td>~4h</td></tr>
+      </table>
+    </div>
+    <div class="card">
+      <h2>독창성 주의 — 경쟁 상황</h2>
+      <p>이미 제출된 프로젝트 목록에 <b>온보딩 도구가 2개</b> 있습니다 (DevRamp AI, Ghost Chimera). 공식 예시 use case 5개를 그대로 따라가면 "기술 적용"은 안전하지만 <b>독창성에서 다른 팀과 겹칩니다</b>.</p>
+      <div class="tip callout">
+        <b>💡 결론</b>
+        공식 카테고리 중 하나를 고르되, <b>남들이 안 잡는 각도</b>로 비틀어야 함. 또는 공식 5개에 없는 방향(예: Bob 세션 리포트 자체를 활용)을 노린다.
+      </div>
+    </div>
+    <div class="card">
+      <h2>결정 사항 &amp; 다음 할 일 <span class="badge">작성 중</span></h2>
+      <h3>확정된 것</h3>
+      <ul>
+        <li>방향: 개발자 생산성 도구 (해석 A) — <i>잠정</i></li>
+        <li>구조: 엔진 + 웹 데모 UI — <i>잠정</i></li>
+      </ul>
+      <h3>아직 미정</h3>
+      <ul>
+        <li>구체 아이디어 1개</li>
+        <li>데모 호스팅 플랫폼</li>
+        <li>역할 분담 세부</li>
+      </ul>
+      <p style="color:var(--muted);font-size:0.86rem">※ 대화하며 여기 채워나갈 영역.</p>
+    </div>
+  </div>
+
+  <!-- ===== 아이디어 ===== -->
+  <div class="panel" id="ideas">
+    <div class="editnote">이 탭은 대화 진행에 따라 계속 업데이트됩니다.</div>
+    <div class="card">
+      <h2>아이디어 후보 <span class="badge">미정</span></h2>
+      <table>
+        <tr><th>후보</th><th>한 줄 설명</th><th>독창성</th><th>리스크</th></tr>
+        <tr>
+          <td><b>Why-Map</b></td>
+          <td>코드의 "왜"를 찾아줌 — Bob이 코드+git 히스토리+PR을 읽고 "왜 존재 / 왜 이렇게 / 바꾸면 뭐가 깨지는지"를 답하고 ADR 생성</td>
+          <td>높음</td><td>중</td>
+        </tr>
+        <tr>
+          <td><b>Session-to-Knowledge</b></td>
+          <td>export된 Bob 세션 리포트를 입력받아 ADR·changelog·PR 설명·온보딩 문서로 자동 변환</td>
+          <td>매우 높음</td><td>높음(포맷 의존)</td>
+        </tr>
+        <tr>
+          <td><b>Test Gap Hunter</b></td>
+          <td>Bob이 위험하면서 테스트 없는 코드 경로를 찾아 위험도 랭킹 + 테스트 자동 생성</td>
+          <td>중</td><td>낮음</td>
+        </tr>
+        <tr>
+          <td><b>Onboarding Companion</b></td>
+          <td>낯선 repo → 구조화된 온보딩 가이드(아키텍처 맵, start-here, 용어집) 자동 생성</td>
+          <td>낮음~중<br>(경쟁작 다수)</td><td>낮음</td>
+        </tr>
+      </table>
+      <p style="color:var(--muted);font-size:0.86rem">※ 위 4개는 출발점. 새 후보를 추가하거나 합쳐도 됨.</p>
+    </div>
+    <div class="card">
+      <h2>공식 예시 use case 5개</h2>
+      <p>가이드 부록 기준. 이걸 그대로 해도 되지만 독창성에서 불리할 수 있음.</p>
+      <table>
+        <tr><th>#</th><th>공식 use case</th><th>후보 매핑</th></tr>
+        <tr><td>1</td><td>코드 이해 &amp; 온보딩 가속기</td><td>Onboarding Companion, Why-Map</td></tr>
+        <tr><td>2</td><td>문서·테스트 자동 동반자</td><td>Test Gap Hunter</td></tr>
+        <tr><td>3</td><td>반복작업·보일러플레이트 감축</td><td>—</td></tr>
+        <tr><td>4</td><td>지능형 디버깅 &amp; 이슈 인사이트</td><td>Why-Map</td></tr>
+        <tr><td>5</td><td>가이드형 현대화·개선 플래너</td><td>—</td></tr>
       </table>
       <div class="tip callout">
-        <b>💡 Time budget suggestion</b>
-        Idea + setup ~4h · Build ~30h · Demo, video, slides, session export ~10h · Buffer ~4h.
-        Never leave deliverables (video / slides / Bob report) to the last minute.
+        <b>💡 메모</b>
+        Session-to-Knowledge는 공식 5개 어디에도 없음 → 가장 독창적. 단 세션 리포트 포맷에 의존하는 리스크.
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== 개요 ===== -->
+  <div class="panel" id="overview">
+    <div class="card">
+      <h2>이벤트 개요</h2>
+      <table>
+        <tr><th>이름</th><td>IBM Bob 해커톤</td></tr>
+        <tr><th>테마</th><td>소프트웨어를 만드는 방식 자체를 개선하는 솔루션</td></tr>
+        <tr><th>형식</th><td>완전 온라인, 48시간 빌드</td></tr>
+        <tr><th>플랫폼</th><td>lablab.ai 플랫폼 + lablab.ai Discord</td></tr>
+        <tr><th>일정</th><td>2026년 5월 15–17일</td></tr>
+        <tr><th>주최</th><td>lablab.ai · IBM · NativelyAI</td></tr>
+        <tr><th>참가</th><td>팀 또는 솔로</td></tr>
+        <tr><th>상금</th><td>총 $10,000 — 🥇 $5,000 · 🥈 $3,000 · 🥉 $2,000</td></tr>
+      </table>
+      <p>상금 지급에 최대 90일 소요 가능. 제출물은 독창적이어야 하고 MIT 라이선스 준수.</p>
+    </div>
+    <div class="card">
+      <h2>챌린지 — "Turn idea into impact faster"</h2>
+      <p>IBM Bob을 사용해 일상 개발을 빠르게 해주는 <b>proof-of-concept 솔루션</b>을 설계·구축. 제안 방향:</p>
+      <ul>
+        <li>기존 코드를 빠르게 파악</li>
+        <li>문서와 테스트 생성</li>
+        <li>팀을 느리게 하는 반복 작업 줄이기</li>
+      </ul>
+      <div class="danger callout">
+        <b>⛔ 실격 위험</b>
+        모든 제출작은 IBM Bob을 의미 있게 사용했음을 명확히 보여야 함. 심사 자격을 위해 솔루션은 <b>IBM Bob IDE를 core component로 showcase</b>해야 하며, 그 증거가 export된 세션 리포트입니다.
+      </div>
+      <p>Bob IDE가 핵심이고 제품 사용 정책을 지키면 어떤 프레임워크·기술이든 사용 가능.</p>
+    </div>
+  </div>
+
+  <!-- ===== 일정 ===== -->
+  <div class="panel" id="timeline">
+    <div class="card">
+      <h2>일정 (미 동부시간 EDT)</h2>
+      <table>
+        <tr><th>시점</th><th>이벤트</th></tr>
+        <tr><td>5/15 7:00 AM ET</td><td>등록 마감 (1:00 PM CET)</td></tr>
+        <tr><td>5/15 11:00 AM ET</td><td>킥오프 스트림 — Twitch (5:00 PM CET / 8:00 AM PDT)</td></tr>
+        <tr><td>5/15 12:00 PM ET</td><td>라이브 Q&amp;A — Discord General Q&amp;A Stage</td></tr>
+        <tr><td>5/17 11:00 AM ET</td><td><b>제출 마감</b></td></tr>
+      </table>
+      <div class="tip callout">
+        <b>💡 시간 배분</b>
+        아이디어+셋업 ~4h · 빌드 ~30h · 데모·영상·슬라이드·세션 export ~10h · 버퍼 ~4h.
+        영상·슬라이드·Bob 리포트를 마지막에 몰지 말 것.
       </div>
     </div>
   </div>
@@ -188,206 +353,160 @@
   <div class="panel" id="bob">
     <div class="card">
       <h2>IBM Bob &amp; Bob IDE</h2>
-      <p>IBM Bob is an AI-powered development partner that works directly with the codebase
-      with full repository context — it understands intent, reads complete repo context,
-      explains logic, automates complex transformations, and streamlines multi-step work.</p>
-      <h3>Two ways to work</h3>
+      <p>IBM Bob은 코드베이스와 직접 작업하는 AI 개발 파트너. 전체 리포지토리 컨텍스트를 갖고 의도를 이해하고, 로직을 설명하고, 복잡한 변환을 자동화하고, 다단계 작업을 정리해줌.</p>
+      <h3>두 가지 작업 방식</h3>
       <ul>
-        <li><b>Bob IDE</b> — <b>Required.</b> Must be used; session reports are exported from it.</li>
-        <li><b>Bob Shell</b> — Optional. Brings Bob to the command line for automation.</li>
+        <li><b>Bob IDE</b> — <b>필수.</b> 반드시 사용; 세션 리포트를 여기서 export.</li>
+        <li><b>Bob Shell</b> — 선택. 커맨드라인용, 자동화에 유용.</li>
       </ul>
-      <h3>Bob IDE features (useful building blocks)</h3>
-      <p>
-        <span class="pill">Chat interface</span>
-        <span class="pill">Modes: Plan / Code / Advanced / Ask / Orchestrator</span>
-        <span class="pill">Custom modes</span>
-        <span class="pill">Auto-approve</span>
-        <span class="pill">Custom instructions</span>
-        <span class="pill">MCP servers</span>
-        <span class="pill">Context mentions (@)</span>
-        <span class="pill">Bob tips</span>
-        <span class="pill">Code actions</span>
-        <span class="pill">Next Edit</span>
-        <span class="pill">Slash commands (/init → AGENTS.md, /create-pr, /review)</span>
-        <span class="pill">Checkpoints</span>
-        <span class="pill">Code reviews</span>
-        <span class="pill">Commit messages</span>
-        <span class="pill">Pull requests</span>
-        <span class="pill">Enhance prompt</span>
-        <span class="pill">Literate coding</span>
-        <span class="pill">Skills</span>
-      </p>
-      <h3>Account</h3>
-      <p>Use the <b>hackathon-provisioned Bob account</b> (team name <code>ibm-hackathon-xxx</code>,
-      Enterprise plan), not a personal account. An IBMid is required to sign in.</p>
+      <h3>Bob IDE 주요 기능 (활용 가능한 부품)</h3>
+      <ul>
+        <li>채팅 인터페이스 / Modes (Plan · Code · Advanced · Ask · Orchestrator) / Custom modes</li>
+        <li>Auto-approve / Custom instructions / Skills (재사용 가능한 작업 레시피)</li>
+        <li>MCP 서버 / Context mentions(@) / Literate coding</li>
+        <li>Bob tips(실시간 품질 진단) / Code actions / Next Edit</li>
+        <li>Slash commands (<code>/init</code> → AGENTS.md, <code>/create-pr</code>, <code>/review</code>)</li>
+        <li>Checkpoints / Code reviews / Commit messages / Pull requests / Enhance prompt</li>
+      </ul>
+      <h3>계정</h3>
+      <p>개인 계정이 아닌 <b>해커톤 제공 Bob 계정</b>(팀명 <code>ibm-hackathon-xxx</code>, Enterprise 플랜) 사용. 로그인에 IBMid 필요.</p>
     </div>
     <div class="card">
-      <h2>Bobcoins</h2>
-      <p>Every interaction with Bob's AI consumes <b>Bobcoins</b> (also called "BP Coins") —
-      the metered usage budget for the event.</p>
+      <h2>Bobcoin</h2>
+      <p>Bob AI와의 모든 상호작용은 <b>Bobcoin</b>("BP Coins")을 소모. 이벤트용 사용량 예산.</p>
       <table>
-        <tr><th>Allocation</th><td><b>40 Bobcoins per account</b> (per team member)</td></tr>
-        <tr><th>Consumption</th><td>Per AI interaction. Guide example: a small task ≈ <b>0.52 Bobcoins</b> of API cost</td></tr>
-        <tr><th>When 100% used</th><td>No additional Bobcoins — work &amp; submission can still continue; consider watsonx as fallback</td></tr>
-        <tr><th>Monitor</th><td>Bob IDE → Settings → General → Budget / Usage · or Bob admin portal → Teams</td></tr>
+        <tr><th>지급량</th><td><b>계정당 40 Bobcoin</b> (팀원 1인당)</td></tr>
+        <tr><th>소모</th><td>AI 상호작용마다 차감. 가이드 예시: 작은 작업 ≈ <b>0.52 Bobcoin</b></td></tr>
+        <tr><th>100% 소진 시</th><td>추가 지급 없음 — 작업·제출은 계속 가능, watsonx fallback 권장</td></tr>
+        <tr><th>잔액 확인</th><td>Bob IDE → Settings → General → Budget / Usage · 또는 Bob admin portal → Teams</td></tr>
       </table>
       <div class="warn callout">
-        <b>⚠️ Manage usage carefully</b>
-        Plan task division with teammates. Heavy autonomous Plan + Code runs can consume coins
-        fast. If you run out and cannot export, your submission is at risk.
+        <b>⚠️ 신중하게 사용</b>
+        팀원끼리 작업을 나눠 분담. 무거운 Plan+Code 자동 실행은 코인을 빨리 소모함. 다 써서 export를 못 하면 제출이 위험.
       </div>
     </div>
   </div>
 
-  <!-- ===== SUBMISSION ===== -->
+  <!-- ===== 제출 ===== -->
   <div class="panel" id="submission">
     <div class="card">
-      <h2>Submission Requirements</h2>
-      <h3>Basic information</h3>
+      <h2>제출 요구사항</h2>
+      <h3>기본 정보</h3>
       <table>
-        <tr><th>Field</th><th>Requirement</th></tr>
-        <tr><td>Submission title</td><td>Max 50 characters</td></tr>
-        <tr><td>Short description</td><td>Max 255 characters</td></tr>
-        <tr><td>Long description</td><td>Min 100 words</td></tr>
-        <tr><td>Main tracks</td><td>Categories listed on the hackathon page</td></tr>
-        <tr><td>Technologies</td><td>All technologies used (see lablab.ai/tech)</td></tr>
+        <tr><th>항목</th><th>제약</th></tr>
+        <tr><td>제출 제목</td><td>최대 50자</td></tr>
+        <tr><td>짧은 설명</td><td>최대 255자</td></tr>
+        <tr><td>긴 설명</td><td>최소 100단어</td></tr>
+        <tr><td>메인 트랙</td><td>해커톤 페이지에 안내된 카테고리</td></tr>
+        <tr><td>기술</td><td>사용한 모든 기술 (lablab.ai/tech 참고)</td></tr>
       </table>
-      <h3>Media</h3>
+      <h3>미디어</h3>
       <table>
-        <tr><th>Field</th><th>Requirement</th></tr>
-        <tr><td>Cover image</td><td>Recommended 16:9 ratio</td></tr>
-        <tr><td>Video presentation</td><td>≤ 5 minutes, ≤ 300 MB</td></tr>
-        <tr><td>Slide presentation</td><td>Required</td></tr>
+        <tr><th>항목</th><th>제약</th></tr>
+        <tr><td>커버 이미지</td><td>16:9 비율 권장</td></tr>
+        <tr><td>영상 프레젠테이션</td><td>≤ 5분, ≤ 300MB</td></tr>
+        <tr><td>슬라이드 프레젠테이션</td><td>필수</td></tr>
       </table>
-      <h3>Code &amp; hosting</h3>
+      <h3>코드 &amp; 호스팅</h3>
       <ul>
-        <li><b>Public GitHub repository</b> — private repos cannot be fully reviewed</li>
-        <li><b><code>bob_sessions/</code> folder</b> with exported Bob session reports + screenshots</li>
+        <li><b>Public GitHub 리포지토리</b> — private는 심사 불가</li>
+        <li><b><code>bob_sessions/</code> 폴더</b> — export한 세션 리포트 + 스크린샷</li>
         <li>Written statement</li>
-        <li>Demo application platform + live demo URL</li>
-        <li>Additional information for judges (e.g. how it could scale)</li>
+        <li>데모 플랫폼 + 라이브 데모 URL</li>
+        <li>심사위원용 추가 정보 (예: 확장 가능성)</li>
       </ul>
       <div class="warn callout">
-        <b>⚠️ Deployment</b>
-        Hackathon-provisioned IBM Cloud accounts <b>do not support deployment</b>. Run the demo
-        locally or host it on your own platform (e.g. Vercel), then showcase it in the submission.
+        <b>⚠️ 배포</b>
+        해커톤 제공 IBM Cloud 계정은 <b>배포 미지원</b>. 데모는 로컬 실행 또는 자체 호스팅(Vercel 등)에 올려서 보여줄 것.
       </div>
     </div>
   </div>
 
-  <!-- ===== BOB SESSIONS ===== -->
+  <!-- ===== 세션 & 보안 ===== -->
   <div class="panel" id="sessions">
     <div class="card">
-      <h2>Exporting Bob Session Reports (required for judging)</h2>
-      <p><b>Each team member</b> must export and upload all relevant Bob task session reports
-      into the final code repository.</p>
+      <h2>Bob 세션 리포트 export (심사 필수)</h2>
+      <p><b>팀원 각자</b>가 관련된 모든 Bob task 세션 리포트를 export해서 최종 리포지토리에 업로드해야 함.</p>
       <ol>
-        <li>Create a folder named <code>bob_sessions/</code> in the project repo.</li>
-        <li>Bob IDE chat → <b>Views and More Actions</b> → <b>History</b>.</li>
-        <li>Confirm the correct workspace (or select <b>All</b> for multiple workspaces).</li>
-        <li>Open a task → select the task header → the task session consumption summary appears.</li>
-        <li>Take a <b>screenshot</b> of the consumption summary.</li>
-        <li>Select <b>Export task history</b> → downloads the task history as a markdown file.</li>
-        <li>Repeat for every task related to the submission.</li>
-        <li>Upload all screenshots + exported markdown files into <code>bob_sessions/</code>.</li>
+        <li>리포에 <code>bob_sessions/</code> 폴더 생성.</li>
+        <li>Bob IDE 채팅 → <b>Views and More Actions</b> → <b>History</b>.</li>
+        <li>올바른 workspace 확인 (여러 개면 <b>All</b> 선택).</li>
+        <li>작업 열기 → task 헤더 선택 → 세션 소비 요약 표시.</li>
+        <li>소비 요약 <b>스크린샷</b> 찍기.</li>
+        <li><b>Export task history</b> 선택 → task 기록을 markdown으로 다운로드.</li>
+        <li>제출 관련 모든 작업에 대해 반복.</li>
+        <li>스크린샷 + markdown 파일 전부 <code>bob_sessions/</code>에 업로드.</li>
       </ol>
       <div class="danger callout">
-        <b>⛔ Before exporting</b>
-        Remove all credentials and API keys from the code. If IBM Bob or Cloud credentials are
-        detected in the public repo, the IBM Security team will deactivate account access.
+        <b>⛔ export 전에</b>
+        코드에서 모든 크리덴셜·API 키 제거. public 리포에서 IBM Bob/Cloud 크리덴셜이 발견되면 IBM 보안팀이 계정 접근을 비활성화함.
       </div>
     </div>
     <div class="card">
-      <h2>Security &amp; Data Rules</h2>
+      <h2>보안 &amp; 데이터 규칙</h2>
       <ul>
-        <li><b>Never expose API keys / credentials</b> in the repo — IBM security scanners run
-        24/7 and will immediately deactivate access; the cloud account stays suspended until
-        the key is removed everywhere, rotated, and remediation is confirmed with support.</li>
-        <li>Keep the GitHub repository <b>public</b>.</li>
+        <li><b>API 키·크리덴셜 절대 노출 금지</b> — IBM 보안 스캐너가 24/7 작동, 발견 즉시 접근 차단. 키를 모든 곳에서 제거·교체하고 서포트팀과 조치 확인 전까지 클라우드 계정 정지.</li>
+        <li>GitHub 리포는 <b>public</b> 유지.</li>
       </ul>
-      <h3>Data set rules (bring your own data)</h3>
+      <h3>데이터셋 규칙 (자체 데이터 지참)</h3>
       <ul>
-        <li>Teams are responsible for data compliance.</li>
-        <li>Public-website data is allowed only if terms permit commercial use — keep a list of sources.</li>
-        <li><b>Not allowed:</b> company-confidential data, client data, personal information (PI), social-media data.</li>
+        <li>데이터 컴플라이언스는 팀 책임.</li>
+        <li>공개 웹사이트 데이터는 상업적 이용 약관이 허용할 때만 사용 — 출처 목록 보관.</li>
+        <li><b>금지:</b> 회사 기밀 데이터, 클라이언트 데이터, 개인정보(PI), 소셜미디어 데이터.</li>
       </ul>
     </div>
   </div>
 
-  <!-- ===== JUDGING & IDEAS ===== -->
+  <!-- ===== 심사 & 체크리스트 ===== -->
   <div class="panel" id="judging">
     <div class="card">
-      <h2>Judging Criteria</h2>
+      <h2>심사 기준</h2>
       <table>
-        <tr><th>Criterion</th><th>What it measures</th></tr>
-        <tr><td>Application of Technology</td><td>Completeness and thoughtfulness of the project, with clear application of IBM Bob</td></tr>
-        <tr><td>Presentation</td><td>Clarity and effectiveness of the project presentation</td></tr>
-        <tr><td>Business Value</td><td>Impact and practical value in addressing a high-priority issue</td></tr>
-        <tr><td>Originality</td><td>Uniqueness and creativity of the solution and the approach to applying Bob</td></tr>
+        <tr><th>기준</th><th>측정 대상</th></tr>
+        <tr><td>Application of Technology</td><td>프로젝트의 완성도와 깊이, IBM Bob의 명확한 적용</td></tr>
+        <tr><td>Presentation</td><td>프로젝트 발표의 명료함과 효과</td></tr>
+        <tr><td>Business Value</td><td>높은 우선순위 문제를 해결하는 실질적 임팩트·가치</td></tr>
+        <tr><td>Originality</td><td>솔루션과 Bob 적용 접근의 독창성·창의성</td></tr>
       </table>
     </div>
     <div class="card">
-      <h2>Official Example Use Cases</h2>
-      <p>The guide's appendix lists five example directions (you are not limited to these):</p>
-      <table>
-        <tr><th>#</th><th>Use case</th><th>Idea</th></tr>
-        <tr><td>1</td><td>Code understanding &amp; onboarding accelerator</td><td>Bob explains what code does, how components interact, where critical logic lives</td></tr>
-        <tr><td>2</td><td>Automated documentation &amp; test companion</td><td>Bob reviews logic and auto-generates documentation and relevant tests</td></tr>
-        <tr><td>3</td><td>Repetitive task &amp; boilerplate reduction assistant</td><td>Bob generates boilerplate, updates configs, refactors common patterns</td></tr>
-        <tr><td>4</td><td>Intelligent debugging &amp; issue insight solution</td><td>Bob explains execution flow, finds root causes, summarizes risky changes</td></tr>
-        <tr><td>5</td><td>Guided modernization &amp; improvement planner</td><td>Bob assesses code quality and suggests prioritized improvements</td></tr>
-      </table>
-      <div class="tip callout">
-        <b>💡 Strategy note</b>
-        These five are "safe" for the <i>Application of Technology</i> score, but many teams
-        will pick them — so for <i>Originality</i>, choose a category and attack it from an
-        angle competitors are not taking. Optional watsonx Orchestrate / watsonx.ai can extend the idea.
-      </div>
-    </div>
-  </div>
-
-  <!-- ===== CHECKLIST ===== -->
-  <div class="panel" id="checklist">
-    <div class="card">
-      <h2>Critical Checklist</h2>
+      <h2>최종 체크리스트</h2>
       <ul class="check">
-        <li>Built with IBM Bob IDE as a core component</li>
-        <li>Bob used meaningfully and visibly throughout development</li>
-        <li>Bobcoin usage planned across team members</li>
-        <li>Public GitHub repo</li>
-        <li><code>bob_sessions/</code> folder with exported reports + consumption screenshots (each member)</li>
-        <li>All API keys / credentials removed before exporting and pushing</li>
-        <li>Title ≤ 50 chars · short desc ≤ 255 chars · long desc ≥ 100 words</li>
-        <li>Cover image (16:9)</li>
-        <li>Video ≤ 5 min and ≤ 300 MB</li>
-        <li>Slide presentation prepared</li>
-        <li>Written statement included</li>
-        <li>Demo deployed (locally / self-hosted) with a working demo URL</li>
-        <li>Main tracks + technology tags selected</li>
-        <li>Submitted before May 17, 11:00 AM ET</li>
+        <li>IBM Bob IDE를 core component로 사용해 빌드</li>
+        <li>개발 전 과정에서 Bob을 의미 있고 눈에 띄게 사용</li>
+        <li>팀원 간 Bobcoin 사용 계획 수립</li>
+        <li>Public GitHub 리포</li>
+        <li><code>bob_sessions/</code> 폴더 — export 리포트 + 소비 스크린샷 (팀원 각자)</li>
+        <li>export·push 전에 모든 API 키·크리덴셜 제거</li>
+        <li>제목 ≤ 50자 · 짧은 설명 ≤ 255자 · 긴 설명 ≥ 100단어</li>
+        <li>커버 이미지 (16:9)</li>
+        <li>영상 ≤ 5분, ≤ 300MB</li>
+        <li>슬라이드 프레젠테이션 준비</li>
+        <li>Written statement 포함</li>
+        <li>데모 배포(로컬/자체 호스팅) + 작동하는 데모 URL</li>
+        <li>메인 트랙 + 기술 태그 선택</li>
+        <li>5/17 11:00 AM ET 전에 제출</li>
       </ul>
     </div>
     <div class="card">
-      <h2>Links &amp; Notes</h2>
+      <h2>링크 &amp; 메모</h2>
       <ul>
-        <li>Event page — <a href="https://lablab.ai/ai-hackathons/ibm-bob-hackathon">lablab.ai/ai-hackathons/ibm-bob-hackathon</a></li>
-        <li>Hackathon guidelines article — <a href="https://lablab.ai/ai-articles/hackathon-guidelines">lablab.ai/ai-articles/hackathon-guidelines</a></li>
-        <li>Official guide PDF — saved in <code>prepare/Lablab-IBM-Bob-hackathon-guide-May-2026.pdf</code></li>
-        <li>Kick-off stream — <a href="https://www.twitch.tv/lablabai">twitch.tv/lablabai</a></li>
-        <li>Technologies list — <a href="https://lablab.ai/tech">lablab.ai/tech</a></li>
+        <li>이벤트 페이지 — <a href="https://lablab.ai/ai-hackathons/ibm-bob-hackathon">lablab.ai/ai-hackathons/ibm-bob-hackathon</a></li>
+        <li>해커톤 가이드라인 — <a href="https://lablab.ai/ai-articles/hackathon-guidelines">lablab.ai/ai-articles/hackathon-guidelines</a></li>
+        <li>공식 가이드 PDF — <code>prepare/Lablab-IBM-Bob-hackathon-guide-May-2026.pdf</code></li>
+        <li>킥오프 스트림 — <a href="https://www.twitch.tv/lablabai">twitch.tv/lablabai</a></li>
+        <li>기술 목록 — <a href="https://lablab.ai/tech">lablab.ai/tech</a></li>
       </ul>
-      <h3>Naming note</h3>
-      <p>Announcements use names interchangeably: "IBM Bob" / "Build on Bob (BoB)" for the
-      tool, and "Bobcoins" / "BP Coins" for the usage credits.</p>
-      <h3>Getting help</h3>
-      <p>Post questions in the Discord support channel and tag the mentor roles — do not DM
-      mentors; posting in the channel is the fastest route to an answer.</p>
+      <h3>명칭 메모</h3>
+      <p>공지는 명칭을 혼용함: 도구는 "IBM Bob" / "Build on Bob (BoB)", 사용량 크레딧은 "Bobcoin" / "BP Coins".</p>
+      <h3>도움 받기</h3>
+      <p>질문은 Discord 서포트 채널에 멘토 역할을 태그해서 올릴 것 — 멘토에게 DM 금지, 채널에 올리는 게 가장 빠름.</p>
     </div>
   </div>
 
 </div>
 
-<div class="navhint">Compiled from the event page, lablab.ai guidelines, Discord announcements, and the official guide PDF · temporary <code>prepare</code> branch</div>
+<div class="navhint">이벤트 페이지 · lablab.ai 가이드라인 · Discord 공지 · 공식 가이드 PDF + 대화 내용 기반 · 임시 <code>prepare</code> 브랜치</div>
 
 <script>
   const bar = document.getElementById('tabbar');
