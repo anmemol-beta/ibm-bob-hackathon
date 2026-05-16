@@ -444,6 +444,29 @@
       </div>
 
       <div class="card">
+        <h2>AI 연동 &amp; 아키텍처 <span class="src an">분석</span></h2>
+        <p>제품의 런타임 AI(시나리오 생성·전달·스탠드인)는 결국 <b>LLM 호출 한 곳</b>으로 모인다 — 백엔드의 호출 함수. 거창하지 않음.</p>
+        <div class="flow">
+          <div class="flow-step"><span class="ico">🖥️</span><b>웹 UI</b><span>페어링 화면</span></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step"><span class="ico">⚙️</span><b>Python 백엔드</b><span>git 읽기 · 프롬프트 조립</span></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step bob"><span class="ico">🧠</span><b>watsonx.ai</b><span>시나리오 · 스탠드인 생성</span></div>
+        </div>
+        <h3>LLM 선택 — watsonx.ai 권장</h3>
+        <ul>
+          <li>IBM 해커톤이라 watsonx.ai를 쓰면 "Application of Technology" 점수에 유리. 가이드도 inference provider로 안내 <span class="src">가이드 p4</span>.</li>
+          <li>연동 순서: IBM Cloud 계정 → watsonx.ai 프로젝트 생성 → Granite 모델 선택 → <b>API key + project ID</b> 발급 → Python SDK <code>ibm-watsonx-ai</code>(또는 REST·Node SDK)로 호출.</li>
+          <li>비용: RU 과금 ($0.0001/RU, 1000토큰 = 1RU), $80 크레딧 <span class="src">가이드 p44</span>. Bobcoin과 별개.</li>
+          <li>Fallback: watsonx 셋업이 빡세면 다른 LLM API(본인 키)도 가능 — 제품 두뇌가 IBM이어야 한다는 규정은 없음.</li>
+        </ul>
+        <div class="danger callout">
+          <b>⛔ API 키 보안</b>
+          API key는 <code>.env</code>에 두고 <code>.gitignore</code> · <code>.bobignore</code>에 등록. 절대 커밋 금지 — IBM 보안 스캐너 24/7.
+        </div>
+      </div>
+
+      <div class="card">
         <h2>왜 심사 4축을 다 먹나</h2>
         <table>
           <tr><th>심사 축</th><th>근거</th></tr>
@@ -457,7 +480,7 @@
       <div class="card">
         <h2>실현성 &amp; 다음 할 일</h2>
         <ul>
-          <li>구조: 엔진(Python — git·Bob 세션·시나리오 처리) + 웹 UI(페어링 화면)</li>
+          <li>구조: 엔진(Python — git 읽기·프롬프트 조립·LLM 호출) + 웹 UI(페어링 화면)</li>
           <li>역할: 한 명 엔진, 한 명 UI</li>
           <li>실제 시차 팀이라 <b>진짜 비동기 페어링 세션을 데모로 찍을 수 있음</b> — 결정적 강점</li>
         </ul>
