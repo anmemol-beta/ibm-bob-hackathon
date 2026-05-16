@@ -677,7 +677,7 @@ Task: propose a concrete, minimal folder and file structure for the MVP, with a 
 
     <div class="card">
       <h2>단계별 Bob 프롬프트 (S0–S7)</h2>
-      <p>각 프롬프트를 Bob IDE에 붙여넣기. 큰 단계는 <b>Plan mode 먼저 → Code mode</b>. 커밋 전 <code>/review</code>. 프롬프트의 <code>&lt;NAME&gt;</code>은 <b>AsyncPair</b>로 교체. <span style="color:var(--ok)">✅ 완료</span>=재실행 금지 · ⬜ 미시작.</p>
+      <p>각 프롬프트를 Bob IDE에 붙여넣기. 큰 단계는 <b>Plan mode 먼저 → Code mode</b>. 커밋 전 <code>/review</code>. 프롬프트의 <code>&lt;NAME&gt;</code>은 <b>AsyncPair</b>로 교체. <span style="color:var(--ok)">✅ 완료</span>=재실행 금지 · <span style="color:var(--warn)">🟡 진행 중</span> · ⬜ 미시작.</p>
 
       <p class="pcap">S0 — 스캐폴드 · Plan → Code &nbsp;<span style="color:var(--ok)">✅ 완료</span> — AsyncPair ~16파일, 빌드 통과(라우트 10개), clsx 누락 1건 수정</p>
       <div class="prompt">Plan, then scaffold a web app called &lt;NAME&gt;: an async pair-programming tool. Use Next.js with TypeScript (App Router) and Tailwind CSS. Create pages /author, /handoff, /pairing and API route stubs /api/scenarios, /api/standin, /api/repo, plus a lib/ folder. Add .gitignore and .bobignore that exclude .env.</div>
@@ -685,8 +685,8 @@ Task: propose a concrete, minimal folder and file structure for the MVP, with a 
       <p class="pcap">S1 — git 읽기 lib · Code &nbsp;<span style="color:var(--ok)">✅ 완료</span> — <code>lib/git.ts</code> + 테스트 6/6 통과 (simple-git·jest 설치)</p>
       <div class="prompt">Implement lib/git.ts: given a local git repository path, return the recent commits with their messages, changed files, and diffs, using the simple-git npm package. Add a typed result interface and a unit test.</div>
 
-      <p class="pcap">S2 — LLM 래퍼 · Code &nbsp;⬜ 미시작</p>
-      <div class="prompt">Implement lib/llm.ts: a wrapper around IBM watsonx.ai text generation, exposing one async function generate(prompt: string): Promise&lt;string&gt;. Read the API key, project ID, and endpoint URL from environment variables. Handle errors clearly. Never hardcode a secret.</div>
+      <p class="pcap">S2 — LLM 래퍼 · Code &nbsp;<span style="color:var(--warn)">🟡 진행 중</span> — watsonx 키 없이도 동작하도록 목(mock) 폴백 포함. 키 승인 시 실호출 전환</p>
+      <div class="prompt">Implement lib/llm.ts: a wrapper around IBM watsonx.ai text generation.<br><br>Export one async function: generate(prompt: string): Promise&lt;string&gt;.<br><br>Behavior:<br>- Read WATSONX_API_KEY, WATSONX_PROJECT_ID, and WATSONX_URL from environment variables.<br>- If all three are present, call the watsonx.ai text generation REST API (Granite model) and return the generated text.<br>- If any are missing, fall back to a deterministic mock: return a clearly-labeled placeholder string derived from the prompt, so the rest of the app can run without credentials.<br>- Expose a boolean isLive() that reports whether real watsonx credentials are configured.<br><br>Handle network and API errors clearly with informative messages. Never hardcode a secret. Add a brief comment explaining the mock fallback.</div>
 
       <p class="pcap">S3 — 시나리오 생성 + /author · Plan → Code &nbsp;⬜ 미시작</p>
       <div class="prompt">Implement the /api/scenarios endpoint and the /author page. The endpoint takes git activity and the developer's notes, builds a prompt, and calls lib/llm.ts to generate 3-5 handoff scenarios — each predicting a situation the next developer will likely face, with a suggested approach. The /author page lets a developer review and edit the generated scenarios.</div>
