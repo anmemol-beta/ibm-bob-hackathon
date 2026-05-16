@@ -11,6 +11,22 @@ export interface Scenario {
   updatedAt: Date;
 }
 
+export interface HandoffScenario {
+  id: string;
+  situation: string;
+  suggestedApproach: string;
+}
+
+export interface GenerateScenariosRequest {
+  gitActivity: string;
+  developerNotes: string;
+  repoPath?: string;
+}
+
+export interface GenerateScenariosResponse {
+  scenarios: HandoffScenario[];
+}
+
 export type CodeChangeStatus = 'pending' | 'approved' | 'rejected';
 
 export interface CodeChange {
