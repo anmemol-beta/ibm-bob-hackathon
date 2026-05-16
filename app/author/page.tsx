@@ -118,14 +118,16 @@ export default function AuthorPage() {
   };
 
   return (
-    <div className="max-w-5xl mx-auto">
-      <h1 className="text-4xl font-bold mb-6">📝 Author Handoff Scenarios</h1>
-      <p className="text-gray-600 dark:text-gray-400 mb-8">
-        Generate handoff scenarios based on git activity and developer notes. The AI will predict situations the next developer will likely face and suggest approaches.
-      </p>
+    <div className="max-w-6xl mx-auto">
+      <div className="mb-8">
+        <h1 className="text-4xl font-bold mb-2">📝 Author Handoff Scenarios</h1>
+        <p className="text-gray-600 dark:text-gray-400">
+          Generate handoff scenarios based on git activity and developer notes. The AI will predict situations the next developer will likely face and suggest approaches.
+        </p>
+      </div>
 
       {scenarios.length === 0 ? (
-        <form onSubmit={handleGenerate} className="space-y-6">
+        <form onSubmit={handleGenerate} className="space-y-6 bg-white dark:bg-gray-800 border rounded-lg p-8">
           <div>
             <label htmlFor="author" className="block text-sm font-medium mb-2">
               Your Name <span className="text-red-500">*</span>
@@ -199,24 +201,32 @@ export default function AuthorPage() {
           <button
             type="submit"
             disabled={isGenerating}
-            className="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition-colors font-medium disabled:bg-gray-400 disabled:cursor-not-allowed"
+            className="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition-colors font-medium disabled:bg-gray-400 disabled:cursor-not-allowed flex items-center justify-center gap-2"
           >
-            {isGenerating ? "Generating Scenarios..." : "Generate Handoff Scenarios"}
+            {isGenerating ? (
+              <>
+                <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                <span>Generating Scenarios...</span>
+              </>
+            ) : (
+              "Generate Handoff Scenarios"
+            )}
           </button>
         </form>
       ) : (
         <div className="space-y-6">
-          <div className="flex justify-between items-center">
-            <h2 className="text-2xl font-bold">Generated Scenarios ({scenarios.length})</h2>
-            <button
-              onClick={handleReset}
-              className="px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
-            >
-              Start Over
-            </button>
-          </div>
+          <div className="bg-white dark:bg-gray-800 border rounded-lg p-6">
+            <div className="flex justify-between items-center mb-6">
+              <h2 className="text-2xl font-bold">Generated Scenarios ({scenarios.length})</h2>
+              <button
+                onClick={handleReset}
+                className="px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors font-medium"
+              >
+                Start Over
+              </button>
+            </div>
 
-          <div className="space-y-4">
+            <div className="space-y-4">
             {scenarios.map((scenario, index) => (
               <div
                 key={scenario.id}
@@ -290,6 +300,7 @@ export default function AuthorPage() {
                 </div>
               </div>
             ))}
+            </div>
           </div>
 
           <div className="flex gap-4">
@@ -302,9 +313,16 @@ export default function AuthorPage() {
             <button
               onClick={handleSaveHandoff}
               disabled={isSaving || !author.trim()}
-              className="flex-1 bg-green-600 text-white py-3 rounded-lg hover:bg-green-700 transition-colors font-medium disabled:bg-gray-400 disabled:cursor-not-allowed"
+              className="flex-1 bg-green-600 text-white py-3 rounded-lg hover:bg-green-700 transition-colors font-medium disabled:bg-gray-400 disabled:cursor-not-allowed flex items-center justify-center gap-2"
             >
-              {isSaving ? "Saving Handoff..." : "Save Handoff & Continue"}
+              {isSaving ? (
+                <>
+                  <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                  <span>Saving Handoff...</span>
+                </>
+              ) : (
+                "Save Handoff & Continue"
+              )}
             </button>
           </div>
         </div>

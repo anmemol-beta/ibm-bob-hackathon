@@ -94,8 +94,18 @@ export default function HandoffPage() {
   if (loading) {
     return (
       <div className="max-w-6xl mx-auto">
-        <h1 className="text-4xl font-bold mb-6">🤝 Handoff</h1>
-        <p className="text-gray-600 dark:text-gray-400">Loading handoffs...</p>
+        <div className="mb-8">
+          <h1 className="text-4xl font-bold mb-2">🤝 Handoff</h1>
+          <p className="text-gray-600 dark:text-gray-400">
+            View incoming handoffs from other developers
+          </p>
+        </div>
+        <div className="flex items-center justify-center py-16 bg-white dark:bg-gray-800 border rounded-lg">
+          <div className="flex items-center gap-3 text-gray-500 dark:text-gray-400">
+            <div className="w-6 h-6 border-2 border-blue-600 border-t-transparent rounded-full animate-spin" />
+            <span className="text-lg">Loading handoffs...</span>
+          </div>
+        </div>
       </div>
     );
   }
@@ -252,9 +262,16 @@ export default function HandoffPage() {
                     <button
                       onClick={handleAcceptHandoff}
                       disabled={acceptingHandoff || !developerName.trim()}
-                      className="flex-1 bg-green-600 text-white py-3 rounded-lg hover:bg-green-700 transition-colors font-medium disabled:bg-gray-400 disabled:cursor-not-allowed"
+                      className="flex-1 bg-green-600 text-white py-3 rounded-lg hover:bg-green-700 transition-colors font-medium disabled:bg-gray-400 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                     >
-                      {acceptingHandoff ? "Accepting..." : "Confirm & Accept"}
+                      {acceptingHandoff ? (
+                        <>
+                          <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                          <span>Accepting...</span>
+                        </>
+                      ) : (
+                        "Confirm & Accept"
+                      )}
                     </button>
                     <button
                       onClick={() => {
@@ -278,15 +295,18 @@ export default function HandoffPage() {
   // List view
   return (
     <div className="max-w-6xl mx-auto">
-      <h1 className="text-4xl font-bold mb-6">🤝 Handoff</h1>
-      <p className="text-gray-600 dark:text-gray-400 mb-8">
-        View incoming handoffs from other developers. Review the context and accept handoffs to start working on them.
-      </p>
+      <div className="mb-8">
+        <h1 className="text-4xl font-bold mb-2">🤝 Handoff</h1>
+        <p className="text-gray-600 dark:text-gray-400">
+          View incoming handoffs from other developers. Review the context and accept handoffs to start working on them.
+        </p>
+      </div>
 
       {handoffs.length === 0 ? (
-        <div className="text-center py-12 bg-gray-50 dark:bg-gray-900 rounded-lg border">
-          <p className="text-gray-600 dark:text-gray-400 mb-4">
-            No handoffs available yet.
+        <div className="text-center py-16 bg-white dark:bg-gray-800 rounded-lg border">
+          <div className="text-5xl mb-4">📭</div>
+          <p className="text-lg font-medium text-gray-700 dark:text-gray-300 mb-2">
+            No handoffs available yet
           </p>
           <p className="text-sm text-gray-500 dark:text-gray-500">
             Handoffs will appear here when developers create them in the Author page.
