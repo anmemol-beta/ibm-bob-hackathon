@@ -260,6 +260,38 @@
       </div>
     </div>
     <div class="card">
+      <h2>도구 분담 — Bob vs Claude Code</h2>
+      <p><b>원칙:</b> "풍부한 세션"은 연출이 아니라 <b>Bob이 실제로 의미 있는 일을 많이 한 결과</b>. 심사위원(시니어 엔지니어)은 속 빈 세션을 바로 알아봄.</p>
+      <div class="tip callout">
+        <b>💡 발상 전환 — Bob 사용은 비용이 아니라 연료</b>
+        우리 제품(Relay)이 bob_session을 입력으로 먹음 → Bob을 진짜로 많이 쓰면 풍부한 세션 = 제출 요건 + 제품 데모 데이터. 일석이조.
+      </div>
+      <h3>역할 분담</h3>
+      <table>
+        <tr><th>Bob IDE — 심사 대상 · 데모 핵심</th><th>Claude Code — 심사 범위 밖</th></tr>
+        <tr><td>아키텍처 설계 (Plan mode)</td><td>리서치 · 전략</td></tr>
+        <tr><td>핸드오프 엔진 코어 — git/diff 파싱, 세션 파서, 브리핑 생성기</td><td>슬라이드 · 영상 스크립트 · written statement</td></tr>
+        <tr><td>테스트 생성 · 코드 리뷰 · 문서</td><td>커버 이미지 · README · 배포 설정</td></tr>
+        <tr><td><code>/init</code> · <code>/review</code> · <code>/create-pr</code></td><td>빠른 throwaway 프로토타이핑 · 실험</td></tr>
+      </table>
+      <p>핵심 원칙: <b>데모에서 보여줄 코어 로직은 Bob이 짠다.</b> 발표물·잡일·실험은 Claude Code 마음껏.</p>
+      <h3>Bob 세션을 정당하게 풍부하게</h3>
+      <ul>
+        <li><b>Plan mode → Code mode</b> 순서 — 분석+계획 다음 구현 = 자연히 멀티스텝</li>
+        <li>한 줄 질문 말고 <b>기능/모듈 단위로 통째 맡기기</b></li>
+        <li>잘게 100개로 쪼개지 말 것 — 기능당 응집된 세션 1개</li>
+        <li>팀원 각자 의미 있는 Bob task 분담 (각자 export 필수)</li>
+      </ul>
+      <h3>Bobcoin 현실</h3>
+      <p>40×2 = <b>80 Bobcoin</b>. 작은 task ≈ 0.52코인 → 코어를 다 Bob으로 해도 넉넉. <b>토큰 아끼듯 쓸 필요 없음</b> — 핵심에 마음껏.</p>
+      <h3>📌 지금 당장</h3>
+      <p>Bob으로 작은 task 1개를 돌리고 <b>export</b> → markdown 구조 직접 확인. 세션 풍부함의 기준이자 동시에 Relay가 파싱할 입력 스펙. 미루지 말 것.</p>
+      <div class="warn callout">
+        <b>⚠️ 자멸 패턴</b>
+        Claude Code로 코어를 짜고 Bob은 구색만 맞추면 → 실격 위험 + 세션 빈약 + Relay 데모 데이터 부족. 절대 금지.
+      </div>
+    </div>
+    <div class="card">
       <h2>결정 사항 &amp; 다음 할 일 <span class="badge">작성 중</span></h2>
       <h3>확정된 것</h3>
       <ul>
