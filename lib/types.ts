@@ -53,4 +53,37 @@ export interface Repository {
   branch: string;
 }
 
+export interface Handoff {
+  id: string;
+  author: string;
+  timestamp: Date;
+  gitActivitySummary: string;
+  scenarios: HandoffScenario[];
+  metadata: {
+    repoPath?: string;
+    branch?: string;
+    commitCount?: number;
+    developerNotes: string;
+  };
+  status: 'pending' | 'accepted' | 'completed';
+  acceptedBy?: string;
+  acceptedAt?: Date;
+}
+
+export interface CreateHandoffRequest {
+  author: string;
+  gitActivitySummary: string;
+  scenarios: HandoffScenario[];
+  metadata: {
+    repoPath?: string;
+    branch?: string;
+    commitCount?: number;
+    developerNotes: string;
+  };
+}
+
+export interface HandoffListResponse {
+  handoffs: Handoff[];
+}
+
 // Made with Bob

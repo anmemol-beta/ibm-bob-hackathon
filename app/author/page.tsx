@@ -1,15 +1,19 @@
 "use client";
 
 import { useState } from "react";
-import { API_ROUTES } from "@/lib/constants";
+import { useRouter } from "next/navigation";
+import { API_ROUTES, ROUTES } from "@/lib/constants";
 import { HandoffScenario } from "@/lib/types";
 
 export default function AuthorPage() {
+  const router = useRouter();
+  const [author, setAuthor] = useState("");
   const [gitActivity, setGitActivity] = useState("");
   const [developerNotes, setDeveloperNotes] = useState("");
   const [repoPath, setRepoPath] = useState("");
   const [scenarios, setScenarios] = useState<HandoffScenario[]>([]);
   const [isGenerating, setIsGenerating] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [editingId, setEditingId] = useState<string | null>(null);
 
@@ -65,12 +69,52 @@ export default function AuthorPage() {
   };
 
   const handleReset = () => {
+    setAuthor("");
     setGitActivity("");
     setDeveloperNotes("");
     setRepoPath("");
     setScenarios([]);
     setError(null);
     setEditingId(null);
+  };
+
+  const handleSaveHandoff = async () => {
+    if (!author.trim()) {
+      setError("Please enter your name before saving the handoff");
+      return;
+    }
+
+    setIsSaving(true);
+    setError(null);
+
+    try {
+      const response = await fetch(API_ROUTES.HANDOFF, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          author: author.trim(),
+          gitActivitySummary: gitActivity,
+          scenarios,
+          metadata: {
+            repoPath: repoPath.trim() || undefined,
+            developerNotes,
+          },
+        }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || "Failed to save handoff");
+      }
+
+      // Success - redirect to handoff page
+      router.push(ROUTES.HANDOFF);
+    } catch (err) {
+      console.error("Error saving handoff:", err);
+      setError(err instanceof Error ? err.message : "Failed to save handoff");
+    } finally {
+      setIsSaving(false);
+    }
   };
 
   return (
@@ -82,6 +126,24 @@ export default function AuthorPage() {
 
       {scenarios.length === 0 ? (
         <form onSubmit={handleGenerate} className="space-y-6">
+          <div>
+            <label htmlFor="author" className="block text-sm font-medium mb-2">
+              Your Name <span className="text-red-500">*</span>
+            </label>
+            <input
+              type="text"
+              id="author"
+              value={author}
+              onChange={(e) => setAuthor(e.target.value)}
+              className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-800 dark:border-gray-700"
+              placeholder="Enter your name"
+              required
+            />
+            <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+              This will be shown to the developer picking up the handoff
+            </p>
+          </div>
+
           <div>
             <label htmlFor="repoPath" className="block text-sm font-medium mb-2">
               Repository Path (optional)
@@ -238,13 +300,11 @@ export default function AuthorPage() {
               Generate New Scenarios
             </button>
             <button
-              onClick={() => {
-                // TODO: Implement save to database or export functionality
-                alert("Scenarios saved! (This would save to a database in production)");
-              }}
-              className="flex-1 bg-green-600 text-white py-3 rounded-lg hover:bg-green-700 transition-colors font-medium"
+              onClick={handleSaveHandoff}
+              disabled={isSaving || !author.trim()}
+              className="flex-1 bg-green-600 text-white py-3 rounded-lg hover:bg-green-700 transition-colors font-medium disabled:bg-gray-400 disabled:cursor-not-allowed"
             >
-              Save All Scenarios
+              {isSaving ? "Saving Handoff..." : "Save Handoff & Continue"}
             </button>
           </div>
         </div>

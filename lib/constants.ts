@@ -26,6 +26,13 @@ export const API_ROUTES = {
   SCENARIOS: '/api/scenarios',
   STANDIN: '/api/standin',
   REPO: '/api/repo',
+  HANDOFF: '/api/handoff',
+} as const;
+
+export const HANDOFF_STATUSES = {
+  PENDING: 'pending',
+  ACCEPTED: 'accepted',
+  COMPLETED: 'completed',
 } as const;
 
 // Made with Bob
