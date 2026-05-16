@@ -108,6 +108,17 @@
     background: #faf8fd; border: 1px dashed var(--border); border-radius: 8px;
     padding: 8px 12px; margin-bottom: 14px;
   }
+  /* ---- 서브탭 ---- */
+  .subtabs { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+  .subtab-btn {
+    background: #f0ebfa; border: 1px solid var(--border); cursor: pointer;
+    padding: 7px 15px; border-radius: 20px; font-size: 0.85rem; font-weight: 600;
+    color: var(--muted); font-family: inherit; transition: all .15s;
+  }
+  .subtab-btn:hover { color: var(--purple); }
+  .subtab-btn.active { background: var(--purple); color: #fff; border-color: var(--purple); }
+  .subpanel { display: none; animation: fade .2s ease; }
+  .subpanel.active { display: block; }
   .navhint { text-align: center; color: var(--muted); font-size: 0.83rem; margin: 10px 0 0; }
 </style>
 </head>
@@ -149,10 +160,10 @@
       <table>
         <tr><th>리포지토리</th><td>세팅 완료 — <code>main</code>(README), <code>prepare</code>(정보 노트 + 이 요약). <code>prepare</code>는 나중에 삭제 예정</td></tr>
         <tr><th>정보 수집</th><td>이벤트 페이지 · 가이드라인 · Discord 공지 · 공식 가이드 PDF 정리 완료</td></tr>
-        <tr><th>팀</th><td>구성 완료 — Bobcoin 40×인원, 역할 분담 가능</td></tr>
+        <tr><th>팀</th><td>2인 — hunjun(대한민국) · Hyoungseo(보스턴), 13시간 시차. Bobcoin 40×2</td></tr>
         <tr><th>스택</th><td>Python · 웹(TS/JS) 양쪽 모두 가능</td></tr>
         <tr><th>Bob 셋업</th><td>완료 — 로그인 확인, 40.00 Bobcoin (100% 잔여), enterprise plan</td></tr>
-        <tr><th>아이디어</th><td><b>미정</b> — 다음 단계는 아이디어 1개 확정</td></tr>
+        <tr><th>아이디어</th><td>비동기 핸드오프 컴패니언 (가칭 Relay) — 컨셉 선정 · MVP 범위 확정 필요. "아이디어" 탭 참조</td></tr>
       </table>
     </div>
     <div class="card">
@@ -245,12 +256,13 @@
       <h2>결정 사항 &amp; 다음 할 일 <span class="badge">작성 중</span></h2>
       <h3>확정된 것</h3>
       <ul>
-        <li>방향: 개발자 생산성 도구 (해석 A) — <i>잠정</i></li>
-        <li>구조: 엔진 + 웹 데모 UI — <i>잠정</i></li>
+        <li>방향: 개발자 생산성 도구 (해석 A)</li>
+        <li>컨셉: <b>비동기 핸드오프 컴패니언</b> (가칭 Relay) — 13시간 시차 팀의 핸드오프를 Bob이 자동 브리핑. 자세히는 "아이디어" 탭</li>
+        <li>구조: 엔진(Python) + 웹 데모 UI</li>
       </ul>
       <h3>아직 미정</h3>
       <ul>
-        <li>구체 아이디어 1개</li>
+        <li>최종 이름 / MVP 범위</li>
         <li>데모 호스팅 플랫폼</li>
         <li>역할 분담 세부</li>
       </ul>
@@ -261,47 +273,132 @@
   <!-- ===== 아이디어 ===== -->
   <div class="panel" id="ideas">
     <div class="editnote">이 탭은 대화 진행에 따라 계속 업데이트됩니다.</div>
-    <div class="card">
-      <h2>아이디어 후보 <span class="badge">미정</span></h2>
-      <table>
-        <tr><th>후보</th><th>한 줄 설명</th><th>독창성</th><th>리스크</th></tr>
-        <tr>
-          <td><b>Why-Map</b></td>
-          <td>코드의 "왜"를 찾아줌 — Bob이 코드+git 히스토리+PR을 읽고 "왜 존재 / 왜 이렇게 / 바꾸면 뭐가 깨지는지"를 답하고 ADR 생성</td>
-          <td>높음</td><td>중</td>
-        </tr>
-        <tr>
-          <td><b>Session-to-Knowledge</b></td>
-          <td>export된 Bob 세션 리포트를 입력받아 ADR·changelog·PR 설명·온보딩 문서로 자동 변환</td>
-          <td>매우 높음</td><td>높음(포맷 의존)</td>
-        </tr>
-        <tr>
-          <td><b>Test Gap Hunter</b></td>
-          <td>Bob이 위험하면서 테스트 없는 코드 경로를 찾아 위험도 랭킹 + 테스트 자동 생성</td>
-          <td>중</td><td>낮음</td>
-        </tr>
-        <tr>
-          <td><b>Onboarding Companion</b></td>
-          <td>낯선 repo → 구조화된 온보딩 가이드(아키텍처 맵, start-here, 용어집) 자동 생성</td>
-          <td>낮음~중<br>(경쟁작 다수)</td><td>낮음</td>
-        </tr>
-      </table>
-      <p style="color:var(--muted);font-size:0.86rem">※ 위 4개는 출발점. 새 후보를 추가하거나 합쳐도 됨.</p>
+    <div class="subtabs">
+      <button class="subtab-btn active" data-sub="concept">🎯 선정 컨셉</button>
+      <button class="subtab-btn" data-sub="candidates">후보 비교</button>
+      <button class="subtab-btn" data-sub="official">공식 use case</button>
     </div>
-    <div class="card">
-      <h2>공식 예시 use case 5개</h2>
-      <p>가이드 부록 기준. 이걸 그대로 해도 되지만 독창성에서 불리할 수 있음.</p>
-      <table>
-        <tr><th>#</th><th>공식 use case</th><th>후보 매핑</th></tr>
-        <tr><td>1</td><td>코드 이해 &amp; 온보딩 가속기</td><td>Onboarding Companion, Why-Map</td></tr>
-        <tr><td>2</td><td>문서·테스트 자동 동반자</td><td>Test Gap Hunter</td></tr>
-        <tr><td>3</td><td>반복작업·보일러플레이트 감축</td><td>—</td></tr>
-        <tr><td>4</td><td>지능형 디버깅 &amp; 이슈 인사이트</td><td>Why-Map</td></tr>
-        <tr><td>5</td><td>가이드형 현대화·개선 플래너</td><td>—</td></tr>
-      </table>
-      <div class="tip callout">
-        <b>💡 메모</b>
-        Session-to-Knowledge는 공식 5개 어디에도 없음 → 가장 독창적. 단 세션 리포트 포맷에 의존하는 리스크.
+
+    <!-- 서브탭: 선정 컨셉 -->
+    <div class="subpanel active" data-sub="concept">
+      <div class="card">
+        <h2>팀 &amp; 스토리</h2>
+        <table>
+          <tr><th>팀</th><td>2인 — hunjun (대한민국) · Hyoungseo (보스턴)</td></tr>
+          <tr><th>배경</th><td>보스턴에서 2년간 함께 개발 → 현재 13시간 시차로 분리</td></tr>
+          <tr><th>스토리 자산</th><td>"함께 살던 팀이 시차를 넘어 함께 개발한다" — 지어낸 게 아니라 실제로 사는 스토리</td></tr>
+        </table>
+        <div class="tip callout">
+          <b>💡 왜 강력한가</b>
+          심사 4축 중 Presentation·Originality는 스토리가 직접 점수가 됨. 데모가 곧 팀의 실제 일상이라 다른 팀이 못 베낌.
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>문제 — 핸드오프 (baton pass)</h2>
+        <p>13시간 시차 팀의 진짜 고통은 "같이 못 있음"이 아니라 <b>핸드오프</b>다.</p>
+        <ul>
+          <li>보스턴이 잠들 때 한국이 깸 → 겹치는 시간 ≈ 0</li>
+          <li>한쪽이 일어나면 13시간 전 상대가 <i>뭘 / 왜</i> 했는지, 뭐가 막혔는지 맥락이 통째로 증발</li>
+          <li>질문 1회 = 13시간 왕복. 답이 올 땐 이미 딴 일 중이거나 자는 중</li>
+          <li>결국 핸드오프가 급하게 쓴 슬랙 한 줄, 아니면 아예 없음</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <h2>제품 — 비동기 핸드오프 컴패니언 <span class="badge">가칭 Relay</span></h2>
+        <p>Bob이 시차 너머로 "맥락"을 배달한다.</p>
+        <ul>
+          <li><b>하루 끝</b> → Bob이 그날의 commit·diff, 브랜치 상태, WIP, <b>그날의 Bob 세션 리포트</b>, 깨진 테스트, TODO를 전부 읽고 → 상대가 받을 <b>핸드오프 브리핑</b> 생성</li>
+          <li>브리핑 내용 — 무엇이/왜 바뀜 · 뭐가 막혀 네가 봐줘야 함 · 다음에 뭘 집을지 · 내가 남긴 질문</li>
+          <li><b>상대가 일어남</b> → 콜드 스타트 대신 옆자리에서 브리핑 받듯 시작. 비동기로 답을 남기면 그게 다음 핸드오프가 됨</li>
+          <li>양방향 릴레이 — 코드는 잠들지 않는다</li>
+        </ul>
+        <h3>이름 후보</h3>
+        <p><b>Relay</b> (릴레이 — 바통 패스, 한 명이 전 구간을 안 뛰어도 팀은 계속 달림 · follow-the-sun 개발) · 그 외 Handoff · Daybreak · Sundial</p>
+      </div>
+
+      <div class="card">
+        <h2>왜 심사 4축을 다 먹나</h2>
+        <table>
+          <tr><th>심사 축</th><th>근거</th></tr>
+          <tr><td>Application of Technology</td><td>Bob의 full-repo context가 엔진. 게다가 Bob 세션 리포트를 입력으로 재활용 — 해커톤이 어차피 요구하는 산출물을 영리하게 씀 (메타)</td></tr>
+          <tr><td>Business Value</td><td>분산·원격 팀 + 큰 시차 = 거대하고 계속 커지는 시장</td></tr>
+          <tr><td>Originality</td><td>공식 5개 use case 어디에도 없음 — 온보딩/테스트 레드오션 회피</td></tr>
+          <tr><td>Presentation</td><td>팀의 실제 스토리가 곧 데모</td></tr>
+        </table>
+      </div>
+
+      <div class="card">
+        <h2>실현성 &amp; 다음 할 일</h2>
+        <ul>
+          <li>구조: 엔진(Python — git·세션 읽고 Bob 호출) + 웹 UI("Good morning 브리핑" 화면)</li>
+          <li>역할: 한 명 엔진, 한 명 UI</li>
+          <li>실제 시차 팀이라 <b>진짜 핸드오프를 데모로 찍을 수 있음</b> — 결정적 강점</li>
+        </ul>
+        <div class="warn callout">
+          <b>⚠️ 좁히기 주의</b>
+          "시공간을 초월하는 툴"은 너무 넓다. <b>핸드오프 브리핑 한 가지</b>에 집중 — 협업 플랫폼을 만들지 말 것.
+        </div>
+        <h3>미정 <span class="badge">작성 중</span></h3>
+        <ul>
+          <li>최종 이름</li>
+          <li>MVP 범위 (단방향 핸드오프 먼저? 양방향?)</li>
+          <li>데모 호스팅 플랫폼</li>
+          <li>역할 분담 세부</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 서브탭: 후보 비교 -->
+    <div class="subpanel" data-sub="candidates">
+      <div class="card">
+        <h2>초기 아이디어 후보 <span class="badge">참고용</span></h2>
+        <p>핸드오프 컴패니언으로 좁히기 전 검토한 후보들 — 기록 보존용.</p>
+        <table>
+          <tr><th>후보</th><th>한 줄 설명</th><th>독창성</th><th>리스크</th></tr>
+          <tr>
+            <td><b>Why-Map</b></td>
+            <td>코드의 "왜"를 찾아줌 — Bob이 코드+git 히스토리+PR을 읽고 "왜 존재 / 왜 이렇게 / 바꾸면 뭐가 깨지는지"를 답하고 ADR 생성</td>
+            <td>높음</td><td>중</td>
+          </tr>
+          <tr>
+            <td><b>Session-to-Knowledge</b></td>
+            <td>export된 Bob 세션 리포트를 입력받아 ADR·changelog·PR 설명·온보딩 문서로 자동 변환</td>
+            <td>매우 높음</td><td>높음(포맷 의존)</td>
+          </tr>
+          <tr>
+            <td><b>Test Gap Hunter</b></td>
+            <td>Bob이 위험하면서 테스트 없는 코드 경로를 찾아 위험도 랭킹 + 테스트 자동 생성</td>
+            <td>중</td><td>낮음</td>
+          </tr>
+          <tr>
+            <td><b>Onboarding Companion</b></td>
+            <td>낯선 repo → 구조화된 온보딩 가이드(아키텍처 맵, start-here, 용어집) 자동 생성</td>
+            <td>낮음~중<br>(경쟁작 다수)</td><td>낮음</td>
+          </tr>
+        </table>
+        <p style="color:var(--muted);font-size:0.86rem">※ 선정된 핸드오프 컴패니언이 Session-to-Knowledge의 메타 아이디어(Bob 세션 리포트 활용)를 흡수함.</p>
+      </div>
+    </div>
+
+    <!-- 서브탭: 공식 use case -->
+    <div class="subpanel" data-sub="official">
+      <div class="card">
+        <h2>공식 예시 use case 5개</h2>
+        <p>가이드 부록 기준. 이걸 그대로 해도 되지만 독창성에서 불리할 수 있음.</p>
+        <table>
+          <tr><th>#</th><th>공식 use case</th><th>관련 후보</th></tr>
+          <tr><td>1</td><td>코드 이해 &amp; 온보딩 가속기</td><td>Onboarding Companion, Why-Map</td></tr>
+          <tr><td>2</td><td>문서·테스트 자동 동반자</td><td>Test Gap Hunter</td></tr>
+          <tr><td>3</td><td>반복작업·보일러플레이트 감축</td><td>—</td></tr>
+          <tr><td>4</td><td>지능형 디버깅 &amp; 이슈 인사이트</td><td>Why-Map</td></tr>
+          <tr><td>5</td><td>가이드형 현대화·개선 플래너</td><td>—</td></tr>
+        </table>
+        <div class="tip callout">
+          <b>💡 메모</b>
+          선정한 핸드오프 컴패니언은 공식 5개 어디에도 안 들어감 → 독창성에서 유리.
+        </div>
       </div>
     </div>
   </div>
@@ -578,6 +675,17 @@
     btns.forEach(b => b.classList.toggle('active', b === btn));
     panels.forEach(p => p.classList.toggle('active', p.id === tab));
     window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+  document.querySelectorAll('.subtabs').forEach(function (group) {
+    group.addEventListener('click', function (e) {
+      const btn = e.target.closest('.subtab-btn');
+      if (!btn) return;
+      const sub = btn.dataset.sub;
+      const parent = group.parentElement;
+      group.querySelectorAll('.subtab-btn').forEach(b => b.classList.toggle('active', b === btn));
+      parent.querySelectorAll(':scope > .subpanel').forEach(p => p.classList.toggle('active', p.dataset.sub === sub));
+    });
   });
 </script>
 
