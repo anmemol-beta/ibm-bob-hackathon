@@ -133,6 +133,7 @@
     <button class="tab-btn" data-tab="overview">개요</button>
     <button class="tab-btn" data-tab="timeline">일정</button>
     <button class="tab-btn" data-tab="bob">IBM Bob</button>
+    <button class="tab-btn" data-tab="setup">셋업</button>
     <button class="tab-btn" data-tab="submission">제출</button>
     <button class="tab-btn" data-tab="sessions">세션 &amp; 보안</button>
     <button class="tab-btn" data-tab="judging">심사 &amp; 체크리스트</button>
@@ -191,6 +192,12 @@
       <div class="qa">
         <div class="q">Q. 세션 리포트가 뭐고 왜 중요해?</div>
         <p>Bob IDE에서 한 작업 기록을 markdown + 소비 요약 스크린샷으로 export한 것. <b>팀원 각자</b>가 export해서 리포 <code>bob_sessions/</code> 폴더에 올려야 하며, 이게 곧 심사 근거입니다. (자세한 절차는 "세션 &amp; 보안" 탭)</p>
+      </div>
+
+      <div class="qa">
+        <div class="q">Q. Claude Code 같은 다른 도구를 같이 써도 돼?</div>
+        <p>됩니다. 가이드는 "어떤 프레임워크·기술이든 사용 가능 — 단 솔루션이 <b>Bob IDE를 core component로 showcase</b>해야 함"이라고 명시. 다른 AI 도구 병행을 금지하지 않습니다.</p>
+        <p>다만 심사 근거가 Bob 세션 리포트이므로 <b>핵심·의미 있는 빌드는 Bob IDE에서</b> 하고 다른 도구는 보조(리서치·슬라이드·주변 스크립트)로만. Bob을 의미 있게 안 쓰면 실격 위험. Claude Code는 해커톤이 제공하지 않으니 본인 계정 필요. (자세히는 "셋업" 탭)</p>
       </div>
     </div>
   </div>
@@ -384,6 +391,55 @@
         <b>⚠️ 신중하게 사용</b>
         팀원끼리 작업을 나눠 분담. 무거운 Plan+Code 자동 실행은 코인을 빨리 소모함. 다 써서 export를 못 하면 제출이 위험.
       </div>
+    </div>
+  </div>
+
+  <!-- ===== 셋업 ===== -->
+  <div class="panel" id="setup">
+    <div class="card">
+      <h2>① IBM Bob 접근 (필수) — 신청 불필요</h2>
+      <p>별도 신청 폼이 없습니다. 해커톤 시작 시 <b>등록한 이메일로 초대 메일이 자동 발송</b>됩니다.</p>
+      <ol>
+        <li>등록 이메일 받은편지함(+ 스팸/정크함)에서 IBM Bob 팀의 초대 메일 확인 — "IBM Bob"으로 검색.</li>
+        <li>메일에 "<b>ibm-hackathon-xxx</b> 팀에 멤버로 추가됨 / Bob Plan: Enterprise"가 보이면 올바른 메일.</li>
+        <li>IBMid가 없으면 <b>등록 이메일로</b> IBMid 생성.</li>
+        <li>Bob IDE 설치 → "Log in to Bob" → IBMid 인증.</li>
+        <li>개인 Bob 계정이 따로 있으면 Settings → General에서 <code>ibm-coding-challenge-xxx</code> 인스턴스로 전환.</li>
+      </ol>
+      <div class="tip callout">
+        <b>💡 요점</b>
+        Bob은 "토큰 신청"이 아니라 <b>이메일 초대 확인</b> 방식. 등록만 되어 있으면 자동으로 옴.
+      </div>
+    </div>
+    <div class="card">
+      <h2>② IBM Cloud / watsonx 접근 (선택) — 직접 신청</h2>
+      <p>watsonx Orchestrate / watsonx.ai를 쓸 경우에만 필요. 안 쓰면 신청 불필요.</p>
+      <h3>신청 절차</h3>
+      <ol>
+        <li>신청 URL 접속 — <a href="https://www.ibm.com/account/reg/us-en/signup?formid=urx-54370">ibm.com/account/reg/us-en/signup?formid=urx-54370</a></li>
+        <li>등록 이메일로 IBMid 생성 또는 로그인.</li>
+        <li>이메일로 온 7자리 코드 인증.</li>
+        <li>이름·이메일 확인 후 <b>"Request account"</b> 클릭.</li>
+        <li>약 1시간 뒤 클라우드 계정 초대 메일 도착 → <b>"Join Now"</b> → 계정 정보 확인 후 "Join Account".</li>
+      </ol>
+      <table>
+        <tr><th>크레딧</th><td><b>$80</b> 자동 지급</td></tr>
+        <tr><th>알림</th><td>사용량 25% / 50% / 80%에 이메일 (시간당 1회 — 알림 전에 소진될 수 있음)</td></tr>
+        <tr><th>100% 소진 시</th><td>계정 정지 — 정지 알림 메일의 폼으로 이의 신청 가능</td></tr>
+      </table>
+      <div class="warn callout">
+        <b>⚠️ 주의</b>
+        신청 시 "Unable to verify registration" 메시지가 뜨면 해커톤 미등록 상태. · 개인 IBM Cloud 계정이 있으면 대시보드 우상단에서 <code>xxxxxxx - watsonx</code> 계정으로 전환.
+      </div>
+    </div>
+    <div class="card">
+      <h2>접근 요약</h2>
+      <table>
+        <tr><th>대상</th><th>방식</th><th>필수 여부</th></tr>
+        <tr><td>IBM Bob</td><td>이메일 초대 자동 발송 → 확인</td><td><b>필수</b></td></tr>
+        <tr><td>IBM Cloud / watsonx</td><td>신청 URL에서 직접 요청</td><td>선택</td></tr>
+        <tr><td>Claude Code 등</td><td>본인 계정 (해커톤 미제공)</td><td>선택 · 보조용</td></tr>
+      </table>
     </div>
   </div>
 
