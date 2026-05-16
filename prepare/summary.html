@@ -101,10 +101,18 @@
     border-radius: 6px; padding: 2px 9px; font-size: 0.72rem; font-weight: 700;
     vertical-align: middle; margin-left: 8px;
   }
+  /* ---- 출처 태그 ---- */
+  .src {
+    display: inline-block; font-size: 0.66rem; font-weight: 700;
+    color: var(--purple); background: #ece4f8; border-radius: 4px;
+    padding: 1px 6px; margin-left: 4px; vertical-align: middle;
+    white-space: nowrap; letter-spacing: 0.2px;
+  }
+  .src.an { color: #715c00; background: #fbf1c7; }
   .qa { border-left: 3px solid var(--purple); padding-left: 14px; margin: 14px 0; }
   .qa .q { font-weight: 700; color: var(--purple); margin-bottom: 4px; }
   .editnote {
-    font-size: 0.82rem; color: var(--muted); font-style: italic;
+    font-size: 0.82rem; color: var(--muted);
     background: #faf8fd; border: 1px dashed var(--border); border-radius: 8px;
     padding: 8px 12px; margin-bottom: 14px;
   }
@@ -181,8 +189,17 @@
 
   <!-- ===== 핵심 Q&A ===== -->
   <div class="panel active" id="qa">
+    <div class="editnote">
+      <b>출처 표기 안내</b> — 사실 옆에 출처 태그를 붙였습니다.
+      <span class="src">이벤트</span> lablab 이벤트 페이지 ·
+      <span class="src">가이드라인</span> lablab 가이드라인 글 ·
+      <span class="src">Discord</span> Discord 공지 ·
+      <span class="src">가이드 p#</span> 공식 가이드 PDF 해당 페이지 ·
+      <span class="src">메일</span> IBM 발송 메일/신청 폼 ·
+      <span class="src an">분석</span> 우리 해석·추정 (출처 아님). 전체 범례는 "심사 &amp; 체크리스트" 탭 하단.
+    </div>
     <div class="card">
-      <h2>지금 우리 상태</h2>
+      <h2>지금 우리 상태 <span class="src an">우리 현황</span></h2>
       <table>
         <tr><th>리포지토리</th><td>세팅 완료 — <code>main</code>(README), <code>prepare</code>(정보 노트 + 이 요약). <code>prepare</code>는 나중에 삭제 예정</td></tr>
         <tr><th>정보 수집</th><td>이벤트 페이지 · 가이드라인 · Discord 공지 · 공식 가이드 PDF 정리 완료</td></tr>
@@ -197,76 +214,78 @@
 
       <div class="qa">
         <div class="q">Q. Bobcoin이 뭐임?</div>
-        <p>해커톤 동안 IBM Bob을 쓸 수 있는 <b>사용량 크레딧</b>입니다 (공지에선 "BP Coins"라고도 부름).</p>
+        <p>해커톤 동안 IBM Bob을 쓸 수 있는 <b>사용량 크레딧</b>입니다 (공지에선 "BP Coins"라고도 부름 <span class="src">Discord</span>).</p>
         <ul>
-          <li><b>계정당 40개</b> 지급 = 팀원 1인당 40개. 팀이면 총 40×인원.</li>
-          <li>Bob AI와 <b>상호작용할 때마다 차감</b>. 가이드 예시: 작은 작업 1개 ≈ API Cost <b>0.52 Bobcoin</b>.</li>
-          <li>100% 소진 시 추가 지급 없음. 단 그 후에도 작업·제출은 가능하고 watsonx를 fallback으로 안내.</li>
-          <li>잔액 확인: Bob IDE → Settings → General → Budget / Usage.</li>
+          <li><b>계정당 40개</b> 지급 = 팀원 1인당 40개. 팀이면 총 40×인원. <span class="src">가이드 p6</span></li>
+          <li>Bob AI와 <b>상호작용할 때마다 차감</b>. 가이드 예시: 작은 작업 1개 ≈ API Cost <b>0.52 Bobcoin</b>. <span class="src">가이드 p6</span><span class="src">가이드 p19</span></li>
+          <li>100% 소진 시 추가 지급 없음. 그 후에도 작업·제출은 가능하고 watsonx를 fallback으로 안내. <span class="src">가이드 p6</span></li>
+          <li>다 쓰면 work를 export 못 할 수 있음. <span class="src">Discord</span></li>
+          <li>잔액 확인: Bob IDE → Settings → General → Budget / Usage. <span class="src">가이드 p7</span></li>
         </ul>
-        <p>→ 무거운 자동 실행(Plan+Code)은 코인을 빨리 먹음. 다 쓰면 export가 막혀 제출이 위험해질 수 있으니 계획적으로.</p>
+        <p>→ 무거운 자동 실행(Plan+Code)은 코인을 빨리 먹음. 계획적으로 쓸 것. <span class="src an">분석</span></p>
       </div>
 
       <div class="qa">
         <div class="q">Q. 우리가 만드는 게 "개발을 빠르게 하는 도구"야?</div>
-        <p>원칙적으로 <b>그렇습니다.</b> 챌린지 제목이 "Turn idea into impact faster", 헤드라인이 "개발 방식 자체를 개선하라"입니다. 해석이 둘로 갈립니다:</p>
+        <p>챌린지 제목은 "Turn idea into impact faster", 헤드라인은 "Build solutions that improve how software is built(소프트웨어를 만드는 방식을 개선하라)"입니다. <span class="src">이벤트</span><span class="src">가이드 p4</span> 챌린지가 든 예시도 전부 개발 생산성 쪽 — 기존 코드 빠르게 파악 / 문서·테스트 생성 / 반복작업 감축. <span class="src">이벤트</span><span class="src">가이드 p4</span></p>
+        <p><b>해석 주의</b> <span class="src an">분석</span>: "반드시 개발자 도구여야 한다"고 못박은 규정은 <b>없습니다.</b> 해석이 둘로 갈림 —</p>
         <ul>
-          <li><b>A (권장)</b> — 만드는 제품 자체가 <b>개발자 생산성 도구</b></li>
-          <li><b>B</b> — 아무거나 만들되, Bob을 개발에 썼다는 걸 보여줌 (실제 제출작 중에도 일반 앱 존재)</li>
+          <li><b>A (우리 권장)</b> — 만드는 제품 자체가 개발자 생산성 도구</li>
+          <li><b>B</b> — 아무거나 만들되 Bob을 개발에 썼다는 걸 보여줌 (실제 제출작 목록에 일반 앱도 있음 <span class="src">이벤트</span>)</li>
         </ul>
-        <p>A를 권장: 챌린지가 명시적으로 개발자 도구를 요구하고, Bob을 무겁고 눈에 띄게 쓰게 되어 심사(세션 리포트 기반)에 유리.</p>
+        <p>A를 권장하는 건 우리 판단 <span class="src an">분석</span>: 챌린지 예시가 전부 개발 생산성이고, 그래야 Bob을 무겁고 눈에 띄게 쓰게 되어 세션 리포트 기반 심사에 유리하기 때문.</p>
       </div>
 
       <div class="qa">
         <div class="q">Q. Bob을 활용해서 앱을 만드는 거야, Bob을 활용하는 앱을 만드는 거야?</div>
-        <p>두 축을 구분: <b>축 1</b> = Bob을 <b>개발 도구로</b> 씀 (Bob IDE로 우리 앱을 만든다) · <b>축 2</b> = Bob을 <b>앱 속 부품으로</b> 내장.</p>
-        <p>해커톤이 요구하는 건 <b>축 1</b> — "Bob을 활용<b>해서</b> 앱을 만든다". 가이드가 "Bob IDE를 core component로 showcase"하라 하고, 필수 제출물인 세션 리포트가 곧 "Bob IDE로 짰다"는 증거이기 때문. 축 2는 요구사항이 아님 — Bob IDE는 데스크톱 IDE라 앱이 코드로 호출하는 API가 아님.</p>
-        <p>→ 우리 앱의 AI 두뇌(브리핑 생성)는 watsonx.ai(Granite) 등 LLM이 담당. <b>제품이 Bob을 내장할 필요는 없음.</b> 단 우리 핸드오프 앱은 Bob 세션 리포트를 입력으로 쓰므로 Bob이 스토리상 자연스럽게 중심에 옴.</p>
+        <p>두 축을 구분 <span class="src an">분석</span>: <b>축 1</b> = Bob을 <b>개발 도구로</b> 씀 (Bob IDE로 우리 앱을 만든다) · <b>축 2</b> = Bob을 <b>앱 속 부품으로</b> 내장.</p>
+        <p>해커톤이 요구하는 건 <b>축 1</b>. 가이드가 "솔루션은 Bob IDE를 core component로 showcase해야 한다"고 명시 <span class="src">가이드 p4</span>, 필수 제출물인 세션 리포트가 곧 "Bob IDE로 짰다"는 증거 <span class="src">가이드 p4</span><span class="src">가이드 p18</span>. 축 2가 요구사항이 아니라는 건 우리 해석 <span class="src an">분석</span> — Bob IDE는 데스크톱 IDE라 앱이 코드로 호출하는 API가 아님.</p>
+        <p>→ 우리 앱의 AI 기능은 watsonx.ai 등 LLM이 담당. 제품이 Bob을 내장할 필요는 없음. <span class="src an">분석</span></p>
       </div>
 
       <div class="qa">
         <div class="q">Q. Bob IDE를 꼭 써야 해?</div>
-        <p>네. <b>Bob IDE는 필수</b>이고 심사 자격 조건입니다. 심사는 Bob IDE에서 export한 <b>세션 리포트</b>를 근거로 합니다. Bob Shell은 선택.</p>
+        <p>네. 가이드가 "You must use Bob IDE for this hackathon"이라 명시하고, 심사 자격을 위해 Bob IDE를 core component로 showcase해야 합니다. <span class="src">가이드 p4</span><span class="src">가이드 p8</span> 심사는 Bob IDE에서 export한 세션 리포트를 근거로 함. Bob Shell은 선택. <span class="src">가이드 p8</span></p>
       </div>
 
       <div class="qa">
         <div class="q">Q. 데모는 어디에 배포해?</div>
-        <p>해커톤용 IBM Cloud 계정은 <b>배포를 지원하지 않음</b>. 데모는 <b>로컬에서 실행</b>하거나 <b>자체 호스팅</b>(Vercel 등)에 올린 뒤 제출에 보여줘야 합니다.</p>
+        <p>해커톤 제공 IBM Cloud 계정은 <b>solution deployment를 지원하지 않음</b> — 로컬에서 실행해 보여주라고 가이드가 안내. <span class="src">가이드 p44</span> 제출 시 데모 플랫폼·라이브 URL을 요구하므로 <span class="src">가이드라인</span> 자체 호스팅(Vercel 등)을 쓰면 됨 <span class="src an">분석</span>.</p>
       </div>
 
       <div class="qa">
         <div class="q">Q. 세션 리포트가 뭐고 왜 중요해?</div>
-        <p>Bob IDE에서 한 작업 기록을 markdown + 소비 요약 스크린샷으로 export한 것. <b>팀원 각자</b>가 export해서 리포 <code>bob_sessions/</code> 폴더에 올려야 하며, 이게 곧 심사 근거입니다. (자세한 절차는 "세션 &amp; 보안" 탭)</p>
+        <p>Bob IDE 작업 기록을 markdown으로 export한 것 + 소비 요약 스크린샷. <b>팀원 각자</b>가 export해 리포 <code>bob_sessions/</code> 폴더에 올려야 하며, 이게 심사 근거입니다. <span class="src">가이드 p18</span><span class="src">가이드 p19</span> (절차는 "세션 &amp; 보안" 탭)</p>
       </div>
 
       <div class="qa">
         <div class="q">Q. Claude Code 같은 다른 도구를 같이 써도 돼?</div>
-        <p>됩니다. 가이드는 "어떤 프레임워크·기술이든 사용 가능 — 단 솔루션이 <b>Bob IDE를 core component로 showcase</b>해야 함"이라고 명시. 다른 AI 도구 병행을 금지하지 않습니다.</p>
-        <p>다만 심사 근거가 Bob 세션 리포트이므로 <b>핵심·의미 있는 빌드는 Bob IDE에서</b> 하고 다른 도구는 보조(리서치·슬라이드·주변 스크립트)로만. Bob을 의미 있게 안 쓰면 실격 위험. Claude Code는 해커톤이 제공하지 않으니 본인 계정 필요. (자세히는 "셋업" 탭)</p>
+        <p>가이드 명시: "어떤 프레임워크·기술이든 사용 가능 — 단 솔루션이 Bob IDE를 core component로 showcase해야 함." <span class="src">가이드 p4</span> 다른 AI 도구 병행을 금지하는 조항은 없음.</p>
+        <p>핵심 빌드는 Bob IDE에서 하고 다른 도구는 보조로만 — 이건 우리 전략 <span class="src an">분석</span>. Claude Code는 해커톤이 제공하지 않으니 본인 계정 필요. (자세히는 "셋업" 탭)</p>
       </div>
     </div>
   </div>
 
   <!-- ===== 전략 ===== -->
   <div class="panel" id="strategy">
-    <div class="editnote">이 탭은 대화 진행에 따라 계속 업데이트됩니다.</div>
+    <div class="editnote">⚠️ 이 탭은 사실 정리가 아니라 <b>우리 분석·전략</b>입니다 — 별도 출처 없음 (<span class="src an">분석</span>). 인용된 사실에만 출처를 답니다. 대화 진행에 따라 업데이트.</div>
     <div class="card">
-      <h2>전략 5원칙</h2>
+      <h2>전략 5원칙 <span class="src an">분석</span></h2>
       <ol>
         <li><b>심사 = Bob 세션 리포트.</b> 그냥 코딩하면 안 됨 — Bob에게 실제로 많이, 의미 있게 시키고 그 과정이 리포트에 남아야 점수가 나옴.</li>
-        <li><b>메타 시너지.</b> 챌린지가 "개발을 더 빠르게"라서, 프로젝트 자체가 개발자 도구면 "Bob으로 개발자 도구를 만든다"는 시너지가 생겨 독창성·기술적용에 유리.</li>
-        <li><b>Bobcoin 40개는 예산.</b> 초반 탕진 금지. 무거운 변환·생성 작업에 집중 투입하고 잡일은 직접.</li>
+        <li><b>메타 시너지.</b> 챌린지가 "개발을 더 빠르게"라서, 프로젝트 자체가 개발자 도구면 시너지가 생겨 독창성·기술적용에 유리.</li>
+        <li><b>Bobcoin 40개는 예산.</b> 초반 탕진 금지. 무거운 작업에 집중 투입하고 잡일은 직접.</li>
         <li><b>48시간 = 작게.</b> 데모 가능한 기능 1개 완성이 미완성 기능 5개보다 훨씬 높은 점수.</li>
         <li><b>제출물을 미루지 말 것.</b> 영상·슬라이드·세션 리포트 export를 마지막에 몰면 망함.</li>
       </ol>
     </div>
     <div class="card">
-      <h2>팀 운영 &amp; 시간 배분</h2>
+      <h2>팀 운영 &amp; 시간 배분 <span class="src an">분석</span></h2>
       <h3>팀</h3>
       <ul>
         <li>구성 완료 → Bobcoin 40×인원, 역할 분담 가능 (예: 빌더 2명 / 데모·발표 1명).</li>
         <li>Python·웹 양쪽 가능 → <b>엔진(Python/CLI) + 웹 데모 UI</b> 구조 권장.</li>
-        <li>세션 리포트는 팀원 각자 export해야 하므로, 각자 Bob으로 의미 있는 작업을 분담.</li>
+        <li>세션 리포트는 팀원 각자 export해야 하므로 <span class="src">가이드 p18</span>, 각자 Bob으로 의미 있는 작업을 분담.</li>
       </ul>
       <h3>시간 배분 (48시간)</h3>
       <table>
@@ -278,19 +297,19 @@
       </table>
     </div>
     <div class="card">
-      <h2>독창성 주의 — 경쟁 상황</h2>
-      <p>이미 제출된 프로젝트 목록에 <b>온보딩 도구가 2개</b> 있습니다 (DevRamp AI, Ghost Chimera). 공식 예시 use case 5개를 그대로 따라가면 "기술 적용"은 안전하지만 <b>독창성에서 다른 팀과 겹칩니다</b>.</p>
+      <h2>독창성 주의 — 경쟁 상황 <span class="src an">분석</span></h2>
+      <p>이미 제출된 프로젝트 목록에 <b>온보딩 도구가 2개</b> 있음 (DevRamp AI, Ghost Chimera). <span class="src">이벤트</span> 공식 예시 use case 5개 <span class="src">가이드 p47</span>를 그대로 따라가면 "기술 적용"은 안전하지만 독창성에서 다른 팀과 겹침.</p>
       <div class="tip callout">
         <b>💡 결론</b>
-        공식 카테고리 중 하나를 고르되, <b>남들이 안 잡는 각도</b>로 비틀어야 함. 또는 공식 5개에 없는 방향(예: Bob 세션 리포트 자체를 활용)을 노린다.
+        공식 카테고리 중 하나를 고르되, <b>남들이 안 잡는 각도</b>로 비틀 것. 또는 공식 5개에 없는 방향을 노린다.
       </div>
     </div>
     <div class="card">
-      <h2>도구 분담 — Bob vs Claude Code</h2>
-      <p><b>원칙:</b> "풍부한 세션"은 연출이 아니라 <b>Bob이 실제로 의미 있는 일을 많이 한 결과</b>. 심사위원(시니어 엔지니어)은 속 빈 세션을 바로 알아봄.</p>
+      <h2>도구 분담 — Bob vs Claude Code <span class="src an">분석</span></h2>
+      <p><b>원칙:</b> "풍부한 세션"은 연출이 아니라 <b>Bob이 실제로 의미 있는 일을 많이 한 결과</b>. 심사위원은 속 빈 세션을 바로 알아봄.</p>
       <div class="tip callout">
         <b>💡 발상 전환 — Bob 사용은 비용이 아니라 연료</b>
-        우리 제품(Relay)이 bob_session을 입력으로 먹음 → Bob을 진짜로 많이 쓰면 풍부한 세션 = 제출 요건 + 제품 데모 데이터. 일석이조.
+        우리 제품이 bob_session을 입력으로 먹음 → Bob을 진짜로 많이 쓰면 풍부한 세션 = 제출 요건 + 제품 데모 데이터. 일석이조.
       </div>
       <h3>역할 분담</h3>
       <table>
@@ -306,15 +325,15 @@
         <li><b>Plan mode → Code mode</b> 순서 — 분석+계획 다음 구현 = 자연히 멀티스텝</li>
         <li>한 줄 질문 말고 <b>기능/모듈 단위로 통째 맡기기</b></li>
         <li>잘게 100개로 쪼개지 말 것 — 기능당 응집된 세션 1개</li>
-        <li>팀원 각자 의미 있는 Bob task 분담 (각자 export 필수)</li>
+        <li>팀원 각자 의미 있는 Bob task 분담 (각자 export 필수 <span class="src">가이드 p18</span>)</li>
       </ul>
       <h3>Bobcoin 현실</h3>
-      <p>40×2 = <b>80 Bobcoin</b>. 작은 task ≈ 0.52코인 → 코어를 다 Bob으로 해도 넉넉. <b>토큰 아끼듯 쓸 필요 없음</b> — 핵심에 마음껏.</p>
+      <p>40×2 = <b>80 Bobcoin</b> (40/계정 <span class="src">가이드 p6</span>). 작은 task ≈ 0.52코인 <span class="src">가이드 p19</span> → 코어를 다 Bob으로 해도 넉넉하다는 게 우리 추정 <span class="src an">분석</span>.</p>
       <h3>📌 지금 당장</h3>
-      <p>Bob으로 작은 task 1개를 돌리고 <b>export</b> → markdown 구조 직접 확인. 세션 풍부함의 기준이자 동시에 Relay가 파싱할 입력 스펙. 미루지 말 것.</p>
+      <p>Bob으로 작은 task 1개를 돌리고 <b>export</b> → markdown 구조 직접 확인. 세션 풍부함의 기준이자 동시에 우리 앱이 파싱할 입력 스펙. 미루지 말 것.</p>
       <div class="warn callout">
         <b>⚠️ 자멸 패턴</b>
-        Claude Code로 코어를 짜고 Bob은 구색만 맞추면 → 실격 위험 + 세션 빈약 + Relay 데모 데이터 부족. 절대 금지.
+        Claude Code로 코어를 짜고 Bob은 구색만 맞추면 → 실격 위험 + 세션 빈약 + 데모 데이터 부족. 절대 금지.
       </div>
     </div>
     <div class="card">
@@ -327,7 +346,7 @@
       </ul>
       <h3>아직 미정</h3>
       <ul>
-        <li>최종 이름 / MVP 범위</li>
+        <li>최종 이름 / MVP 범위 (Lv1 vs Lv2)</li>
         <li>데모 호스팅 플랫폼</li>
         <li>역할 분담 세부</li>
       </ul>
@@ -337,7 +356,7 @@
 
   <!-- ===== 아이디어 ===== -->
   <div class="panel" id="ideas">
-    <div class="editnote">이 탭은 대화 진행에 따라 계속 업데이트됩니다.</div>
+    <div class="editnote">⚠️ 이 탭은 <b>우리 아이디어·설계</b>입니다 — 출처 없음 (<span class="src an">분석</span>). 인용된 사실에만 출처를 답니다.</div>
     <div class="subtabs">
       <button class="subtab-btn active" data-sub="concept">🎯 선정 컨셉</button>
       <button class="subtab-btn" data-sub="candidates">후보 비교</button>
@@ -376,7 +395,7 @@
       </div>
 
       <div class="card">
-        <h2>발상의 출처 — NASA 고지연 로봇 제어</h2>
+        <h2>발상의 출처 — NASA 고지연 로봇 제어 <span class="src an">일반 지식</span></h2>
         <p>화성 로버는 편도 4~24분 지연 → 실시간 조종 불가능. NASA가 쓰는 기법을 그대로 코드 도구로 가져온다.</p>
         <table>
           <tr><th>NASA 기법</th><th>코드 도구로 번역</th></tr>
@@ -486,15 +505,15 @@
             <td>낮음~중<br>(경쟁작 다수)</td><td>낮음</td>
           </tr>
         </table>
-        <p style="color:var(--muted);font-size:0.86rem">※ 선정된 핸드오프 컴패니언이 Session-to-Knowledge의 메타 아이디어(Bob 세션 리포트 활용)를 흡수함.</p>
+        <p style="color:var(--muted);font-size:0.86rem">※ 선정된 미션 컨트롤이 Session-to-Knowledge의 메타 아이디어(Bob 세션 리포트 활용)를 흡수함.</p>
       </div>
     </div>
 
     <!-- 서브탭: 공식 use case -->
     <div class="subpanel" data-sub="official">
       <div class="card">
-        <h2>공식 예시 use case 5개</h2>
-        <p>가이드 부록 기준. 이걸 그대로 해도 되지만 독창성에서 불리할 수 있음.</p>
+        <h2>공식 예시 use case 5개 <span class="src">가이드 p47</span></h2>
+        <p>공식 가이드 부록 "Appendix: Example use cases" 기준. 이걸 그대로 해도 되지만 독창성에서 불리할 수 있음 <span class="src an">분석</span>.</p>
         <table>
           <tr><th>#</th><th>공식 use case</th><th>관련 후보</th></tr>
           <tr><td>1</td><td>코드 이해 &amp; 온보딩 가속기</td><td>Onboarding Companion, Why-Map</td></tr>
@@ -504,8 +523,8 @@
           <tr><td>5</td><td>가이드형 현대화·개선 플래너</td><td>—</td></tr>
         </table>
         <div class="tip callout">
-          <b>💡 메모</b>
-          선정한 핸드오프 컴패니언은 공식 5개 어디에도 안 들어감 → 독창성에서 유리.
+          <b>💡 메모</b> <span class="src an">분석</span>
+          선정한 미션 컨트롤은 공식 5개 어디에도 안 들어감 → 독창성에서 유리.
         </div>
       </div>
     </div>
@@ -514,7 +533,7 @@
   <!-- ===== 개요 ===== -->
   <div class="panel" id="overview">
     <div class="card">
-      <h2>이벤트 개요</h2>
+      <h2>이벤트 개요 <span class="src">이벤트</span></h2>
       <table>
         <tr><th>이름</th><td>IBM Bob 해커톤</td></tr>
         <tr><th>테마</th><td>소프트웨어를 만드는 방식 자체를 개선하는 솔루션</td></tr>
@@ -525,11 +544,11 @@
         <tr><th>참가</th><td>팀 또는 솔로</td></tr>
         <tr><th>상금</th><td>총 $10,000 — 🥇 $5,000 · 🥈 $3,000 · 🥉 $2,000</td></tr>
       </table>
-      <p>상금 지급에 최대 90일 소요 가능. 제출물은 독창적이어야 하고 MIT 라이선스 준수.</p>
+      <p>상금 지급에 최대 90일 소요 가능. 제출물은 독창적이어야 하고 MIT 라이선스 준수. <span class="src">이벤트</span></p>
     </div>
     <div class="card">
       <h2>챌린지 — "Turn idea into impact faster"</h2>
-      <p>IBM Bob을 사용해 일상 개발을 빠르게 해주는 <b>proof-of-concept 솔루션</b>을 설계·구축. 제안 방향:</p>
+      <p>IBM Bob을 사용해 일상 개발을 빠르게 해주는 <b>proof-of-concept 솔루션</b>을 설계·구축. 제안 방향 <span class="src">이벤트</span><span class="src">가이드 p4</span>:</p>
       <ul>
         <li>기존 코드를 빠르게 파악</li>
         <li>문서와 테스트 생성</li>
@@ -537,9 +556,9 @@
       </ul>
       <div class="danger callout">
         <b>⛔ 실격 위험</b>
-        모든 제출작은 IBM Bob을 의미 있게 사용했음을 명확히 보여야 함. 심사 자격을 위해 솔루션은 <b>IBM Bob IDE를 core component로 showcase</b>해야 하며, 그 증거가 export된 세션 리포트입니다.
+        모든 제출작은 IBM Bob을 의미 있게 사용했음을 명확히 보여야 함 <span class="src">이벤트</span>. 심사 자격을 위해 솔루션은 <b>IBM Bob IDE를 core component로 showcase</b>해야 하며, 그 증거가 export된 세션 리포트 <span class="src">가이드 p4</span>.
       </div>
-      <p>Bob IDE가 핵심이고 제품 사용 정책을 지키면 어떤 프레임워크·기술이든 사용 가능.</p>
+      <p>Bob IDE가 핵심이고 제품 사용 정책을 지키면 어떤 프레임워크·기술이든 사용 가능. <span class="src">가이드 p4</span></p>
     </div>
   </div>
 
@@ -548,20 +567,20 @@
     <div class="card">
       <h2>일정</h2>
       <table>
-        <tr><th>이벤트</th><th>미 동부 (ET / EDT)</th><th>한국 (KST)</th></tr>
+        <tr><th>이벤트</th><th>미 동부 (ET / EDT) <span class="src">이벤트</span></th><th>한국 (KST) <span class="src an">환산</span></th></tr>
         <tr><td>등록 마감</td><td>5/15 오전 7:00</td><td>5/15 오후 8:00</td></tr>
         <tr><td>킥오프 스트림 (Twitch)</td><td>5/15 오전 11:00</td><td>5/16 자정 0:00</td></tr>
         <tr><td>라이브 Q&amp;A (Discord)</td><td>5/15 정오 12:00</td><td>5/16 오전 1:00</td></tr>
         <tr><td><b>제출 마감</b></td><td><b>5/17 오전 11:00</b></td><td><b>5/18 자정 0:00</b></td></tr>
       </table>
+      <p style="font-size:0.82rem;color:var(--muted)">ET 시각은 이벤트 페이지 일정 + Discord 공지 기준 <span class="src">이벤트</span><span class="src">Discord</span>. KST는 ET +13시간 환산 <span class="src an">환산</span>.</p>
       <div class="danger callout">
         <b>⛔ 제출 마감 — 한국 기준</b>
-        이벤트 페이지 기준 5/17 11:00 AM ET = <b>한국 5/18 자정(00:00)</b>. 단 IBM Cloud 신청 폼엔 10:00 AM ET로 적혀 1시간 불일치 → <b>안전하게 한국 5/17 밤 11:00을 마감으로 잡을 것.</b> (KST = ET +13시간)
+        이벤트 페이지 기준 5/17 11:00 AM ET = <b>한국 5/18 자정(00:00)</b> <span class="src">이벤트</span>. 단 IBM Cloud 신청 폼 화면엔 10:00 AM ET로 적혀 1시간 불일치 <span class="src">메일</span> → <b>안전하게 한국 5/17 밤 11:00을 마감으로 잡을 것</b> <span class="src an">분석</span>.
       </div>
       <div class="tip callout">
-        <b>💡 시간 배분</b>
+        <b>💡 시간 배분</b> <span class="src an">분석</span>
         아이디어+셋업 ~4h · 빌드 ~30h · 데모·영상·슬라이드·세션 export ~10h · 버퍼 ~4h.
-        영상·슬라이드·Bob 리포트를 마지막에 몰지 말 것.
       </div>
     </div>
   </div>
@@ -569,14 +588,14 @@
   <!-- ===== IBM BOB ===== -->
   <div class="panel" id="bob">
     <div class="card">
-      <h2>IBM Bob &amp; Bob IDE</h2>
+      <h2>IBM Bob &amp; Bob IDE <span class="src">가이드 p2</span><span class="src">가이드 p8</span></h2>
       <p>IBM Bob은 코드베이스와 직접 작업하는 AI 개발 파트너. 전체 리포지토리 컨텍스트를 갖고 의도를 이해하고, 로직을 설명하고, 복잡한 변환을 자동화하고, 다단계 작업을 정리해줌.</p>
-      <h3>두 가지 작업 방식</h3>
+      <h3>두 가지 작업 방식 <span class="src">가이드 p8</span></h3>
       <ul>
         <li><b>Bob IDE</b> — <b>필수.</b> 반드시 사용; 세션 리포트를 여기서 export.</li>
         <li><b>Bob Shell</b> — 선택. 커맨드라인용, 자동화에 유용.</li>
       </ul>
-      <h3>Bob IDE 주요 기능 (활용 가능한 부품)</h3>
+      <h3>Bob IDE 주요 기능 <span class="src">가이드 p10–15</span></h3>
       <ul>
         <li>채팅 인터페이스 / Modes (Plan · Code · Advanced · Ask · Orchestrator) / Custom modes</li>
         <li>Auto-approve / Custom instructions / Skills (재사용 가능한 작업 레시피)</li>
@@ -585,20 +604,20 @@
         <li>Slash commands (<code>/init</code> → AGENTS.md, <code>/create-pr</code>, <code>/review</code>)</li>
         <li>Checkpoints / Code reviews / Commit messages / Pull requests / Enhance prompt</li>
       </ul>
-      <h3>계정</h3>
+      <h3>계정 <span class="src">가이드 p5</span></h3>
       <p>개인 계정이 아닌 <b>해커톤 제공 Bob 계정</b>(팀명 <code>ibm-hackathon-xxx</code>, Enterprise 플랜) 사용. 로그인에 IBMid 필요.</p>
     </div>
     <div class="card">
       <h2>Bobcoin</h2>
-      <p>Bob AI와의 모든 상호작용은 <b>Bobcoin</b>("BP Coins")을 소모. 이벤트용 사용량 예산.</p>
+      <p>Bob AI와의 모든 상호작용은 <b>Bobcoin</b>("BP Coins" <span class="src">Discord</span>)을 소모. 이벤트용 사용량 예산.</p>
       <table>
-        <tr><th>지급량</th><td><b>계정당 40 Bobcoin</b> (팀원 1인당)</td></tr>
-        <tr><th>소모</th><td>AI 상호작용마다 차감. 가이드 예시: 작은 작업 ≈ <b>0.52 Bobcoin</b></td></tr>
-        <tr><th>100% 소진 시</th><td>추가 지급 없음 — 작업·제출은 계속 가능, watsonx fallback 권장</td></tr>
-        <tr><th>잔액 확인</th><td>Bob IDE → Settings → General → Budget / Usage · 또는 Bob admin portal → Teams</td></tr>
+        <tr><th>지급량</th><td><b>계정당 40 Bobcoin</b> (팀원 1인당) <span class="src">가이드 p6</span></td></tr>
+        <tr><th>소모</th><td>AI 상호작용마다 차감. 가이드 예시 스크린샷: 작은 작업 ≈ <b>API Cost 0.52 Bobcoin</b> <span class="src">가이드 p6</span><span class="src">가이드 p19</span></td></tr>
+        <tr><th>100% 소진 시</th><td>추가 지급 없음 — 작업·제출은 계속 가능, watsonx fallback 권장 <span class="src">가이드 p6</span> · 다 쓰면 export 불가 가능 <span class="src">Discord</span></td></tr>
+        <tr><th>잔액 확인</th><td>Bob IDE → Settings → General → Budget / Usage · 또는 Bob admin portal → Teams <span class="src">가이드 p6</span><span class="src">가이드 p7</span></td></tr>
       </table>
       <div class="warn callout">
-        <b>⚠️ 신중하게 사용</b>
+        <b>⚠️ 신중하게 사용</b> <span class="src an">분석</span>
         팀원끼리 작업을 나눠 분담. 무거운 Plan+Code 자동 실행은 코인을 빨리 소모함. 다 써서 export를 못 하면 제출이 위험.
       </div>
     </div>
@@ -607,7 +626,7 @@
   <!-- ===== 셋업 ===== -->
   <div class="panel" id="setup">
     <div class="card">
-      <h2>① IBM Bob 접근 (필수) — 신청 불필요</h2>
+      <h2>① IBM Bob 접근 (필수) — 신청 불필요 <span class="src">가이드 p5–8</span><span class="src">메일</span></h2>
       <p>별도 신청 폼이 없습니다. 해커톤 시작 시 <b>등록한 이메일로 초대 메일이 자동 발송</b>됩니다.</p>
       <ol>
         <li>등록 이메일 받은편지함(+ 스팸/정크함)에서 IBM Bob 팀의 초대 메일 확인 — "IBM Bob"으로 검색.</li>
@@ -618,12 +637,12 @@
       </ol>
       <p>📘 Bob IDE 공식 문서 — <a href="https://bob.ibm.com/docs/ide">bob.ibm.com/docs/ide</a></p>
       <div class="tip callout">
-        <b>💡 요점</b>
+        <b>💡 요점</b> <span class="src an">분석</span>
         Bob은 "토큰 신청"이 아니라 <b>이메일 초대 확인</b> 방식. 등록만 되어 있으면 자동으로 옴.
       </div>
     </div>
     <div class="card">
-      <h2>② IBM Cloud / watsonx 접근 (선택) — 직접 신청</h2>
+      <h2>② IBM Cloud / watsonx 접근 (선택) — 직접 신청 <span class="src">가이드 p21–24</span></h2>
       <p>watsonx Orchestrate / watsonx.ai를 쓸 경우에만 필요. 안 쓰면 신청 불필요.</p>
       <h3>신청 절차</h3>
       <ol>
@@ -634,22 +653,22 @@
         <li>약 1시간 뒤 클라우드 계정 초대 메일 도착 → <b>"Join Now"</b> → 계정 정보 확인 후 "Join Account".</li>
       </ol>
       <table>
-        <tr><th>크레딧</th><td><b>$80</b> 자동 지급</td></tr>
-        <tr><th>알림</th><td>사용량 25% / 50% / 80%에 이메일 (시간당 1회 — 알림 전에 소진될 수 있음)</td></tr>
-        <tr><th>100% 소진 시</th><td>계정 정지 — 정지 알림 메일의 폼으로 이의 신청 가능</td></tr>
+        <tr><th>크레딧</th><td><b>$80</b> 자동 지급 <span class="src">가이드 p21</span></td></tr>
+        <tr><th>알림</th><td>사용량 25% / 50% / 80%에 이메일 (시간당 1회 — 알림 전에 소진될 수 있음) <span class="src">가이드 p21</span></td></tr>
+        <tr><th>100% 소진 시</th><td>계정 정지 — 정지 알림 메일의 폼으로 이의 신청 가능 <span class="src">가이드 p21</span></td></tr>
       </table>
       <div class="warn callout">
         <b>⚠️ 주의</b>
-        신청 시 "Unable to verify registration" 메시지가 뜨면 해커톤 미등록 상태. · 개인 IBM Cloud 계정이 있으면 대시보드 우상단에서 <code>xxxxxxx - watsonx</code> 계정으로 전환.
+        신청 시 "Unable to verify registration" 메시지가 뜨면 해커톤 미등록 상태 <span class="src">가이드 p22</span>. · 개인 IBM Cloud 계정이 있으면 대시보드 우상단에서 <code>xxxxxxx - watsonx</code> 계정으로 전환 <span class="src">가이드 p24</span>.
       </div>
     </div>
     <div class="card">
       <h2>접근 요약</h2>
       <table>
         <tr><th>대상</th><th>방식</th><th>필수 여부</th></tr>
-        <tr><td>IBM Bob</td><td>이메일 초대 자동 발송 → 확인</td><td><b>필수</b></td></tr>
-        <tr><td>IBM Cloud / watsonx</td><td>신청 URL에서 직접 요청</td><td>선택</td></tr>
-        <tr><td>Claude Code 등</td><td>본인 계정 (해커톤 미제공)</td><td>선택 · 보조용</td></tr>
+        <tr><td>IBM Bob</td><td>이메일 초대 자동 발송 → 확인 <span class="src">가이드 p5</span></td><td><b>필수</b></td></tr>
+        <tr><td>IBM Cloud / watsonx</td><td>신청 URL에서 직접 요청 <span class="src">가이드 p21</span></td><td>선택</td></tr>
+        <tr><td>Claude Code 등</td><td>본인 계정 (해커톤 미제공) <span class="src an">분석</span></td><td>선택 · 보조용</td></tr>
       </table>
     </div>
   </div>
@@ -658,7 +677,7 @@
   <div class="panel" id="submission">
     <div class="card">
       <h2>제출 요구사항</h2>
-      <h3>기본 정보</h3>
+      <h3>기본 정보 <span class="src">가이드라인</span></h3>
       <table>
         <tr><th>항목</th><th>제약</th></tr>
         <tr><td>제출 제목</td><td>최대 50자</td></tr>
@@ -667,24 +686,24 @@
         <tr><td>메인 트랙</td><td>해커톤 페이지에 안내된 카테고리</td></tr>
         <tr><td>기술</td><td>사용한 모든 기술 (lablab.ai/tech 참고)</td></tr>
       </table>
-      <h3>미디어</h3>
+      <h3>미디어 <span class="src">가이드라인</span><span class="src">이벤트</span></h3>
       <table>
         <tr><th>항목</th><th>제약</th></tr>
         <tr><td>커버 이미지</td><td>16:9 비율 권장</td></tr>
         <tr><td>영상 프레젠테이션</td><td>≤ 5분, ≤ 300MB</td></tr>
-        <tr><td>슬라이드 프레젠테이션</td><td>필수</td></tr>
+        <tr><td>슬라이드 프레젠테이션</td><td>필수 (이벤트 페이지 제출 항목)</td></tr>
       </table>
       <h3>코드 &amp; 호스팅</h3>
       <ul>
-        <li><b>Public GitHub 리포지토리</b> — private는 심사 불가</li>
-        <li><b><code>bob_sessions/</code> 폴더</b> — export한 세션 리포트 + 스크린샷</li>
-        <li>Written statement</li>
-        <li>데모 플랫폼 + 라이브 데모 URL</li>
-        <li>심사위원용 추가 정보 (예: 확장 가능성)</li>
+        <li><b>Public GitHub 리포지토리</b> — private는 심사 불가 <span class="src">이벤트</span><span class="src">Discord</span></li>
+        <li><b><code>bob_sessions/</code> 폴더</b> — export한 세션 리포트 + 스크린샷 <span class="src">가이드 p18</span><span class="src">Discord</span></li>
+        <li>Written statement (가이드 제출 체크리스트) <span class="src">가이드 p18</span></li>
+        <li>데모 플랫폼 + 라이브 데모 URL <span class="src">가이드라인</span><span class="src">이벤트</span></li>
+        <li>심사위원용 추가 정보 (예: 확장 가능성) <span class="src">가이드라인</span></li>
       </ul>
       <div class="warn callout">
         <b>⚠️ 배포</b>
-        해커톤 제공 IBM Cloud 계정은 <b>배포 미지원</b>. 데모는 로컬 실행 또는 자체 호스팅(Vercel 등)에 올려서 보여줄 것.
+        해커톤 제공 IBM Cloud 계정은 <b>solution deployment 미지원</b> — 로컬 실행 또는 자체 호스팅(Vercel 등)에 올려서 보여줄 것 <span class="src">가이드 p44</span>.
       </div>
     </div>
   </div>
@@ -692,7 +711,7 @@
   <!-- ===== 세션 & 보안 ===== -->
   <div class="panel" id="sessions">
     <div class="card">
-      <h2>Bob 세션 리포트 export (심사 필수)</h2>
+      <h2>Bob 세션 리포트 export (심사 필수) <span class="src">가이드 p18–19</span></h2>
       <p><b>팀원 각자</b>가 관련된 모든 Bob task 세션 리포트를 export해서 최종 리포지토리에 업로드해야 함.</p>
       <ol>
         <li>리포에 <code>bob_sessions/</code> 폴더 생성.</li>
@@ -705,17 +724,17 @@
         <li>스크린샷 + markdown 파일 전부 <code>bob_sessions/</code>에 업로드.</li>
       </ol>
       <div class="danger callout">
-        <b>⛔ export 전에</b>
+        <b>⛔ export 전에</b> <span class="src">가이드 p18</span>
         코드에서 모든 크리덴셜·API 키 제거. public 리포에서 IBM Bob/Cloud 크리덴셜이 발견되면 IBM 보안팀이 계정 접근을 비활성화함.
       </div>
     </div>
     <div class="card">
       <h2>보안 &amp; 데이터 규칙</h2>
       <ul>
-        <li><b>API 키·크리덴셜 절대 노출 금지</b> — IBM 보안 스캐너가 24/7 작동, 발견 즉시 접근 차단. 키를 모든 곳에서 제거·교체하고 서포트팀과 조치 확인 전까지 클라우드 계정 정지.</li>
-        <li>GitHub 리포는 <b>public</b> 유지.</li>
+        <li><b>API 키·크리덴셜 절대 노출 금지</b> — IBM 보안 스캐너가 24/7 작동, 발견 즉시 접근 차단 <span class="src">Discord</span>. 키를 모든 곳에서 제거·교체하고 서포트팀과 조치 확인 전까지 클라우드 계정 정지 <span class="src">가이드 p20</span>.</li>
+        <li>GitHub 리포는 <b>public</b> 유지 <span class="src">이벤트</span>.</li>
       </ul>
-      <h3>데이터셋 규칙 (자체 데이터 지참)</h3>
+      <h3>데이터셋 규칙 (자체 데이터 지참) <span class="src">가이드 p4–5</span></h3>
       <ul>
         <li>데이터 컴플라이언스는 팀 책임.</li>
         <li>공개 웹사이트 데이터는 상업적 이용 약관이 허용할 때만 사용 — 출처 목록 보관.</li>
@@ -727,7 +746,7 @@
   <!-- ===== 심사 & 체크리스트 ===== -->
   <div class="panel" id="judging">
     <div class="card">
-      <h2>심사 기준</h2>
+      <h2>심사 기준 <span class="src">이벤트</span></h2>
       <table>
         <tr><th>기준</th><th>측정 대상</th></tr>
         <tr><td>Application of Technology</td><td>프로젝트의 완성도와 깊이, IBM Bob의 명확한 적용</td></tr>
@@ -738,6 +757,7 @@
     </div>
     <div class="card">
       <h2>최종 체크리스트</h2>
+      <p style="font-size:0.82rem;color:var(--muted)">각 항목의 출처는 해당 탭(제출 / 세션 &amp; 보안 / IBM Bob)에 표기됨.</p>
       <ul class="check">
         <li>IBM Bob IDE를 core component로 사용해 빌드</li>
         <li>개발 전 과정에서 Bob을 의미 있고 눈에 띄게 사용</li>
@@ -756,6 +776,18 @@
       </ul>
     </div>
     <div class="card">
+      <h2>출처 범례</h2>
+      <table>
+        <tr><th>태그</th><th>의미</th></tr>
+        <tr><td><span class="src">이벤트</span></td><td>lablab.ai 이벤트 페이지 — <a href="https://lablab.ai/ai-hackathons/ibm-bob-hackathon">lablab.ai/ai-hackathons/ibm-bob-hackathon</a></td></tr>
+        <tr><td><span class="src">가이드라인</span></td><td>lablab.ai 해커톤 가이드라인 글 — <a href="https://lablab.ai/ai-articles/hackathon-guidelines">lablab.ai/ai-articles/hackathon-guidelines</a></td></tr>
+        <tr><td><span class="src">가이드 p#</span></td><td>공식 가이드 PDF 해당 페이지 — <code>prepare/Lablab-IBM-Bob-hackathon-guide-May-2026.pdf</code></td></tr>
+        <tr><td><span class="src">Discord</span></td><td>lablab.ai Discord 공지 채널</td></tr>
+        <tr><td><span class="src">메일</span></td><td>IBM이 보낸 메일 / IBM Cloud 신청 폼 화면</td></tr>
+        <tr><td><span class="src an">분석</span></td><td>우리 해석·추정·전략 — <b>공식 출처 아님</b></td></tr>
+      </table>
+    </div>
+    <div class="card">
       <h2>링크 &amp; 메모</h2>
       <ul>
         <li>이벤트 페이지 — <a href="https://lablab.ai/ai-hackathons/ibm-bob-hackathon">lablab.ai/ai-hackathons/ibm-bob-hackathon</a></li>
@@ -765,16 +797,16 @@
         <li>킥오프 스트림 — <a href="https://www.twitch.tv/lablabai">twitch.tv/lablabai</a></li>
         <li>기술 목록 — <a href="https://lablab.ai/tech">lablab.ai/tech</a></li>
       </ul>
-      <h3>명칭 메모</h3>
+      <h3>명칭 메모 <span class="src">Discord</span></h3>
       <p>공지는 명칭을 혼용함: 도구는 "IBM Bob" / "Build on Bob (BoB)", 사용량 크레딧은 "Bobcoin" / "BP Coins".</p>
-      <h3>도움 받기</h3>
+      <h3>도움 받기 <span class="src">Discord</span></h3>
       <p>질문은 Discord 서포트 채널에 멘토 역할을 태그해서 올릴 것 — 멘토에게 DM 금지, 채널에 올리는 게 가장 빠름.</p>
     </div>
   </div>
 
 </div>
 
-<div class="navhint">이벤트 페이지 · lablab.ai 가이드라인 · Discord 공지 · 공식 가이드 PDF + 대화 내용 기반 · 임시 <code>prepare</code> 브랜치</div>
+<div class="navhint">이벤트 페이지 · lablab.ai 가이드라인 · Discord 공지 · 공식 가이드 PDF + 대화 내용 기반 · 출처 범례는 "심사 &amp; 체크리스트" 탭 · 임시 <code>prepare</code> 브랜치</div>
 
 <script>
   const bar = document.getElementById('tabbar');
