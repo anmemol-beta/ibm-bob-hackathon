@@ -707,7 +707,7 @@ Task: propose a concrete, minimal folder and file structure for the MVP, with a 
       <p><b>검증 결과 (2026-05-16)</b> — <code>npm install</code> + <code>npm run build</code> 통과. 라우트 10개(<code>/</code> · <code>/author</code> · <code>/handoff</code> · <code>/pairing</code> + API 3개) 전부 빌드됨. ⚠️ S0 버그 1건 수정: <code>lib/utils.ts</code>가 <code>clsx</code>를 import하는데 package.json에 누락 → <code>clsx</code> 설치로 해결. 참고: <code>next@14.2.3</code>에 알려진 보안 취약점 경고 — POC엔 무방, 여유되면 버전 업.</p>
       <div class="warn callout">
         <b>📋 진행 현황 (팀 공유 — 중복 작업 방지)</b>
-        스모크 ✅ · S0 ✅ · S1 ✅ · S2 ✅ · S3 ✅ · S4 ✅ · S4.5 ✅ · S5 ✅ · S6 ✅ · <b>S7 ⬜</b><br>
+        스모크 ✅ · S0 ✅ · S1 ✅ · S2 ✅ · S3 ✅ · S4 ✅ · S4.5 ✅ · S5 ✅ · S6 ✅ · <b>S7 ✅</b> — 빌드 전 단계 완료<br>
         각 단계 시작·완료 시 여기에 표시하고 누가 맡았는지 적을 것.
       </div>
       <h3>스테이지 로그</h3>
@@ -721,6 +721,7 @@ Task: propose a concrete, minimal folder and file structure for the MVP, with a 
         <li><b>S4.5 — CLI + 스토어</b> ✅ — <code>lib/store.ts</code>(JSON 파일 백엔드, repo-local <code>.asyncpair/</code>) + <code>/api/handoff</code> 스토어 연동 + <code>cli/</code> <code>asyncpair init</code>·<code>capture</code>(commander). tsc·build(11라우트)·test 6/6·build:cli·<code>capture</code> 기능 검증 통과. 비용 <b>6.72 Bobcoin</b>($3.22 세션 in-file USD) — 지금까지 최대 스테이지. ⚠️ 검증 중 수정 3건: Bob이 스토어를 <code>~/.asyncpair</code>(홈)에 둠 → <code>process.cwd()</code> repo-local로(핸드오프 git 전달 위해), <code>.gitignore</code>의 <code>.asyncpair/</code> 제거, <code>cli/</code> 컴파일 잔재 삭제. 커밋 <code>a9ee646</code>.</li>
         <li><b>S5 — standin + /pairing</b> ✅ — <code>/api/standin</code> POST(핸드오프 컨텍스트 + 최근 커밋 diff 조립 → LLM이 "부재중 팀원이라면" 답변) + <code>/pairing</code> 채팅 UI(메시지 이력·로딩·키보드 단축) + <code>types.ts</code>에 <code>ChatMessage</code> 등 3종. tsc·build(11라우트)·test 6/6·build:cli 통과. 파일 쓰기 없음(Vercel 안전). 비용 $0.57(세션 in-file USD). 커밋 <code>d54bd99</code>.</li>
         <li><b>S6 — 페어링 UI 마무리</b> ✅ — <code>/pairing</code>에 시나리오 인라인 노출(키워드 매칭·핸드오프 선택기·채팅+사이드바 레이아웃) + 홈·author·handoff·pairing 4페이지 Tailwind 디자인 통일 + 로딩 스피너·빈 상태. tsc·build(11라우트)·test 6/6 통과. 비용 $1.34(세션 in-file USD). 커밋 <code>0822e07</code>.</li>
+        <li><b>S7 — 시드 + 데모 + 점검</b> ✅ — <code>data/seed.json</code>(데모 핸드오프 2개 · 시나리오 8개, 배열 형식 — 스토어가 직접 읽음) + 전체 프로젝트 점검. tsc·build(11라우트)·test 6/6·build:cli 통과, 타입 에러 0. Bob이 dev 서버 + curl로 API·페이지 동작 확인. 비용 $2.18. 검증 중 <code>.asyncpair/handoffs.json</code> 테스트 잔재 삭제(런타임 상태). 커밋 <code>7c2b7bc</code>.</li>
       </ul>
     </div>
 
@@ -752,7 +753,7 @@ Task: propose a concrete, minimal folder and file structure for the MVP, with a 
       <p class="pcap">S6 — 페어링 UI 마무리 · Code &nbsp;<span style="color:var(--ok)">✅ 완료</span> — 시나리오 인라인 노출(키워드 매칭) + 4페이지 Tailwind 디자인 통일 + 로딩·빈 상태. tsc·build·test 통과</p>
       <div class="prompt">Polish the /pairing experience: when the developer reaches a point covered by a scenario, surface that scenario inline. Unify the visual design with Tailwind so the three pages feel like one coherent product. Add loading and empty states.</div>
 
-      <p class="pcap">S7 — 시드 + 데모 + 점검 · Code &nbsp;⬜ 미시작</p>
+      <p class="pcap">S7 — 시드 + 데모 + 점검 · Code &nbsp;<span style="color:var(--ok)">✅ 완료</span> — <code>data/seed.json</code>(핸드오프 2개·시나리오 8개) + 전체 점검. tsc·build·test 통과, 타입 에러 0</p>
       <div class="prompt">Create data/seed.json with a realistic demo handoff (git activity plus 4 scenarios) so the app can be demoed without a live repo. Then review the whole project, fix any type errors, and make sure it builds and runs.</div>
     </div>
 
