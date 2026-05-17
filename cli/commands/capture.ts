@@ -126,16 +126,16 @@ export async function captureCommand(options: CaptureOptions): Promise<void> {
       console.log(`\n📝 Capturing handoff for commit: ${commit.message.substring(0, 60)}${commit.message.length > 60 ? '...' : ''}`);
       console.log('');
       
-      // Question 1: Context about the commit
+      // Question 1: Hidden risks — stubs, hacks, unsafe code
       contextNotes = await askQuestion(
-        'Anything the next developer should know about this commit? [Enter to skip]: ',
+        'Anything stubbed, hardcoded, or unsafe the next dev should know about? [Enter to skip]: ',
         15000
       );
-      
-      // Question 2: What's next
+
+      // Question 2: The next concrete task and where it lives
       if (contextNotes || true) {
         developerNotes = await askQuestion(
-          'What should be worked on next? [Enter to skip]: ',
+          'What should the next developer do first, and where in the code? [Enter to skip]: ',
           15000
         );
       }
