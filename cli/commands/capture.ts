@@ -10,24 +10,18 @@ interface CaptureOptions {
 }
 
 /**
- * Ask a question in the terminal with a timeout
+ * Ask a single question on a shared readline interface. Resolves with the
+ * trimmed answer, or '' if stdin ends (EOF) before an answer is given.
  */
-function askQuestion(question: string, timeoutMs: number = 10000): Promise<string> {
+function askQuestion(rl: readline.Interface, question: string): Promise<string> {
   return new Promise((resolve) => {
-    const rl = readline.createInterface({
-      input: process.stdin,
-      output: process.stdout,
-    });
-
-    const timeout = setTimeout(() => {
-      rl.close();
-      resolve('');
-    }, timeoutMs);
-
+    let answered = false;
     rl.question(question, (answer) => {
-      clearTimeout(timeout);
-      rl.close();
+      answered = true;
       resolve(answer.trim());
+    });
+    rl.once('close', () => {
+      if (!answered) resolve('');
     });
   });
 }
@@ -177,9 +171,16 @@ export async function captureCommand(options: CaptureOptions): Promise<void> {
       const [question1, question2] = await generateCommitQuestions(commit);
       console.log('');
 
-      // Question 1 surfaces hidden risk; question 2 pins down the next task.
-      contextNotes = await askQuestion(`${question1} [Enter to skip]: `, 60000);
-      developerNotes = await askQuestion(`${question2} [Enter to skip]: `, 60000);
+      // One shared readline interface for both questions — recreating it per
+      // question drops piped input and can leave stdin unresponsive.
+      const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
+      try {
+        // Question 1 surfaces hidden risk; question 2 pins down the next task.
+        contextNotes = await askQuestion(rl, `${question1} [Enter to skip]: `);
+        developerNotes = await askQuestion(rl, `${question2} [Enter to skip]: `);
+      } finally {
+        rl.close();
+      }
     }
     
     // Combine notes
