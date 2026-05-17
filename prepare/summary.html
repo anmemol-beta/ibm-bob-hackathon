@@ -735,11 +735,20 @@ Task: propose a concrete, minimal folder and file structure for the MVP, with a 
         <tr><td>LLM 전환</td><td>🟡 watsonx → <b>Google Gemini</b> (<code>gemini-2.0-flash</code>, 팀 보유 API 키). 가이드상 제품 LLM이 IBM일 필요 없음 — 감점 아님. <code>lib/llm.ts</code>에 Gemini 경로 추가 중(Bob 태스크). 키는 <code>.env</code> + Vercel 환경변수.</td></tr>
         <tr><td>시드 로딩 버그</td><td>🟡 배포 후 <code>/api/handoff</code>가 빈 배열 반환 — <code>lib/store.ts</code>가 <code>data/seed.json</code>을 런타임 <code>fs</code>로 읽어 Vercel 함수 번들에 미포함. 수정: JSON을 <code>import</code>로 정적 포함. 위 Gemini Bob 태스크에 같이 묶음.</td></tr>
       </table>
-      <p style="font-size:0.84rem;color:var(--muted)">남은 일: Gemini 연동 검증·재배포 → 데모 영상 → 슬라이드/서면 → 세션 소비 스크린샷 → lablab.ai 제출.</p>
+      <h3>남은 일 — 순서대로</h3>
+      <ol>
+        <li><b>S8 Bob 태스크</b> — 아래 "단계별 Bob 프롬프트"의 <b>S8</b>(Gemini 연동 + 시드 버그) 검은 박스를 새 Bob 태스크에 붙여넣기 → 세션 검증 → <code>main</code> 푸시(Vercel 자동 재배포)</li>
+        <li><b>Gemini 키 설정</b> — 로컬 <code>ibm-bob-hackathon-main/.env</code>에 <code>GEMINI_API_KEY=...</code> 추가 + Vercel <b>Settings → Environment Variables</b>에 같은 키 추가 → Redeploy. ⚠️ 키 값은 채팅·코드에 절대 안 적음 (<code>.env</code>는 <code>.gitignore</code>·<code>.bobignore</code>에 있음)</li>
+        <li><b>배포 확인</b> — <code>/api/handoff</code>에 시드 핸드오프 2건이 뜨는지, <code>/pairing</code>에서 standin이 실제 Gemini 답변을 주는지</li>
+        <li><b>데모 영상</b> — 실제 시차 팀 스토리: 로컬에서 CLI 커밋 포착 → 핸드오프 → standin Q&amp;A</li>
+        <li><b>슬라이드 / 서면</b> — 컨셉 + Bob 활용 + 프로덕션 로드맵(CLI·GitHub·Slack)</li>
+        <li><b>세션 소비 스크린샷</b> — 각 Bob 세션의 Bobcoin 소비 화면을 <code>bob_sessions/</code>에 적재 (가이드 p18 필수 제출물)</li>
+        <li><b>lablab.ai 제출</b> — Technologies 칸 정직하게 (IBM Bob IDE · Next.js · Gemini …)</li>
+      </ol>
     </div>
 
     <div class="card">
-      <h2>단계별 Bob 프롬프트 (S0–S7)</h2>
+      <h2>단계별 Bob 프롬프트 (S0–S8)</h2>
       <p>각 프롬프트를 Bob IDE에 붙여넣기. 큰 단계는 <b>Plan mode 먼저 → Code mode</b>. 커밋 전 <code>/review</code>. 프롬프트의 <code>&lt;NAME&gt;</code>은 <b>AsyncPair</b>로 교체. <span style="color:var(--ok)">✅ 완료</span>=재실행 금지 · <span style="color:var(--warn)">🟡 진행 중</span> · ⬜ 미시작.</p>
 
       <p class="pcap">S0 — 스캐폴드 · Plan → Code &nbsp;<span style="color:var(--ok)">✅ 완료</span> — AsyncPair ~16파일, 빌드 통과(라우트 10개), clsx 누락 1건 수정</p>
@@ -768,6 +777,9 @@ Task: propose a concrete, minimal folder and file structure for the MVP, with a 
 
       <p class="pcap">S7 — 시드 + 데모 + 점검 · Code &nbsp;<span style="color:var(--ok)">✅ 완료</span> — <code>data/seed.json</code>(핸드오프 2개·시나리오 8개) + 전체 점검. tsc·build·test 통과, 타입 에러 0</p>
       <div class="prompt">Create data/seed.json with a realistic demo handoff (git activity plus 4 scenarios) so the app can be demoed without a live repo. Then review the whole project, fix any type errors, and make sure it builds and runs.</div>
+
+      <p class="pcap">S8 — Gemini 연동 + 시드 버그 수정 · Code &nbsp;<span style="color:var(--warn)">🟡 진행 중</span> — watsonx가 계정 권한으로 막혀 Gemini로 전환. <code>lib/llm.ts</code> Gemini 경로 + <code>lib/store.ts</code> 시드 <code>import</code> 수정</p>
+      <div class="prompt">Two changes to AsyncPair's lib/ folder.<br><br>Change 1 — lib/store.ts seed loading. The store currently reads data/seed.json with fs.readFileSync at runtime. On Vercel serverless functions that file is not bundled, so the deployed app shows no handoffs. Fix it: import data/seed.json as a static module (resolveJsonModule is enabled) and use that imported array as the seed fallback when .asyncpair/handoffs.json does not exist. Keep the fs-based read/write of .asyncpair/handoffs.json for local use; only the seed fallback changes from fs.readFileSync to a static import.<br><br>Change 2 — lib/llm.ts Gemini support. Add a Google Gemini path to generate():<br>- Read GEMINI_API_KEY from environment variables.<br>- If GEMINI_API_KEY is set, call the Google Gemini REST API (generativelanguage.googleapis.com, model gemini-2.0-flash) and return the generated text.<br>- Keep the existing watsonx path and the deterministic mock fallback. Priority order: Gemini if its key is set, else watsonx if its keys are set, else mock.<br>- Update isLive() to return true if either Gemini or watsonx credentials are configured.<br><br>Handle network and API errors clearly. Never hardcode a secret — read keys from process.env only. Keep all existing pages, tests, and the production build working.</div>
     </div>
 
     <div class="card">
