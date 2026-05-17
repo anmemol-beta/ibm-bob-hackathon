@@ -9,6 +9,9 @@
 
 // Read environment variables
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
+// Cheapest current Gemini tier — keeps demo cost low. (gemini-2.0-flash-lite
+// is no longer available to new API keys, so use the 2.5 lite tier.)
+const GEMINI_MODEL = 'gemini-2.5-flash-lite';
 const WATSONX_API_KEY = process.env.WATSONX_API_KEY;
 const WATSONX_PROJECT_ID = process.env.WATSONX_PROJECT_ID;
 const WATSONX_URL = process.env.WATSONX_URL;
@@ -68,66 +71,72 @@ export async function generate(prompt: string): Promise<string> {
   return generateMockResponse(prompt);
 }
 
+/** Pause execution for the given number of milliseconds. */
+function sleep(ms: number): Promise<void> {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
 /**
- * Generate text using Google Gemini API
+ * Generate text using the Google Gemini API.
+ * Retries automatically on transient failures (HTTP 429/5xx and network
+ * errors) with exponential backoff, since Gemini returns these intermittently.
  * @param prompt - The input prompt for text generation
  * @returns Generated text response
  */
 async function generateWithGemini(prompt: string): Promise<string> {
-  try {
-    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_API_KEY}`;
-    
-    const response = await fetch(url, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        contents: [{
-          parts: [{
-            text: prompt
-          }]
-        }],
-        generationConfig: {
-          temperature: 0.7,
-          maxOutputTokens: 500,
-          topP: 1,
-          topK: 50,
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent?key=${GEMINI_API_KEY}`;
+  const body = JSON.stringify({
+    contents: [{ parts: [{ text: prompt }] }],
+    generationConfig: {
+      temperature: 0.7,
+      maxOutputTokens: 500,
+      topP: 1,
+      topK: 50,
+    },
+  });
+
+  const MAX_ATTEMPTS = 3;
+  const RETRYABLE_STATUS = [429, 500, 502, 503, 504];
+
+  for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
+    const isLastAttempt = attempt === MAX_ATTEMPTS;
+    try {
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body,
+      });
+
+      if (response.ok) {
+        const data: any = await response.json();
+        const text = data?.candidates?.[0]?.content?.parts?.[0]?.text;
+        if (typeof text === 'string') {
+          return text.trim();
         }
-      }),
-    });
-
-    if (!response.ok) {
-      const errorText = await response.text();
-      throw new Error(
-        `Gemini API error (${response.status}): ${errorText || response.statusText}`
-      );
-    }
-
-    const data: any = await response.json();
-    
-    // Extract generated text from Gemini response
-    if (data.candidates &&
-        data.candidates.length > 0 &&
-        data.candidates[0].content &&
-        data.candidates[0].content.parts &&
-        data.candidates[0].content.parts.length > 0) {
-      return data.candidates[0].content.parts[0].text.trim();
-    }
-
-    throw new Error('Gemini API returned unexpected response format');
-  } catch (error) {
-    // Provide informative error messages
-    if (error instanceof Error) {
-      if (error.message.includes('fetch')) {
-        throw new Error(
-          `Network error connecting to Gemini API: ${error.message}. Please check your internet connection.`
-        );
+        throw new Error('Gemini API returned an unexpected response format');
       }
-      throw new Error(`Gemini generation failed: ${error.message}`);
+
+      // Non-OK response: retry transient server/rate-limit errors, fail fast otherwise.
+      const errorText = await response.text();
+      const message = `Gemini API error (${response.status}): ${errorText || response.statusText}`;
+      if (RETRYABLE_STATUS.includes(response.status) && !isLastAttempt) {
+        await sleep(500 * 2 ** (attempt - 1));
+        continue;
+      }
+      throw new Error(message);
+    } catch (error) {
+      const message = error instanceof Error ? error.message : 'Unknown error';
+      // fetch() network failures throw a TypeError — retry those.
+      if (error instanceof TypeError && !isLastAttempt) {
+        await sleep(500 * 2 ** (attempt - 1));
+        continue;
+      }
+      throw new Error(`Gemini generation failed: ${message}`);
     }
-    throw new Error('Unknown error occurred during Gemini text generation');
   }
+
+  // The loop always returns or throws; this satisfies the type checker.
+  throw new Error('Gemini generation failed: exhausted all retry attempts');
 }
 
 /**
@@ -167,7 +176,7 @@ async function generateWithWatsonx(prompt: string): Promise<string> {
     }
 
     const data: any = await response.json();
-    
+
     // Extract generated text from response
     if (data.results && data.results.length > 0 && data.results[0].generated_text) {
       return data.results[0].generated_text.trim();
@@ -200,17 +209,17 @@ function generateMockResponse(prompt: string): string {
   const hash = prompt.split('').reduce((acc, char) => {
     return ((acc << 5) - acc) + char.charCodeAt(0);
   }, 0);
-  
+
   const mockResponses = [
     'This is a mock response. Configure GEMINI_API_KEY or watsonx credentials (WATSONX_API_KEY, WATSONX_PROJECT_ID, WATSONX_URL) to use real AI generation.',
     'Mock AI response: The system is running in demo mode without LLM credentials.',
     'Placeholder response generated. Set up Gemini or watsonx environment variables for actual AI-powered responses.',
     'Demo mode active. This is a simulated response. Configure LLM credentials for real functionality.',
   ];
-  
+
   // Select response deterministically based on prompt
   const index = Math.abs(hash) % mockResponses.length;
-  
+
   return `[MOCK MODE] ${mockResponses[index]}\n\nPrompt received: "${prompt.substring(0, 100)}${prompt.length > 100 ? '...' : ''}"`;
 }
 
