@@ -129,7 +129,7 @@ export default function Home() {
                 <div className="text-4xl mb-4">😴</div>
                 <h3 className="text-2xl font-bold mb-4 text-gray-900 dark:text-white">Never Online Together</h3>
                 <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
-                  When your teammate in Tokyo finishes their day, you're just starting yours in San Francisco. A 13-hour time zone gap means zero overlap for real-time collaboration.
+                  When your teammate in Seoul finishes their day, you're just starting yours in Boston. A 13-hour time zone gap means zero overlap for real-time collaboration.
                 </p>
               </div>
 
