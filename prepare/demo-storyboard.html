@@ -195,26 +195,29 @@
 
 <!-- ============ SCENE 5 ============ -->
 <div class="card">
-  <div class="scene-head"><span class="scene-no">SCENE 5</span><span class="scene-title">스탠드인 — 자는 팀원에게 묻다</span><span class="scene-dur">~35초</span></div>
+  <div class="scene-head"><span class="scene-no">SCENE 5</span><span class="scene-title">스탠드인 — 자는 팀원에게 묻다</span><span class="scene-dur">~50초</span></div>
   <div class="scene-body">
     <div class="row"><div class="label">🎬 화면</div>
-      <code>/pairing</code> 채팅 화면. 실제 Gemini가 답함 (localhost + <code>.env</code> 키).</div>
+      <code>/pairing</code> 채팅 화면. 실제 Gemini가 답함 (localhost + <code>.env</code> 키). 질문 2개 — 하나는 <b>핸드오프</b>가, 하나는 <b>작성자의 다른 repo 이력</b>이 답한다.</div>
     <div class="row"><div class="label">🖱️ 액션</div>
       <ol class="actions">
-        <li>내비에서 <b>Pairing</b> 클릭</li>
-        <li>핸드오프 선택 (notifications)</li>
-        <li>채팅에 입력: <i>I'm getting a 500 from the notification preferences endpoint — any idea why?</i> → 전송</li>
-        <li>로딩 점 → 스탠드인 답변이 한 줄씩 나타나는 걸 보여줌</li>
+        <li>내비에서 <b>Pairing</b> 클릭 → 핸드오프 선택 (notifications)</li>
+        <li><b>질문 1</b> (핸드오프가 다루는 것): <i>I'm getting a 500 from the notification preferences endpoint — any idea why?</i> → 전송 → 스탠드인이 시나리오 1로 답함</li>
+        <li><b>질문 2</b> (핸드오프에 없는 것): <i>There's no validation library in this project — what would you reach for?</i> → 전송</li>
+        <li>로딩 점 → 스탠드인이 <b>Hyoungseo의 과거 프로젝트 패턴</b>(작은 <code>requireFields</code> 헬퍼)을 근거로 답하는 걸 보여줌</li>
       </ol></div>
     <div class="row"><div class="label">🎙️ 나레이션</div>
-      <div class="narration">"Then he hits something the notes didn't cover. Normally, that's a lost day. Instead, he asks the AI stand-in. It answers with my context — my commits, my decisions, my reasoning — the way I would have. He stays unblocked. The pair never breaks, even though one of us is always asleep."
-      <span class="kr">노트에 없던 문제 / 평소엔 하루 날림 / 대신 AI 스탠드인에게 / 내 커밋·결정·이유로, 내가 답하듯 답함 / 막히지 않음 — 한 명은 늘 자고 있어도 페어는 끊기지 않는다</span></div></div>
+      <div class="narration">"Then he hits something the notes didn't cover. Normally, that's a lost day. Instead, he asks the AI stand-in. For the questions my handoff already answers, it replies with my exact reasoning. And for the ones it doesn't — like which validation approach to use — the stand-in looks at how I've solved it across my other repositories, and answers in my style. He stays unblocked. The pair never breaks, even though one of us is always asleep."
+      <span class="kr">노트에 없던 문제 / 평소엔 하루 날림 / 핸드오프가 답하는 질문엔 내 추론 그대로 / 답하지 못하는 질문(어떤 검증 방식을 쓸지)엔 — 내가 다른 repo들에서 어떻게 풀어왔는지를 보고 내 스타일로 답함 / 막히지 않음 — 페어는 끊기지 않는다</span></div></div>
     <div class="row"><div class="label">📺 미리보기</div>
       <div class="screen"><div class="bar">localhost:3000/pairing</div><div class="view">
         <div style="text-align:right;margin:4px 0"><span style="background:#eef2ff;border-radius:10px;padding:6px 12px;font-size:0.86rem">I'm getting a 500 from the notification preferences endpoint…</span></div>
-        <div style="margin:4px 0"><span style="background:#f1f3f5;border-radius:10px;padding:6px 12px;font-size:0.86rem">🤖 That's the POST handler — it saves straight to the DB with no validation. Add a check for the <code>channels</code> array and the <code>mutedUntil</code> date; the GET handler shows the shape…</span></div>
+        <div style="margin:4px 0"><span style="background:#f1f3f5;border-radius:10px;padding:6px 12px;font-size:0.86rem">🤖 That's the POST handler — it saves straight to the DB with no validation. Check the <code>channels</code> array and the <code>mutedUntil</code> date first; the GET handler shows the shape.</span></div>
+        <div style="text-align:right;margin:10px 0 4px"><span style="background:#eef2ff;border-radius:10px;padding:6px 12px;font-size:0.86rem">No validation library here — what would you reach for?</span></div>
+        <div style="margin:4px 0"><span style="background:#f1f3f5;border-radius:10px;padding:6px 12px;font-size:0.86rem">🤖 I don't pull in a library — in my other projects I keep a tiny <code>requireFields</code> helper that throws <code>ValidationError</code>, and the route turns it into a 400. Same pattern fits here.</span></div>
       </div></div>
-      <div class="note">이 답변은 미리보기일 뿐 — 실제 영상에선 Gemini가 핸드오프 컨텍스트(시나리오 1)를 바탕으로 라이브로 답합니다.</div></div>
+      <div class="note">두 번째 답변이 핵심 — 핸드오프엔 없는 내용을, 스탠드인이 <b>작성자의 다른 repo 커밋 이력</b>(<code>data/mock-commits.json</code>의 <code>hyoungseo-prior-projects</code>)에서 끌어와 답합니다. 라이브 Gemini라 문구는 매번 다름 — 위는 예시.</div>
+      <div class="note">레퍼런스 repo는 핸드오프마다 지정되며(이 데모 데이터에 연결돼 있음), 기본값은 <code>Settings</code> 페이지에서 관리합니다.</div></div>
   </div>
 </div>
 
@@ -249,7 +252,7 @@
   <p><span class="s">S2</span> Async collaboration sounds easy — until you try it. A git commit tells you what changed, never why. A question sent at midnight waits a full day for an answer. The handoff itself becomes the bottleneck.</p>
   <p><span class="s">S3</span> This is AsyncPair. I've just finished my session in Boston. Instead of writing a long handoff doc, I run one command — asyncpair capture. It reads my git activity automatically, and asks me two quick questions while everything is still fresh. Twenty seconds. It becomes a structured handoff — then I push, and log off.</p>
   <p><span class="s">S4</span> Thirteen hours later, my teammate wakes up in Seoul. The handoff is already waiting — what I did, what's still unfinished, and the exact situations he's most likely to run into, each with a suggested approach. He accepts it, and starts not from zero, but from where I stopped.</p>
-  <p><span class="s">S5</span> Then he hits something the notes didn't cover. Normally, that's a lost day. Instead, he asks the AI stand-in. It answers with my context — my commits, my decisions, my reasoning — the way I would have. He stays unblocked. The pair never breaks, even though one of us is always asleep.</p>
+  <p><span class="s">S5</span> Then he hits something the notes didn't cover. Normally, that's a lost day. Instead, he asks the AI stand-in. For the questions my handoff already answers, it replies with my exact reasoning. And for the ones it doesn't — like which validation approach to use — the stand-in looks at how I've solved it across my other repositories, and answers in my style. He stays unblocked. The pair never breaks, even though one of us is always asleep.</p>
   <p><span class="s">S6</span> This isn't just our story. It's every team split across time zones. Every developer with a different rhythm — early risers, night owls, parents, remote teammates half a world apart. They've all been told real collaboration needs a shared clock. It doesn't.</p>
   <p><span class="s">S7</span> AsyncPair. Async pair programming, across any distance. Built with IBM Bob.</p>
 </div>
