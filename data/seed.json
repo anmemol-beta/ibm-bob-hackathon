@@ -31,7 +31,7 @@
       "branch": "feature/notifications",
       "commitCount": 4,
       "developerNotes": "Notifications are about 70% there. The model, the WebSocket delivery, and the reconnect logic are solid — I tested those by hand. What is NOT done: the preferences endpoint only has GET (POST has no validation and will crash on bad input), the WebSocket auth is a temporary hack, and the whole unsubscribe flow is missing. If you only have time for one thing, do the WebSocket auth (scenario 2) — it's a security hole and we can't demo with it. Everything I touched is on the `feature/notifications` branch. Ask the stand-in if anything is unclear — I tried to leave enough context. Good luck, talk soon.",
-      "referenceRepos": []
+      "referenceRepos": ["hyoungseo-prior-projects"]
     },
     "status": "pending"
   },

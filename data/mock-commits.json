@@ -194,5 +194,67 @@
         }
       ]
     }
+  ],
+  "hyoungseo-prior-projects": [
+    {
+      "hash": "h1a2y3o4u5n6",
+      "message": "Add a tiny request-validation helper instead of pulling in a library",
+      "author": "Hyoungseo Son",
+      "date": "2026-03-22T13:00:00.000Z",
+      "changedFiles": ["lib/validate.ts", "app/api/projects/route.ts"],
+      "diffs": [
+        {
+          "path": "lib/validate.ts",
+          "diff": "+// Keep validation tiny and dependency-free. A thrown ValidationError\n+// is caught by the route and turned into a clean 400.\n+export class ValidationError extends Error {}\n+\n+export function requireFields<T>(body: any, fields: (keyof T)[]): T {\n+  for (const f of fields) {\n+    if (body[f] === undefined || body[f] === null) {\n+      throw new ValidationError(`Missing field: ${String(f)}`);\n+    }\n+  }\n+  return body as T;\n+}"
+        },
+        {
+          "path": "app/api/projects/route.ts",
+          "diff": "+export async function POST(req: Request) {\n+  try {\n+    const body = requireFields(await req.json(), ['name', 'ownerId']);\n+    return Response.json(await db.project.create(body), { status: 201 });\n+  } catch (e) {\n+    if (e instanceof ValidationError) {\n+      return Response.json({ error: e.message }, { status: 400 });\n+    }\n+    throw e;\n+  }\n+}"
+        }
+      ]
+    },
+    {
+      "hash": "h7a8y9o0u1n2",
+      "message": "Share one session check between REST routes and the WebSocket",
+      "author": "Hyoungseo Son",
+      "date": "2026-03-29T10:40:00.000Z",
+      "changedFiles": ["lib/auth.ts", "lib/ws.ts"],
+      "diffs": [
+        {
+          "path": "lib/auth.ts",
+          "diff": "+// One source of truth for 'who is this request'. Used by both the REST\n+// routes and the socket handshake so the two never drift apart.\n+export async function getSession(req: { headers: Headers | Record<string, string> }) {\n+  const cookie = readCookie(req, 'session');\n+  if (!cookie) return null;\n+  return verifySession(cookie);\n+}"
+        },
+        {
+          "path": "lib/ws.ts",
+          "diff": " io.use(async (socket, next) => {\n-  // temporary: accept any socket with the dev token\n-  if (socket.handshake.headers['x-temp-token']) return next();\n+  const session = await getSession({ headers: socket.handshake.headers });\n+  if (!session) return next(new Error('unauthorized'));\n+  socket.data.userId = session.userId;\n   next();\n });"
+        }
+      ]
+    },
+    {
+      "hash": "h3a4y5o6u7n8",
+      "message": "Guard live-update reconnect against duplicate 'connected' events",
+      "author": "Hyoungseo Son",
+      "date": "2026-04-04T17:25:00.000Z",
+      "changedFiles": ["lib/useLiveChannel.ts"],
+      "diffs": [
+        {
+          "path": "lib/useLiveChannel.ts",
+          "diff": "+  // Reconnects used to fire 'connected' twice and double every toast.\n+  const hasConnected = useRef(false);\n+\n   socket.on('connect', () => {\n-    onConnected();\n+    if (hasConnected.current) return;\n+    hasConnected.current = true;\n+    onConnected();\n   });\n+  socket.on('disconnect', () => { hasConnected.current = false; });"
+        }
+      ]
+    },
+    {
+      "hash": "h9a0y1o2u3n4",
+      "message": "Return typed error responses { error, code } instead of plain strings",
+      "author": "Hyoungseo Son",
+      "date": "2026-04-09T11:10:00.000Z",
+      "changedFiles": ["lib/apiError.ts"],
+      "diffs": [
+        {
+          "path": "lib/apiError.ts",
+          "diff": "+// Every API error goes out in the same shape: { error, code }.\n+// The frontend switches on `code`; humans read `error`.\n+export function apiError(message: string, code: string, status = 400) {\n+  return Response.json({ error: message, code }, { status });\n+}"
+        }
+      ]
+    }
   ]
 }
