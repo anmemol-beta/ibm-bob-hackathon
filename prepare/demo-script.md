@@ -1,11 +1,13 @@
 # AsyncPair — Demo Video Script
 
 > **For the AI / editor making this video.** This is a complete shot-by-shot
-> script for a ~3-minute product demo. Each scene gives you the visual, the
-> on-screen action, and the exact voiceover line. Narration is English. The
-> demo is built around a real, deployed web app and CLI — ideally you record
-> the live product; if you generate visuals instead, the **Visual** blocks
-> describe each frame closely enough to render.
+> script for a ~3-minute product demo. Narration is English.
+>
+> **CRITICAL — the narration moves across 7 different screens.** Do **not**
+> place all narration over the landing page. **Section 5** is the line-by-line
+> Narration → Screen map: every narration line has its own `Screen` value, and
+> the video must cut to that screen for that line. Section 5 is the source of
+> truth for editing; Sections 3–4 give the visual detail.
 
 ---
 
@@ -25,7 +27,7 @@
 clean, modern SaaS look; lots of whitespace; gradient accents running
 blue → violet → magenta; rounded cards with soft shadows; strong modern
 typography; inline SVG illustrations; a recurring time-zone motif (two clocks /
-a globe) for the two cities. No stock photos.
+a globe). No stock photos.
 
 ---
 
@@ -43,65 +45,40 @@ The video should feel **personal at the start and end** (Scenes 1, 6, 7) and
 
 ---
 
-## 3. Scenes
+## 3. Screens (the 7 distinct screens — controlled vocabulary)
 
-### Scene 1 — Our Story  (~35s)
+Every narration line in Section 5 uses exactly one of these `Screen` names.
 
-**Visual**
-The AsyncPair landing page hero. A bold headline reads
-*"Async Pair Programming Across Time Zones."* Below it, a time-zone visual:
-☀️ **Boston 9:00 AM** — *13 hours apart* — 🌙 **Seoul 10:00 PM**, shown as two
-clocks or a globe. Calm, spacious, gradient background.
-
-**On-screen action / camera**
-Open the landing page. Hold on the hero. A very slight slow drift or gentle
-zoom — let the headline and the two cities breathe.
-
-**Voiceover**
-> "Two years ago, in Boston, we met. We kept showing up — ten hackathons, side
-> by side, one laptop next to another. Then last week, my teammate flew home to
-> Korea. Now thirteen hours sit between us. When I'm coding, he's asleep. When
-> he's coding, I'm asleep. But we still want to build together — so we built a
-> way to."
-
-**Mood:** slow, warm, sincere.
+| Screen name | What is on screen |
+|---|---|
+| `Landing — hero` | AsyncPair landing page, hero section: headline "Async Pair Programming Across Time Zones" + the Boston ↔ Seoul time-zone visual |
+| `Landing — Problem` | Landing page "The Problem" section: 4 cards revealing on scroll |
+| `Terminal` | A full-screen terminal running the `asyncpair capture` CLI |
+| `App — Handoff` | The web app's **Handoff** page: handoff list, then a handoff detail view |
+| `App — Pairing` | The web app's **Pairing** page: the AI stand-in chat |
+| `Landing — CTA` | Landing page closing call-to-action section |
+| `End card` | A clean end card with the AsyncPair logo |
 
 ---
 
-### Scene 2 — The Problem  (~20s)
+## 4. Scenes (visual detail)
 
-**Visual**
-The landing page "The Problem" section. Four cards reveal one by one as the
-page scrolls: **Never Online Together**, **Context Lost**, **24-Hour Feedback
-Loops**, **Blocked & Frustrated**.
+### Scene 1 — Our Story  (~35s) · Screen: `Landing — hero`
+Open the landing page; hold on the hero with a slight slow drift. The headline
+and the two cities (☀️ Boston 9:00 AM — *13 hours apart* — 🌙 Seoul 10:00 PM)
+are visible. Mood: slow, warm, sincere.
 
-**On-screen action / camera**
-Scroll down slowly from the hero. Each of the four cards animates into view in
-sequence.
+### Scene 2 — The Problem  (~20s) · Screen: `Landing — Problem`
+Scroll down slowly. Four cards reveal one by one: **Never Online Together**,
+**Context Lost**, **24-Hour Feedback Loops**, **Blocked & Frustrated**.
 
-**Voiceover**
-> "Async collaboration sounds easy — until you try it. A git commit tells you
-> what changed, never why. A question sent at midnight waits a full day for an
-> answer. The handoff itself becomes the bottleneck."
+### Scene 3 — Capture  (~35s) · Screen: `Terminal`
+A clean, full-screen terminal, large monospace font, dark theme. Run
+`asyncpair capture`. The CLI reads the commit just made and **generates two
+questions specific to that change** (show the `🔍 Reading the commit…` beat).
+Type short answers. Let `✓ Handoff captured successfully!` land.
 
----
-
-### Scene 3 — Capture: building the handoff with one command  (~35s)
-
-**Visual**
-A clean, full-screen terminal, large monospace font, dark theme. The developer
-has just finished a coding session in Boston.
-
-**On-screen action / camera**
-1. In a git repository, type `asyncpair capture` and press Enter.
-2. The CLI reads the commit the developer just made and **generates two
-   questions specific to that exact change** — show the brief
-   `🔍 Reading the commit…` beat.
-3. The developer types short answers to both questions.
-4. Let the `✓ Handoff captured successfully!` line land, then hold.
-
-**Example terminal output** (the questions are generated live, so wording
-varies each run — this is representative):
+Representative terminal output (questions are generated live — wording varies):
 ```
 $ asyncpair capture
 📝 Capturing handoff for commit: feat: deliver notifications over a WebSocket…
@@ -114,156 +91,95 @@ Generating handoff scenarios…
 ✓ Handoff captured successfully! — 4 scenarios
 ```
 
-**Voiceover**
-> "This is AsyncPair. I've just finished my session in Boston. Instead of
-> writing a long handoff doc, I run one command — asyncpair capture. It reads
-> the commit I just made, and asks me two questions about that exact change —
-> while everything is still fresh in my head. Twenty seconds. It becomes a
-> structured handoff — then I push, and log off."
+### Scene 4 — Pick Up  (~30s) · Screen: `App — Handoff`
+The web app. Click **Handoff** in the nav → click the **"feature/notifications"**
+card (*from Hyoungseo Son · pending*) → scroll the detail view (Git Activity:
+4 commits; Developer Notes; 4 Scenarios) → click **Accept Handoff**.
 
----
-
-### Scene 4 — Pick Up: receiving the handoff in Seoul  (~30s)
-
-**Visual**
-The AsyncPair web app. A shared top navigation bar. The developer moves from
-the **Handoff** list to a handoff detail view.
-
-**On-screen action / camera**
-1. Click **Handoff** in the navigation.
-2. In the list, click the **"feature/notifications"** handoff card
-   (*from Hyoungseo Son · pending*).
-3. In the detail view, scroll slowly through: **Git Activity** (4 commits),
-   **Developer Notes**, and **4 Scenarios**, each with a suggested approach.
-4. Click the **Accept Handoff** button.
-
-**Voiceover**
-> "Thirteen hours later, my teammate wakes up in Seoul. The handoff is already
-> waiting — what I did, what's still unfinished, and the exact situations he's
-> most likely to run into, each with a suggested approach. He accepts it, and
-> starts not from zero, but from where I stopped."
-
----
-
-### Scene 5 — The Stand-in: asking a teammate who's asleep  (~50s)
-
-This is the centerpiece. It shows two kinds of answers: one the **handoff**
-already contains, and one the stand-in draws from the **absent developer's
-other repositories**.
-
-**Visual**
-The `/pairing` chat screen of the web app. A clean chat UI. Answers stream in
-from a real AI (Google Gemini) — show the loading dots before each reply.
-
-**On-screen action / camera**
-1. Click **Pairing** in the navigation; select the notifications handoff.
-2. **Question 1** — something the handoff already covers. Type and send:
+### Scene 5 — The Stand-in  (~50s) · Screen: `App — Pairing`
+The centerpiece. The `/pairing` chat screen; answers stream from a real AI
+(Google Gemini) — keep the loading dots.
+1. Click **Pairing**; select the notifications handoff.
+2. **Question 1** (handoff already covers it) — type and send:
    *"I'm getting a 500 from the notification preferences endpoint — any idea
-   why?"*
-   The stand-in answers with the original developer's exact reasoning (the
-   POST handler saves to the DB with no validation).
-3. **Question 2** — something the handoff does **not** cover. Type and send:
+   why?"* → answered with the original developer's exact reasoning.
+3. **Question 2** (handoff does NOT cover it) — type and send:
    *"There's no validation library in this project — what would you reach
-   for?"*
-   Show the loading dots, then the stand-in answers by referencing how the
-   original developer solved this in **their other repositories** — a small
-   `requireFields` helper — and answers in that developer's style.
+   for?"* → the stand-in answers by referencing how the original developer
+   solved it in **their other repositories**, in that developer's style.
 
-**Voiceover**
-> "Then he hits something the notes didn't cover. Normally, that's a lost day.
-> Instead, he asks the AI stand-in. For the questions my handoff already
-> answers, it replies with my exact reasoning. And for the ones it doesn't —
-> like which validation approach to use — the stand-in looks at how I've solved
-> it across my other repositories, and answers in my style. He stays
-> unblocked. The pair never breaks, even though one of us is always asleep."
+Key beat: **Question 2's answer comes from the developer's past work, not the
+handoff.**
 
-**Note for the editor:** the answers are generated live, so exact wording will
-differ each take — that's fine, it proves it's real AI. The key beat is that
-**Question 2's answer comes from the developer's past work, not the handoff.**
+### Scene 6 — Zoom Out  (~20s) · Screen: `Landing — CTA`
+The landing page closing CTA section. Music swells gently. Mood: widening,
+hopeful.
 
----
-
-### Scene 6 — Zoom Out: this isn't just our story  (~20s)
-
-**Visual**
-The landing page closing / call-to-action section ("Ready to Bridge the Time
-Zone Gap?"), or a clean closing text slide. Music swells gently here.
-
-**Voiceover**
-> "This isn't just our story. It's every team split across time zones. Every
-> developer with a different rhythm — early risers, night owls, parents, remote
-> teammates half a world apart. They've all been told real collaboration needs
-> a shared clock. It doesn't."
-
-**Mood:** widening, hopeful.
-
----
-
-### Scene 7 — Closing  (~10s)
-
-**Visual**
+### Scene 7 — Closing  (~10s) · Screen: `End card`
 The AsyncPair logo on a clean end card. Optionally flash the live URL
-`ibm-bob-hackathon-two.vercel.app` for a moment to show it's a real, deployed
-product.
-
-**Voiceover**
-> "AsyncPair. Async pair programming, across any distance. Built with IBM Bob."
+`ibm-bob-hackathon-two.vercel.app`.
 
 ---
 
-## 4. Full Voiceover Script (continuous — for a single TTS pass)
+## 5. Narration → Screen Map  (THE EDITING SOURCE OF TRUTH)
 
-> Two years ago, in Boston, we met. We kept showing up — ten hackathons, side
-> by side, one laptop next to another. Then last week, my teammate flew home to
-> Korea. Now thirteen hours sit between us. When I'm coding, he's asleep. When
-> he's coding, I'm asleep. But we still want to build together — so we built a
-> way to.
->
-> Async collaboration sounds easy — until you try it. A git commit tells you
-> what changed, never why. A question sent at midnight waits a full day for an
-> answer. The handoff itself becomes the bottleneck.
->
-> This is AsyncPair. I've just finished my session in Boston. Instead of
-> writing a long handoff doc, I run one command — asyncpair capture. It reads
-> the commit I just made, and asks me two questions about that exact change —
-> while everything is still fresh in my head. Twenty seconds. It becomes a
-> structured handoff — then I push, and log off.
->
-> Thirteen hours later, my teammate wakes up in Seoul. The handoff is already
-> waiting — what I did, what's still unfinished, and the exact situations he's
-> most likely to run into, each with a suggested approach. He accepts it, and
-> starts not from zero, but from where I stopped.
->
-> Then he hits something the notes didn't cover. Normally, that's a lost day.
-> Instead, he asks the AI stand-in. For the questions my handoff already
-> answers, it replies with my exact reasoning. And for the ones it doesn't —
-> like which validation approach to use — the stand-in looks at how I've solved
-> it across my other repositories, and answers in my style. He stays unblocked.
-> The pair never breaks, even though one of us is always asleep.
->
-> This isn't just our story. It's every team split across time zones. Every
-> developer with a different rhythm — early risers, night owls, parents, remote
-> teammates half a world apart. They've all been told real collaboration needs
-> a shared clock. It doesn't.
->
-> AsyncPair. Async pair programming, across any distance. Built with IBM Bob.
+One row per narration line. **Show each line over the screen in its `Screen`
+column** — the screen changes at lines 7, 11, 17, 20, 27 and 32. For a single
+continuous TTS pass, read the `Voiceover` column straight down.
+
+| # | Scene | Screen | Voiceover |
+|---|---|---|---|
+| 1 | 1 | `Landing — hero` | Two years ago, in Boston, we met. |
+| 2 | 1 | `Landing — hero` | We kept showing up — ten hackathons, side by side, one laptop next to another. |
+| 3 | 1 | `Landing — hero` | Then last week, my teammate flew home to Korea. |
+| 4 | 1 | `Landing — hero` | Now thirteen hours sit between us. |
+| 5 | 1 | `Landing — hero` | When I'm coding, he's asleep. When he's coding, I'm asleep. |
+| 6 | 1 | `Landing — hero` | But we still want to build together — so we built a way to. |
+| 7 | 2 | `Landing — Problem` | Async collaboration sounds easy — until you try it. |
+| 8 | 2 | `Landing — Problem` | A git commit tells you what changed, never why. |
+| 9 | 2 | `Landing — Problem` | A question sent at midnight waits a full day for an answer. |
+| 10 | 2 | `Landing — Problem` | The handoff itself becomes the bottleneck. |
+| 11 | 3 | `Terminal` | This is AsyncPair. |
+| 12 | 3 | `Terminal` | I've just finished my session in Boston. |
+| 13 | 3 | `Terminal` | Instead of writing a long handoff doc, I run one command — asyncpair capture. |
+| 14 | 3 | `Terminal` | It reads the commit I just made, and asks me two questions about that exact change — while everything is still fresh in my head. |
+| 15 | 3 | `Terminal` | Twenty seconds. |
+| 16 | 3 | `Terminal` | It becomes a structured handoff — then I push, and log off. |
+| 17 | 4 | `App — Handoff` | Thirteen hours later, my teammate wakes up in Seoul. |
+| 18 | 4 | `App — Handoff` | The handoff is already waiting — what I did, what's still unfinished, and the exact situations he's most likely to run into, each with a suggested approach. |
+| 19 | 4 | `App — Handoff` | He accepts it, and starts not from zero, but from where I stopped. |
+| 20 | 5 | `App — Pairing` | Then he hits something the notes didn't cover. |
+| 21 | 5 | `App — Pairing` | Normally, that's a lost day. |
+| 22 | 5 | `App — Pairing` | Instead, he asks the AI stand-in. |
+| 23 | 5 | `App — Pairing` | For the questions my handoff already answers, it replies with my exact reasoning. |
+| 24 | 5 | `App — Pairing` | And for the ones it doesn't — like which validation approach to use — the stand-in looks at how I've solved it across my other repositories, and answers in my style. |
+| 25 | 5 | `App — Pairing` | He stays unblocked. |
+| 26 | 5 | `App — Pairing` | The pair never breaks, even though one of us is always asleep. |
+| 27 | 6 | `Landing — CTA` | This isn't just our story. |
+| 28 | 6 | `Landing — CTA` | It's every team split across time zones. |
+| 29 | 6 | `Landing — CTA` | Every developer with a different rhythm — early risers, night owls, parents, remote teammates half a world apart. |
+| 30 | 6 | `Landing — CTA` | They've all been told real collaboration needs a shared clock. |
+| 31 | 6 | `Landing — CTA` | It doesn't. |
+| 32 | 7 | `End card` | AsyncPair. Async pair programming, across any distance. Built with IBM Bob. |
 
 ---
 
-## 5. Production Notes
+## 6. Production Notes
 
+- **Screen cuts.** The screen changes at lines 7, 11, 17, 20, 27, and 32 — make
+  sure the visual actually cuts there. If a tool placed every line on one
+  screen, that is wrong; re-map using the `Screen` column above.
 - **Pace.** Leave a pause between each click so the narration can catch up.
-  It's easy to trim silence in editing, hard to stretch it.
-- **Cursor.** Move it slowly and deliberately toward each target so viewers can
-  follow.
-- **Emotion.** Scenes 1, 6, 7 — slow and sincere. Scenes 3–5 (the demo) — clear
-  and confident.
+  Easy to trim silence in editing, hard to stretch it.
+- **Cursor.** Move it slowly and deliberately toward each target.
+- **Emotion.** Lines 1–6 and 27–32 — slow and sincere. Lines 11–26 (the demo) —
+  clear and confident.
 - **Live AI (Scene 5).** Stand-in replies take a few seconds; keep the loading
   dots in — they signal "real AI," not a canned clip.
-- **Readability.** 1080p or higher; browser zoom 100–110%; make sure terminal
-  and UI text is legible in the final frame.
+- **Readability.** 1080p or higher; browser zoom 100–110%; terminal and UI text
+  must be legible in the final frame.
 - **Music.** One soft background layer; let it swell slightly at Scene 6.
-- **If it runs long.** Submission videos are usually 2–4 minutes. This script
-  is ~3. To shorten, trim Scenes 2 and 6 first — the demo (3–5) is the core.
-- **Scenes are independent.** Terminal scenes and browser scenes can be
-  recorded separately and stitched; the narration is the connective tissue.
+- **If it runs long.** This script is ~3 minutes. To shorten, trim Scenes 2 and
+  6 first — the demo (Scenes 3–5) is the core.
+- **Scenes are independent.** Terminal and browser scenes can be recorded
+  separately and stitched; the narration is the connective tissue.
