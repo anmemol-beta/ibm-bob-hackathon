@@ -909,8 +909,8 @@ Task: propose a concrete, minimal folder and file structure for the MVP, with a 
       <div class="row"><div class="label">🖱️ 액션</div>
         <ol class="actions"><li>브라우저 <code>localhost:3000</code></li><li>히어로에서 정지 — 헤드라인 "Async Pair Programming Across Time Zones"와 두 도시 비주얼이 보이게</li></ol></div>
       <div class="row"><div class="label">🎙️ 나레이션</div>
-        <div class="narration">"Two years ago, in Boston, we met at a hackathon. We kept showing up — ten hackathons, side by side, one laptop next to another. Then last week, my teammate flew home to Korea. Now thirteen hours sit between us. When I'm coding, he's asleep. When he's coding, I'm asleep. But we still want to build together — so we built a way to."
-        <span class="kr">2년 전 보스턴 해커톤에서 만나 10번을 함께 나갔다 / 지난주 그가 한국으로 / 이제 13시간 시차 / 그래도 함께 만들고 싶어서, 방법을 만들었다</span></div></div>
+        <div class="narration">"Two years ago, in Boston, we met. We kept showing up — ten hackathons, side by side, one laptop next to another. Then last week, my teammate flew home to Korea. Now thirteen hours sit between us. When I'm coding, he's asleep. When he's coding, I'm asleep. But we still want to build together — so we built a way to."
+        <span class="kr">2년 전 보스턴에서 만나 10번의 해커톤을 함께 나갔다 / 지난주 그가 한국으로 / 이제 13시간 시차 / 그래도 함께 만들고 싶어서, 방법을 만들었다</span></div></div>
       <div class="row"><div class="label">📺 미리보기</div>
         <div class="screen"><div class="bar">localhost:3000</div><div class="view" style="text-align:center">
           <div style="font-weight:800;font-size:1.1rem">Async Pair Programming <span style="color:var(--brand)">Across Time Zones</span></div>
@@ -942,8 +942,8 @@ Task: propose a concrete, minimal folder and file structure for the MVP, with a 
       <div class="row"><div class="label">🖱️ 액션</div>
         <ol class="actions">
           <li>git repo 안에서 <code>asyncpair capture</code> 입력 → Enter</li>
-          <li>질문 1 "Anything the next developer should know?" → 타이핑: <i>WebSocket auth is still a temp hack — swap it before the demo.</i></li>
-          <li>질문 2 "What should be worked on next?" → 타이핑: <i>The preferences POST endpoint — it has no validation yet.</i></li>
+          <li>질문 1 "Anything stubbed, hardcoded, or unsafe…?" → 타이핑: <i>WebSocket auth is a placeholder x-temp-token check — anyone could open a socket. Swap to getSession() before the demo.</i></li>
+          <li>질문 2 "What should the next developer do first, and where?" → 타이핑: <i>preferences POST in app/api/notifications/preferences/route.ts — no validation, 500s on bad input.</i></li>
           <li><code>✓ Handoff captured</code> 출력까지 보여주고 정지</li>
         </ol></div>
       <div class="row"><div class="label">🎙️ 나레이션</div>
@@ -954,8 +954,8 @@ Task: propose a concrete, minimal folder and file structure for the MVP, with a 
           <div class="dots"><span style="background:#ff5f56"></span><span style="background:#ffbd2e"></span><span style="background:#27c93f"></span></div>
           <div><span class="cmd">$ asyncpair capture</span></div>
           <div class="out">↳ Reading latest commit on feature/notifications…</div>
-          <div class="ask">? Anything the next developer should know? <span style="color:#c9d1d9">WebSocket auth is still a temp hack…</span></div>
-          <div class="ask">? What should be worked on next? <span style="color:#c9d1d9">The preferences POST endpoint…</span></div>
+          <div class="ask">? Anything stubbed, hardcoded, or unsafe the next dev should know about? <span style="color:#c9d1d9">WebSocket auth is a placeholder x-temp-token check — swap it before the demo.</span></div>
+          <div class="ask">? What should the next developer do first, and where in the code? <span style="color:#c9d1d9">preferences POST in route.ts — no validation, 500s on bad input.</span></div>
           <div class="out">↳ Generating handoff scenarios…</div>
           <div class="ok">✓ Handoff captured — 4 scenarios · saved to .asyncpair/handoffs.json</div>
         </div></div>
@@ -1044,7 +1044,7 @@ Task: propose a concrete, minimal folder and file structure for the MVP, with a 
   <!-- ============ 전체 대본 ============ -->
   <h2 class="sec">🎙️ 전체 나레이션 (이어 읽기용)</h2>
   <div class="script">
-    <p><span class="s">S1</span> Two years ago, in Boston, we met at a hackathon. We kept showing up — ten hackathons, side by side, one laptop next to another. Then last week, my teammate flew home to Korea. Now thirteen hours sit between us. When I'm coding, he's asleep. When he's coding, I'm asleep. But we still want to build together — so we built a way to.</p>
+    <p><span class="s">S1</span> Two years ago, in Boston, we met. We kept showing up — ten hackathons, side by side, one laptop next to another. Then last week, my teammate flew home to Korea. Now thirteen hours sit between us. When I'm coding, he's asleep. When he's coding, I'm asleep. But we still want to build together — so we built a way to.</p>
     <p><span class="s">S2</span> Async collaboration sounds easy — until you try it. A git commit tells you what changed, never why. A question sent at midnight waits a full day for an answer. The handoff itself becomes the bottleneck.</p>
     <p><span class="s">S3</span> This is AsyncPair. I've just finished my session in Boston. Instead of writing a long handoff doc, I run one command — asyncpair capture. It reads my git activity automatically, and asks me two quick questions while everything is still fresh. Twenty seconds. It becomes a structured handoff — then I push, and log off.</p>
     <p><span class="s">S4</span> Thirteen hours later, my teammate wakes up in Seoul. The handoff is already waiting — what I did, what's still unfinished, and the exact situations he's most likely to run into, each with a suggested approach. He accepts it, and starts not from zero, but from where I stopped.</p>
