@@ -91,6 +91,53 @@ Example:
 }
 
 /**
+ * Ask the LLM for two handoff questions tailored to this specific commit, so the
+ * developer is prompted about what actually changed instead of generic boilerplate.
+ * Falls back to fixed questions if generation fails — mirroring how
+ * generateHandoffScenarios degrades when no LLM is configured.
+ */
+async function generateCommitQuestions(commit: CommitInfo): Promise<[string, string]> {
+  const fallback: [string, string] = [
+    'Anything stubbed, hardcoded, or unsafe the next dev should know about?',
+    'What should the next developer do first, and where in the code?',
+  ];
+
+  try {
+    const prompt = `You are preparing a developer handoff for async pair programming.
+Based only on the commit below, write exactly 2 short questions to ask the developer.
+Each question must be specific to this commit — name the actual feature, file, or endpoint that changed.
+Question 1: surface hidden risk — stubbed, hardcoded, placeholder, or unsafe code; anything that looks done but is not.
+Question 2: pin down the single most important next task and where in the code it lives.
+Keep each question under 22 words. No preamble, no numbering.
+
+Commit message: ${commit.message}
+Files changed: ${commit.changedFiles.join(', ') || 'unknown'}
+
+Return ONLY a JSON array of exactly 2 strings.`;
+
+    const response = await generate(prompt);
+    const jsonMatch = response.match(/\[[\s\S]*\]/);
+    if (jsonMatch) {
+      const parsed = JSON.parse(jsonMatch[0]);
+      if (
+        Array.isArray(parsed) &&
+        parsed.length >= 2 &&
+        typeof parsed[0] === 'string' &&
+        typeof parsed[1] === 'string' &&
+        parsed[0].trim() &&
+        parsed[1].trim()
+      ) {
+        return [parsed[0].trim(), parsed[1].trim()];
+      }
+    }
+    return fallback;
+  } catch (error) {
+    console.warn('Could not generate commit-specific questions, using defaults');
+    return fallback;
+  }
+}
+
+/**
  * Capture a handoff from the most recent commit
  */
 export async function captureCommand(options: CaptureOptions): Promise<void> {
@@ -124,21 +171,15 @@ export async function captureCommand(options: CaptureOptions): Promise<void> {
     // Ask questions if not skipped
     if (!options.skipQuestions) {
       console.log(`\n📝 Capturing handoff for commit: ${commit.message.substring(0, 60)}${commit.message.length > 60 ? '...' : ''}`);
-      console.log('');
-      
-      // Question 1: Hidden risks — stubs, hacks, unsafe code
-      contextNotes = await askQuestion(
-        'Anything stubbed, hardcoded, or unsafe the next dev should know about? [Enter to skip]: ',
-        15000
-      );
 
-      // Question 2: The next concrete task and where it lives
-      if (contextNotes || true) {
-        developerNotes = await askQuestion(
-          'What should the next developer do first, and where in the code? [Enter to skip]: ',
-          15000
-        );
-      }
+      // Tailor the two questions to what this specific commit changed.
+      console.log('🔍 Reading the commit to tailor the questions...');
+      const [question1, question2] = await generateCommitQuestions(commit);
+      console.log('');
+
+      // Question 1 surfaces hidden risk; question 2 pins down the next task.
+      contextNotes = await askQuestion(`${question1} [Enter to skip]: `, 15000);
+      developerNotes = await askQuestion(`${question2} [Enter to skip]: `, 15000);
     }
     
     // Combine notes
