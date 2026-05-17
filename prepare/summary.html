@@ -905,9 +905,13 @@ Task: propose a concrete, minimal folder and file structure for the MVP, with a 
     <div class="scene-head"><span class="scene-no">SCENE 1</span><span class="scene-title">우리 이야기</span><span class="scene-dur">~35초</span></div>
     <div class="scene-body">
       <div class="row"><div class="label">🎬 화면</div>
-        AsyncPair 랜딩페이지 히어로. <code>localhost:3000</code> 접속 — 히어로에 <b>보스턴 9:00 AM ↔ 서울 10:00 PM · 13 hours apart</b> 시간대 비주얼이 그대로 배경이 됨. 천천히 머무르거나 아주 살짝 스크롤.</div>
+        AsyncPair 랜딩페이지 히어로. 라이브 사이트 <code>ibm-bob-hackathon-two.vercel.app</code> — 히어로에 <b>Boston 9:00 AM ↔ Seoul 10:00 PM · 13 hours apart</b> 시차 비주얼.</div>
       <div class="row"><div class="label">🖱️ 액션</div>
-        <ol class="actions"><li>브라우저 <code>localhost:3000</code></li><li>히어로에서 정지 — 헤드라인 "Async Pair Programming Across Time Zones"와 두 도시 비주얼이 보이게</li></ol></div>
+        <ol class="actions">
+          <li>브라우저(시크릿 창 · 줌 100% · 북마크바 숨김)로 <code>ibm-bob-hackathon-two.vercel.app</code> 접속</li>
+          <li>히어로에서 정지 — h1 <b>"Async Pair Programming / Across Time Zones"</b>와 그 아래 시차 비주얼(<b>Boston ☀️ 9:00 AM — 13 hours apart — Seoul 🌙 10:00 PM</b>)이 한 화면에 보이게</li>
+          <li>그대로 정지하거나 아주 살짝 천천히 스크롤</li>
+        </ol></div>
       <div class="row"><div class="label">🎙️ 나레이션</div>
         <div class="narration">"Two years ago, in Boston, we met. We kept showing up — ten hackathons, side by side, one laptop next to another. Then last week, my teammate flew home to Korea. Now thirteen hours sit between us. When I'm coding, he's asleep. When he's coding, I'm asleep. But we still want to build together — so we built a way to."
         <span class="kr">2년 전 보스턴에서 만나 10번의 해커톤을 함께 나갔다 / 지난주 그가 한국으로 / 이제 13시간 시차 / 그래도 함께 만들고 싶어서, 방법을 만들었다</span></div></div>
@@ -926,7 +930,11 @@ Task: propose a concrete, minimal folder and file structure for the MVP, with a 
       <div class="row"><div class="label">🎬 화면</div>
         랜딩페이지 "The Problem" 섹션으로 스크롤. 카드 4개(Never Online Together / Context Lost / 24-Hour Feedback Loops / Blocked &amp; Frustrated)가 스크롤 리빌로 차례로 등장.</div>
       <div class="row"><div class="label">🖱️ 액션</div>
-        <ol class="actions"><li>히어로에서 천천히 스크롤 다운</li><li>"The Problem" 카드 4개가 순차적으로 나타나는 걸 보여줌</li></ol></div>
+        <ol class="actions">
+          <li>히어로에서 <b>천천히 스크롤 다운</b> → <b>"The Problem"</b> 섹션 (부제 "Global teams face an impossible challenge")</li>
+          <li>스크롤에 맞춰 카드 4개가 하나씩 페이드인: <b>Never Online Together</b> → <b>Context Lost in Translation</b> → <b>24-Hour Feedback Loops</b> → <b>Blocked &amp; Frustrated</b></li>
+          <li>네 번째 카드까지 나오면 멈춤</li>
+        </ol></div>
       <div class="row"><div class="label">🎙️ 나레이션</div>
         <div class="narration">"Async collaboration sounds easy — until you try it. A git commit tells you what changed, never why. A question sent at midnight waits a full day for an answer. The handoff itself becomes the bottleneck."
         <span class="kr">비동기 협업은 쉬워 보이지만 / 커밋은 "무엇"만 알려주지 "왜"는 모름 / 자정에 보낸 질문은 하루를 기다림 / 핸드오프가 곧 병목이 된다</span></div></div>
@@ -969,25 +977,28 @@ Task: propose a concrete, minimal folder and file structure for the MVP, with a 
   <div class="card">
     <div class="scene-head"><span class="scene-no">SCENE 4</span><span class="scene-title">인수 — 서울에서 핸드오프를 받다</span><span class="scene-dur">~30초</span></div>
     <div class="scene-body">
-      <div class="note warn">이 씬 촬영 전: <code>rm -rf .asyncpair</code> 다시 한 번 → 앱이 <code>seed.json</code>의 깔끔한 데모 핸드오프 2건만 로드하게.</div>
+      <div class="note warn">라이브 사이트로 녹화 — 시드 핸드오프 2건이 기본 로드됨("Handoff from Hyoungseo Son" = <code>pending</code>). 한 번에 깔끔하게 찍으세요: Accept를 누르면 상태가 <code>accepted</code>로 바뀌어, 재촬영하려면 몇 분 기다려야 서버가 시드로 리셋됩니다.</div>
       <div class="row"><div class="label">🎬 화면</div>
         브라우저. 헤더 내비 <span class="btn ghost">Handoff</span> 클릭 → 핸드오프 목록 → 카드 클릭 → 상세 뷰.</div>
       <div class="row"><div class="label">🖱️ 액션</div>
         <ol class="actions">
-          <li>내비에서 <b>Handoff</b> 클릭</li>
-          <li>목록에서 <b>"feature/notifications"</b> 핸드오프 카드 클릭 (from Hyoungseo Son · pending)</li>
-          <li>상세 뷰에서 천천히 스크롤 — <b>Git Activity</b>(커밋 4개), <b>Developer Notes</b>, <b>Scenarios 4개</b>를 보여줌</li>
-          <li><span class="btn">Accept Handoff</span> 클릭</li>
+          <li>상단 내비바에서 <b>Handoff</b> 클릭</li>
+          <li>목록에서 <b>"Handoff from Hyoungseo Son"</b> 카드 클릭 — 노란 <code>pending</code> 배지가 붙은 카드 (카드 아무 곳, 또는 우측 <b>View Details</b> 버튼)</li>
+          <li>상세 화면을 <b>천천히 스크롤</b>하며 차례로 보여줌: <b>📋 Handoff Information</b> → <b>📝 Developer Notes</b> → <b>🔀 Git Activity Summary</b>(초록 글씨, 커밋 4개) → <b>🎯 Scenarios (4)</b></li>
+          <li>맨 아래 <b>✅ Accept This Handoff</b> 박스에서 <b>"I'm Ready to Accept This Handoff"</b> 버튼 클릭</li>
+          <li>나타난 <b>"Your Name"</b> 입력칸에 이름 입력 — 예: <i>Hunjun</i></li>
+          <li>초록색 <b>"Confirm &amp; Accept"</b> 버튼 클릭</li>
+          <li>브라우저 알림창 <i>"Handoff accepted!"</i> → <b>확인(OK)</b> 클릭 (목록으로 복귀)</li>
         </ol></div>
       <div class="row"><div class="label">🎙️ 나레이션</div>
         <div class="narration">"Thirteen hours later, my teammate wakes up in Seoul. The handoff is already waiting — what I did, what's still unfinished, and the exact situations he's most likely to run into, each with a suggested approach. He accepts it, and starts not from zero, but from where I stopped."
         <span class="kr">13시간 뒤 서울에서 팀원이 깨어남 / 핸드오프가 기다리고 있음 — 한 일·미완성·마주칠 상황+접근법 / 0이 아니라 내가 멈춘 곳에서 시작</span></div></div>
       <div class="row"><div class="label">📺 미리보기</div>
         <div class="screen"><div class="bar">localhost:3000/handoff</div><div class="view">
-          <div style="font-weight:700;margin-bottom:8px">📨 feature/notifications &nbsp;<span class="chip">pending</span></div>
+          <div style="font-weight:700;margin-bottom:8px">📨 Handoff from Hyoungseo Son &nbsp;<span class="chip">pending</span></div>
           <div style="color:var(--muted);font-size:0.86rem">from Hyoungseo Son · Boston · 4 commits</div>
           <div style="margin-top:8px"><span class="chip">Scenario 1 · preferences validation</span><span class="chip">Scenario 2 · WebSocket auth</span><span class="chip">+2</span></div>
-          <div style="margin-top:12px"><span class="btn">Accept Handoff</span></div>
+          <div style="margin-top:12px"><span class="btn">I'm Ready to Accept This Handoff</span></div>
         </div></div></div>
     </div>
   </div>
@@ -997,13 +1008,16 @@ Task: propose a concrete, minimal folder and file structure for the MVP, with a 
     <div class="scene-head"><span class="scene-no">SCENE 5</span><span class="scene-title">스탠드인 — 자는 팀원에게 묻다</span><span class="scene-dur">~50초</span></div>
     <div class="scene-body">
       <div class="row"><div class="label">🎬 화면</div>
-        <code>/pairing</code> 채팅 화면. 실제 Gemini가 답함 (localhost + <code>.env</code> 키). 질문 2개 — 하나는 <b>핸드오프</b>가, 하나는 <b>작성자의 다른 repo 이력</b>이 답한다.</div>
+        <code>/pairing</code> 채팅 화면. 라이브 사이트라 실제 Gemini가 답함. 질문 2개 — 하나는 <b>핸드오프</b>가, 하나는 <b>작성자의 다른 repo 이력</b>이 답한다.</div>
       <div class="row"><div class="label">🖱️ 액션</div>
         <ol class="actions">
-          <li>내비에서 <b>Pairing</b> 클릭 → 핸드오프 선택 (notifications)</li>
-          <li><b>질문 1</b> (핸드오프가 다루는 것): <i>I'm getting a 500 from the notification preferences endpoint — any idea why?</i> → 전송 → 스탠드인이 시나리오 1로 답함</li>
-          <li><b>질문 2</b> (핸드오프에 없는 것): <i>There's no validation library in this project — what would you reach for?</i> → 전송</li>
-          <li>로딩 점 → 스탠드인이 <b>Hyoungseo의 과거 프로젝트 패턴</b>(작은 <code>requireFields</code> 헬퍼)을 근거로 답하는 걸 보여줌</li>
+          <li>상단 내비바에서 <b>Pairing</b> 클릭</li>
+          <li><b>"Select Handoff Context"</b> 박스에서 <b>"Hyoungseo Son"</b> 카드 클릭 (노란 <code>pending</code> 배지) — 클릭하면 테두리가 파랗게 강조됨</li>
+          <li><b>"Repository Path (optional)"</b> 입력칸은 <b>비워둠</b></li>
+          <li>하단 채팅 입력창(핸드오프 선택 후 활성화)을 클릭 → <b>질문 1</b> 입력 → <b>Enter</b> (또는 우측 <b>Send</b> 버튼):<br><i>I'm getting a 500 from the notification preferences endpoint — any idea why?</i></li>
+          <li>점 3개 바운스 로딩 → <b>"AI Teammate"</b> 답변. 우측 <b>🎯 Relevant Scenarios</b>에 매칭 시나리오 표시 — 답변 끝까지 기다림</li>
+          <li><b>질문 2</b> 입력 → <b>Enter</b>:<br><i>There's no validation library in this project — what would you reach for?</i></li>
+          <li>로딩 점 → AI가 작성자의 과거 repo 패턴(<code>requireFields</code> 헬퍼)을 근거로 답함 — 끝까지 보여줌</li>
         </ol></div>
       <div class="row"><div class="label">🎙️ 나레이션</div>
         <div class="narration">"Then he hits something the notes didn't cover. Normally, that's a lost day. Instead, he asks the AI stand-in. For the questions my handoff already answers, it replies with my exact reasoning. And for the ones it doesn't — like which validation approach to use — the stand-in looks at how I've solved it across my other repositories, and answers in my style. He stays unblocked. The pair never breaks, even though one of us is always asleep."
@@ -1026,6 +1040,12 @@ Task: propose a concrete, minimal folder and file structure for the MVP, with a 
     <div class="scene-body">
       <div class="row"><div class="label">🎬 화면</div>
         랜딩페이지 CTA 섹션("Ready to Bridge the Time Zone Gap?")으로 스크롤, 또는 닫는 텍스트 슬라이드.</div>
+      <div class="row"><div class="label">🖱️ 액션</div>
+        <ol class="actions">
+          <li>랜딩페이지 맨 아래까지 스크롤 → 보라/파랑 그라데이션 배경의 <b>CTA 섹션</b></li>
+          <li>h2 <b>"Ready to Bridge the Time Zone Gap?"</b>와 버튼 <b>"Create Your First Handoff"</b> · <b>"View Handoffs"</b>가 보이게</li>
+          <li>정지 또는 아주 살짝 스크롤</li>
+        </ol></div>
       <div class="row"><div class="label">🎙️ 나레이션</div>
         <div class="narration">"This isn't just our story. It's every team split across time zones. Every developer with a different rhythm — early risers, night owls, parents, remote teammates half a world apart. They've all been told real collaboration needs a shared clock. It doesn't."
         <span class="kr">우리만의 이야기가 아니다 / 시차로 나뉜 모든 팀 / 생활 패턴이 다른 개발자들 — 아침형·밤형·육아 중·지구 반대편 원격 / 진짜 협업에 같은 시계가 필요하다고들 하지만 — 아니다</span></div></div>
@@ -1038,6 +1058,12 @@ Task: propose a concrete, minimal folder and file structure for the MVP, with a 
     <div class="scene-body">
       <div class="row"><div class="label">🎬 화면</div>
         AsyncPair 로고 / 히어로. 깔끔한 엔드카드. (선택) 배포 URL <code>ibm-bob-hackathon-two.vercel.app</code>를 잠깐 비춰 "라이브"임을 보여줌.</div>
+      <div class="row"><div class="label">🖱️ 액션</div>
+        <ol class="actions">
+          <li>헤더 좌측 상단의 <b>AsyncPair</b> 워드마크(그라데이션 글자)를 화면에 크게 잡거나, 히어로로 돌아가 정지</li>
+          <li>(선택) 주소창의 <code>ibm-bob-hackathon-two.vercel.app</code>를 1~2초 비춰 라이브 서비스임을 보여줌</li>
+          <li>엔드카드는 편집에서 만들어 붙여도 됨 — 깔끔한 로고 클린샷만 확보</li>
+        </ol></div>
       <div class="row"><div class="label">🎙️ 나레이션</div>
         <div class="narration">"AsyncPair. Async pair programming, across any distance. Built with IBM Bob."
         <span class="kr">AsyncPair — 거리에 상관없는 비동기 페어 프로그래밍. IBM Bob으로 만들었습니다.</span></div></div>
