@@ -52,13 +52,13 @@ export default function Home() {
               </h1>
             </div>
             
-            <div className="animate-on-scroll animate-fade-in-up" style={{ animationDelay: "0.1s" }}>
+            <div className="animate-on-scroll animate-fade-in-up" style={{ transitionDelay: "0.1s" }}>
               <p className="text-xl sm:text-2xl text-gray-600 dark:text-gray-300 mb-8 max-w-3xl mx-auto leading-relaxed">
                 Bridge the 13-hour gap. Capture context at commit time, hand off seamlessly, and let AI stand in for your absent teammate.
               </p>
             </div>
 
-            <div className="animate-on-scroll animate-fade-in-up flex flex-col sm:flex-row gap-4 justify-center items-center" style={{ animationDelay: "0.2s" }}>
+            <div className="animate-on-scroll animate-fade-in-up flex flex-col sm:flex-row gap-4 justify-center items-center" style={{ transitionDelay: "0.2s" }}>
               <Link
                 href={ROUTES.AUTHOR}
                 className="group px-8 py-4 bg-gradient-to-r from-primary-600 to-primary-700 hover:from-primary-700 hover:to-primary-800 text-white rounded-xl font-semibold text-lg shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200 flex items-center gap-2"
@@ -77,7 +77,7 @@ export default function Home() {
             </div>
 
             {/* Time Zone Visual */}
-            <div className="mt-16 animate-on-scroll animate-fade-in-up" style={{ animationDelay: "0.3s" }}>
+            <div className="mt-16 animate-on-scroll animate-fade-in-up" style={{ transitionDelay: "0.3s" }}>
               <div className="flex items-center justify-center gap-8 sm:gap-16">
                 <div className="text-center">
                   <div className="w-24 h-24 sm:w-32 sm:h-32 mx-auto mb-4 rounded-full bg-gradient-to-br from-primary-500 to-primary-600 flex items-center justify-center shadow-xl">
@@ -304,7 +304,7 @@ export default function Home() {
                 </div>
               </div>
 
-              <div className="animate-on-scroll animate-fade-in-up group" style={{ animationDelay: "0.1s" }}>
+              <div className="animate-on-scroll animate-fade-in-up group" style={{ transitionDelay: "0.1s" }}>
                 <div className="bg-gradient-to-br from-white to-gray-50 dark:from-gray-800 dark:to-gray-900 rounded-2xl p-8 border border-gray-200 dark:border-gray-700 hover:border-accent-500 dark:hover:border-accent-500 transition-all duration-300 hover:shadow-xl h-full">
                   <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-accent-500 to-accent-600 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
                     <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -318,7 +318,7 @@ export default function Home() {
                 </div>
               </div>
 
-              <div className="animate-on-scroll animate-fade-in-up group" style={{ animationDelay: "0.2s" }}>
+              <div className="animate-on-scroll animate-fade-in-up group" style={{ transitionDelay: "0.2s" }}>
                 <div className="bg-gradient-to-br from-white to-gray-50 dark:from-gray-800 dark:to-gray-900 rounded-2xl p-8 border border-gray-200 dark:border-gray-700 hover:border-blue-500 dark:hover:border-blue-500 transition-all duration-300 hover:shadow-xl h-full">
                   <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
                     <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -346,7 +346,7 @@ export default function Home() {
                 </div>
               </div>
 
-              <div className="animate-on-scroll animate-fade-in-up group" style={{ animationDelay: "0.1s" }}>
+              <div className="animate-on-scroll animate-fade-in-up group" style={{ transitionDelay: "0.1s" }}>
                 <div className="bg-gradient-to-br from-white to-gray-50 dark:from-gray-800 dark:to-gray-900 rounded-2xl p-8 border border-gray-200 dark:border-gray-700 hover:border-purple-500 dark:hover:border-purple-500 transition-all duration-300 hover:shadow-xl h-full">
                   <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-purple-500 to-purple-600 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
                     <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -360,7 +360,7 @@ export default function Home() {
                 </div>
               </div>
 
-              <div className="animate-on-scroll animate-fade-in-up group" style={{ animationDelay: "0.2s" }}>
+              <div className="animate-on-scroll animate-fade-in-up group" style={{ transitionDelay: "0.2s" }}>
                 <div className="bg-gradient-to-br from-white to-gray-50 dark:from-gray-800 dark:to-gray-900 rounded-2xl p-8 border border-gray-200 dark:border-gray-700 hover:border-orange-500 dark:hover:border-orange-500 transition-all duration-300 hover:shadow-xl h-full">
                   <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-orange-500 to-orange-600 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
                     <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -456,7 +456,7 @@ export default function Home() {
 
       {/* CTA Section */}
       <section className="py-20 sm:py-32 bg-gradient-to-br from-primary-600 via-accent-600 to-blue-600 text-white relative overflow-hidden">
-        <div className="absolute inset-0 bg-grid-white/10 [mask-image:linear-gradient(0deg,white,rgba(255,255,255,0.5))]" />
+        <div className="absolute inset-0 opacity-20" style={{ backgroundImage: "radial-gradient(circle, rgba(255,255,255,0.5) 1px, transparent 1px)", backgroundSize: "22px 22px" }} />
         <div className="relative container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto text-center">
             <div className="animate-on-scroll animate-fade-in-up">
