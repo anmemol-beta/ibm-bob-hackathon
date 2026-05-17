@@ -707,7 +707,7 @@ Task: propose a concrete, minimal folder and file structure for the MVP, with a 
       <p><b>검증 결과 (2026-05-16)</b> — <code>npm install</code> + <code>npm run build</code> 통과. 라우트 10개(<code>/</code> · <code>/author</code> · <code>/handoff</code> · <code>/pairing</code> + API 3개) 전부 빌드됨. ⚠️ S0 버그 1건 수정: <code>lib/utils.ts</code>가 <code>clsx</code>를 import하는데 package.json에 누락 → <code>clsx</code> 설치로 해결. 참고: <code>next@14.2.3</code>에 알려진 보안 취약점 경고 — POC엔 무방, 여유되면 버전 업.</p>
       <div class="warn callout">
         <b>📋 진행 현황 (팀 공유 — 중복 작업 방지)</b>
-        스모크 ✅ · S0 ✅ · S1 ✅ · S2 ✅ · S3 ✅ · S4 ✅ · S4.5 ✅ · S5 ✅ · S6 ✅ · S7 ✅ · S8 ✅ · <b>S9 ✅</b> — 빌드 완료<br>
+        스모크 ✅ · S0 ✅ · S1 ✅ · S2 ✅ · S3 ✅ · S4 ✅ · S4.5 ✅ · S5 ✅ · S6 ✅ · S7 ✅ · S8 ✅ · S9 ✅ · <b>S10 🟡</b> — 코어 완료, 디자인 리뉴얼 중<br>
         배포 ✅ <a href="https://ibm-bob-hackathon-two.vercel.app/">Vercel 라이브</a> · LLM ✅ Gemini 연동·키 입력 완료 (아래 "배포 &amp; 후속" 카드 참조)<br>
         각 단계 시작·완료 시 여기에 표시하고 누가 맡았는지 적을 것.
       </div>
@@ -742,6 +742,7 @@ Task: propose a concrete, minimal folder and file structure for the MVP, with a 
         <li><s><b>S8 Bob 태스크</b> — Gemini 연동 + 시드 버그</s> ✅ 완료 (커밋 <code>f6c5274</code>·<code>d36d5d6</code>)</li>
         <li><s><b>Gemini 키 설정</b> — <code>.env</code> + Vercel 환경변수</s> ✅ 완료</li>
         <li><s><b>배포 확인</b></s> ✅ 완료 — <code>/api/handoff</code> 시드 2건 + <code>/api/standin</code> 실제 Gemini 답변 확인 (배포 사이트)</li>
+        <li><b>S10 — 디자인 리뉴얼</b> 🟡 — "단계별 Bob 프롬프트"의 S10 박스를 Bob에 → 사람이 마무리 → 재배포. (데모 영상 전에 완료할 것 — 예쁜 UI로 찍어야 함)</li>
         <li><b>데모 영상</b> — 실제 시차 팀 스토리: 로컬에서 CLI 커밋 포착 → 핸드오프 → standin Q&amp;A</li>
         <li><b>슬라이드 / 서면</b> — 컨셉 + Bob 활용 + 프로덕션 로드맵(CLI·GitHub·Slack)</li>
         <li><b>세션 소비 스크린샷</b> — 각 Bob 세션의 Bobcoin 소비 화면을 <code>bob_sessions/</code>에 적재 (가이드 p18 필수 제출물)</li>
@@ -750,7 +751,7 @@ Task: propose a concrete, minimal folder and file structure for the MVP, with a 
     </div>
 
     <div class="card">
-      <h2>단계별 Bob 프롬프트 (S0–S8)</h2>
+      <h2>단계별 Bob 프롬프트 (S0–S10)</h2>
       <p>각 프롬프트를 Bob IDE에 붙여넣기. 큰 단계는 <b>Plan mode 먼저 → Code mode</b>. 커밋 전 <code>/review</code>. 프롬프트의 <code>&lt;NAME&gt;</code>은 <b>AsyncPair</b>로 교체. <span style="color:var(--ok)">✅ 완료</span>=재실행 금지 · <span style="color:var(--warn)">🟡 진행 중</span> · ⬜ 미시작.</p>
 
       <p class="pcap">S0 — 스캐폴드 · Plan → Code &nbsp;<span style="color:var(--ok)">✅ 완료</span> — AsyncPair ~16파일, 빌드 통과(라우트 10개), clsx 누락 1건 수정</p>
@@ -782,6 +783,11 @@ Task: propose a concrete, minimal folder and file structure for the MVP, with a 
 
       <p class="pcap">S8 — Gemini 연동 + 시드 버그 수정 · Code &nbsp;<span style="color:var(--ok)">✅ 완료</span> — <code>lib/llm.ts</code> Gemini 경로(우선순위 Gemini→watsonx→mock) + <code>lib/store.ts</code> 시드 import. tsc·build·test 통과, 읽기전용 fs 시드 복원력 수정 1건. 커밋 <code>f6c5274</code></p>
       <div class="prompt">Two changes to AsyncPair's lib/ folder.<br><br>Change 1 — lib/store.ts seed loading. The store currently reads data/seed.json with fs.readFileSync at runtime. On Vercel serverless functions that file is not bundled, so the deployed app shows no handoffs. Fix it: import data/seed.json as a static module (resolveJsonModule is enabled) and use that imported array as the seed fallback when .asyncpair/handoffs.json does not exist. Keep the fs-based read/write of .asyncpair/handoffs.json for local use; only the seed fallback changes from fs.readFileSync to a static import.<br><br>Change 2 — lib/llm.ts Gemini support. Add a Google Gemini path to generate():<br>- Read GEMINI_API_KEY from environment variables.<br>- If GEMINI_API_KEY is set, call the Google Gemini REST API (generativelanguage.googleapis.com, model gemini-2.5-flash-lite) and return the generated text.<br>- Keep the existing watsonx path and the deterministic mock fallback. Priority order: Gemini if its key is set, else watsonx if its keys are set, else mock.<br>- Update isLive() to return true if either Gemini or watsonx credentials are configured.<br><br>Handle network and API errors clearly. Never hardcode a secret — read keys from process.env only. Keep all existing pages, tests, and the production build working.</div>
+
+      <p class="pcap">S9 — 레퍼런스 리포 컨텍스트 · Code &nbsp;<span style="color:var(--ok)">✅ 완료</span> (hunjun) — <code>Handoff.metadata.referenceRepos</code> + standin이 작성자의 다른 repo 커밋·diff를 컨텍스트에 포함. 프롬프트는 <code>bob_sessions/s9-reference-repos.md</code> 참조. 커밋 <code>fb45983</code></p>
+
+      <p class="pcap">S10 — 디자인 리뉴얼 (프로덕션 랜딩페이지) · Plan → Code &nbsp;<span style="color:var(--warn)">🟡 진행 중</span> — 모던 디자인 + 애니메이션 + SVG 일러스트. Bob 작업 후 사람이 마무리</p>
+      <div class="prompt">Redesign AsyncPair into a polished, modern product website. This is a visual overhaul — keep all existing functionality, routes, API behavior, and tests working, and keep the production build green.<br><br>1. Landing page (app/page.tsx) — make it a real product landing page that sells the product:<br>- Hero: a bold headline, a subheadline, and a primary call-to-action. The product is async pair programming for teams split across time zones — one developer captures a handoff at commit time, and an AI stand-in covers for the absent teammate.<br>- Problem section: a 13-hour time-zone gap means two teammates are never online at the same time.<br>- "How it works": three steps — (1) the asyncpair CLI captures a handoff at commit time, (2) the teammate picks it up on the web app, (3) ask the AI stand-in anything, answered with the absent teammate's context.<br>- A features section and a section dedicated to the asyncpair CLI.<br>- A footer.<br><br>2. App pages (/author, /handoff, /pairing): apply the same visual language — shared header/navigation, consistent cards, buttons, spacing, and color system — so the whole product feels like one cohesive, professional product.<br><br>3. Visual style: a cohesive color system with gradient accents, generous whitespace, strong modern typography (load a font with next/font), rounded cards with soft shadows, and inline SVG illustrations or abstract geometric shapes — including a visual motif for the two time zones (e.g. a globe or dual clocks). Do not use external image files or stock photos; everything is SVG/CSS.<br><br>4. Motion: tasteful animation — scroll-triggered reveal of sections (IntersectionObserver), hover transitions on cards and buttons, and a subtle animated hero visual. Animations must be smooth, not distracting, and must respect prefers-reduced-motion.<br><br>Constraints: Next.js App Router + TypeScript + Tailwind CSS. Avoid heavy dependencies — prefer CSS/Tailwind animation; any animation helper must be SSR-safe. Fully responsive (mobile + desktop) and accessible. Run npm run build and npm test and make sure both pass.</div>
     </div>
 
     <div class="card">
