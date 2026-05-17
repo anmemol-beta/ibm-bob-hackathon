@@ -891,11 +891,11 @@ Task: propose a concrete, minimal folder and file structure for the MVP, with a 
       <li><code>rm -rf .asyncpair</code> — 앱이 <code>data/seed.json</code>에서 데모 핸드오프를 새로 로드하도록 (이게 화면에 나올 데이터).</li>
       <li><code>npm run build:cli</code> 그리고 <code>npm link</code> — 터미널에서 <code>asyncpair</code> 명령이 바로 되게.</li>
       <li><b>터미널 A:</b> <code>npm run dev</code> → <code>localhost:3000</code> 띄워두기. (<code>.env</code>의 <code>GEMINI_API_KEY</code>를 Next.js가 자동으로 읽어 → /pairing에서 실 Gemini 작동.)</li>
-      <li><b>터미널 B:</b> 깨끗한 화면 하나 — Scene 3의 CLI 시연용. 글자 크게(16pt+), 다크 테마.</li>
+      <li><b>터미널 B:</b> 깨끗한 화면 하나 — Scene 3의 CLI 시연용. 글자 크게(16pt+), 다크 테마. capture가 커밋에 맞춘 질문을 생성하려면 <b>이 터미널에 <code>GEMINI_API_KEY</code>를 export</b>해야 함 (<code>export GEMINI_API_KEY=&lt;키&gt;</code> — 값은 <code>.env</code>에). 없으면 기본 질문으로 폴백.</li>
       <li>브라우저 — 주소창·북마크바 정리, 줌 100%, 시크릿 창 권장.</li>
     </ol>
     <div class="note">씬은 <b>한 번에 이어 찍을 필요 없음</b> — 터미널 씬과 브라우저 씬을 따로 찍어 편집으로 붙이면 됩니다. 나레이션이 다리 역할.</div>
-    <div class="note warn"><b>데모 데이터</b> — 화면에서 검토할 핸드오프(보스턴 → 서울, "notifications" 작업)는 <code>data/seed.json</code>에 미리 넣어둔 연출용 데모 데이터입니다. Scene 3의 <code>capture</code>는 "포착이 이렇게 일어난다"를 보여주는 실제 시연이고, Scene 4에서 검토하는 건 이 시드 핸드오프예요.</div>
+    <div class="note warn"><b>데모 데이터</b> — 화면에서 검토할 핸드오프(보스턴 → 서울, "notifications" 작업)는 <code>data/seed.json</code>에 미리 넣어둔 연출용 데모 데이터입니다. Scene 3의 <code>capture</code>는 "포착이 이렇게 일어난다"를 보여주는 실제 시연 — 질문이 커밋 내용에서 생성되니, capture를 실행하는 repo의 최신 커밋이 notifications 관련이면 화면이 시나리오와 자연스럽게 이어집니다. Scene 4에서 검토하는 건 이 시드 핸드오프예요.</div>
   </div></div>
 
   <!-- ============ SCENE 1 ============ -->
@@ -942,23 +942,26 @@ Task: propose a concrete, minimal folder and file structure for the MVP, with a 
       <div class="row"><div class="label">🖱️ 액션</div>
         <ol class="actions">
           <li>git repo 안에서 <code>asyncpair capture</code> 입력 → Enter</li>
-          <li>질문 1 "Anything stubbed, hardcoded, or unsafe…?" → 타이핑: <i>WebSocket auth is a placeholder x-temp-token check — anyone could open a socket. Swap to getSession() before the demo.</i></li>
-          <li>질문 2 "What should the next developer do first, and where?" → 타이핑: <i>preferences POST in app/api/notifications/preferences/route.ts — no validation, 500s on bad input.</i></li>
-          <li><code>✓ Handoff captured</code> 출력까지 보여주고 정지</li>
+          <li>CLI가 방금 커밋을 읽고 <b>그 커밋에 맞춘 질문 2개</b>를 생성 — "🔍 Reading the commit…" 한 박자 보여줌</li>
+          <li>질문 1 (커밋 속 위험 요소) → 타이핑: <i>It's a placeholder x-temp-token check — anyone could open a socket. Swap to getSession() before the demo.</i></li>
+          <li>질문 2 (다음 할 일) → 타이핑: <i>Finish the preferences POST in app/api/notifications/preferences/route.ts — it has no validation, 500s on bad input.</i></li>
+          <li><code>✓ Handoff captured successfully!</code> 출력까지 보여주고 정지</li>
         </ol></div>
       <div class="row"><div class="label">🎙️ 나레이션</div>
-        <div class="narration">"This is AsyncPair. I've just finished my session in Boston. Instead of writing a long handoff doc, I run one command — <b>asyncpair capture</b>. It reads my git activity automatically, and asks me two quick questions while everything is still fresh. Twenty seconds. It becomes a structured handoff — then I push, and log off."
-        <span class="kr">긴 문서 대신 명령 하나 / git 활동을 자동으로 읽고 / 머릿속이 생생할 때 짧은 질문 2개 / 20초 / 구조화된 핸드오프로 → push하고 잠든다</span></div></div>
+        <div class="narration">"This is AsyncPair. I've just finished my session in Boston. Instead of writing a long handoff doc, I run one command — <b>asyncpair capture</b>. It reads the commit I just made, and asks me two questions about that exact change — while everything is still fresh in my head. Twenty seconds. It becomes a structured handoff — then I push, and log off."
+        <span class="kr">긴 문서 대신 명령 하나 / 방금 한 커밋을 읽고 / 그 변경에 딱 맞는 질문 2개 / 머릿속이 생생할 때 / 20초 / 구조화된 핸드오프로 → push하고 잠든다</span></div></div>
       <div class="row"><div class="label">💻 터미널 미리보기</div>
         <div class="terminal">
           <div class="dots"><span style="background:#ff5f56"></span><span style="background:#ffbd2e"></span><span style="background:#27c93f"></span></div>
           <div><span class="cmd">$ asyncpair capture</span></div>
-          <div class="out">↳ Reading latest commit on feature/notifications…</div>
-          <div class="ask">? Anything stubbed, hardcoded, or unsafe the next dev should know about? <span style="color:#c9d1d9">WebSocket auth is a placeholder x-temp-token check — swap it before the demo.</span></div>
-          <div class="ask">? What should the next developer do first, and where in the code? <span style="color:#c9d1d9">preferences POST in route.ts — no validation, 500s on bad input.</span></div>
-          <div class="out">↳ Generating handoff scenarios…</div>
-          <div class="ok">✓ Handoff captured — 4 scenarios · saved to .asyncpair/handoffs.json</div>
-        </div></div>
+          <div class="out">📝 Capturing handoff for commit: feat: deliver notifications over a WebSocket…</div>
+          <div class="out">🔍 Reading the commit to tailor the questions…</div>
+          <div class="ask">? Does the WebSocket channel still use the placeholder x-temp-token header for auth? <span style="color:#c9d1d9">Yes — swap to getSession() before the demo.</span></div>
+          <div class="ask">? What's the next task on the notification preferences endpoint, and where? <span style="color:#c9d1d9">The POST handler in route.ts — add validation, it 500s on bad input.</span></div>
+          <div class="out">Generating handoff scenarios…</div>
+          <div class="ok">✓ Handoff captured successfully! — 4 scenarios</div>
+        </div>
+        <div class="note">질문은 <b>커밋을 읽어 그 자리에서 생성</b>됩니다 — 파일명·기능까지 짚는 커밋별 질문. 라이브 Gemini라 매번 문구가 다름, 위는 예시. 키가 없으면 기본 질문으로 폴백.</div></div>
     </div>
   </div>
 
@@ -1046,7 +1049,7 @@ Task: propose a concrete, minimal folder and file structure for the MVP, with a 
   <div class="script">
     <p><span class="s">S1</span> Two years ago, in Boston, we met. We kept showing up — ten hackathons, side by side, one laptop next to another. Then last week, my teammate flew home to Korea. Now thirteen hours sit between us. When I'm coding, he's asleep. When he's coding, I'm asleep. But we still want to build together — so we built a way to.</p>
     <p><span class="s">S2</span> Async collaboration sounds easy — until you try it. A git commit tells you what changed, never why. A question sent at midnight waits a full day for an answer. The handoff itself becomes the bottleneck.</p>
-    <p><span class="s">S3</span> This is AsyncPair. I've just finished my session in Boston. Instead of writing a long handoff doc, I run one command — asyncpair capture. It reads my git activity automatically, and asks me two quick questions while everything is still fresh. Twenty seconds. It becomes a structured handoff — then I push, and log off.</p>
+    <p><span class="s">S3</span> This is AsyncPair. I've just finished my session in Boston. Instead of writing a long handoff doc, I run one command — asyncpair capture. It reads the commit I just made, and asks me two questions about that exact change — while everything is still fresh in my head. Twenty seconds. It becomes a structured handoff — then I push, and log off.</p>
     <p><span class="s">S4</span> Thirteen hours later, my teammate wakes up in Seoul. The handoff is already waiting — what I did, what's still unfinished, and the exact situations he's most likely to run into, each with a suggested approach. He accepts it, and starts not from zero, but from where I stopped.</p>
     <p><span class="s">S5</span> Then he hits something the notes didn't cover. Normally, that's a lost day. Instead, he asks the AI stand-in. For the questions my handoff already answers, it replies with my exact reasoning. And for the ones it doesn't — like which validation approach to use — the stand-in looks at how I've solved it across my other repositories, and answers in my style. He stays unblocked. The pair never breaks, even though one of us is always asleep.</p>
     <p><span class="s">S6</span> This isn't just our story. It's every team split across time zones. Every developer with a different rhythm — early risers, night owls, parents, remote teammates half a world apart. They've all been told real collaboration needs a shared clock. It doesn't.</p>
