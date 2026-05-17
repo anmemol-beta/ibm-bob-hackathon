@@ -70,7 +70,75 @@ export async function POST(request: NextRequest) {
       }
     }
     
-    // 3. Build the prompt for the LLM
+    // 3. Get commits from reference repositories if available
+    if (handoffId) {
+      const handoff = getHandoff(handoffId);
+      if (handoff?.metadata.referenceRepos && handoff.metadata.referenceRepos.length > 0) {
+        context += `# Author's History in Other Repositories\n`;
+        context += `The following commits show ${handoff.author}'s work patterns and conventions across other projects:\n\n`;
+        
+        const COMMITS_PER_REPO = 3;
+        const MAX_DIFF_LENGTH = 400;
+        
+        for (const refRepoPath of handoff.metadata.referenceRepos) {
+          try {
+            const { commits, error } = await getRecentCommits(refRepoPath, 10);
+            
+            if (error) {
+              console.warn(`Failed to fetch commits from reference repo ${refRepoPath}:`, error);
+              continue;
+            }
+            
+            if (commits.length === 0) {
+              console.warn(`No commits found in reference repo: ${refRepoPath}`);
+              continue;
+            }
+            
+            // Filter commits by handoff author, fallback to recent commits
+            let relevantCommits = commits.filter(c =>
+              c.author.toLowerCase().includes(handoff.author.toLowerCase()) ||
+              handoff.author.toLowerCase().includes(c.author.toLowerCase())
+            );
+            
+            // If no commits by author, use most recent commits
+            if (relevantCommits.length === 0) {
+              relevantCommits = commits;
+              context += `## Repository: ${refRepoPath}\n`;
+              context += `*Note: No commits by ${handoff.author} found, showing recent commits instead*\n\n`;
+            } else {
+              context += `## Repository: ${refRepoPath}\n`;
+              context += `*Commits by ${handoff.author}*\n\n`;
+            }
+            
+            // Limit to COMMITS_PER_REPO
+            const commitsToInclude = relevantCommits.slice(0, COMMITS_PER_REPO);
+            
+            commitsToInclude.forEach((commit) => {
+              context += `### ${commit.message}\n`;
+              context += `Author: ${commit.author} | Date: ${commit.date}\n`;
+              context += `Files: ${commit.changedFiles.join(", ")}\n`;
+              
+              // Include truncated diffs
+              if (commit.diffs.length > 0) {
+                commit.diffs.slice(0, 2).forEach((diff) => {
+                  const truncatedDiff = diff.diff.length > MAX_DIFF_LENGTH
+                    ? diff.diff.substring(0, MAX_DIFF_LENGTH) + "...[truncated]"
+                    : diff.diff;
+                  context += `\n**${diff.path}**\n\`\`\`\n${truncatedDiff}\n\`\`\`\n`;
+                });
+              }
+              context += `\n`;
+            });
+            
+          } catch (error) {
+            console.warn(`Error processing reference repo ${refRepoPath}:`, error);
+            // Continue with next repo, don't crash
+          }
+        }
+      }
+    }
+    
+    // 4. Build the prompt for the LLM
     const prompt = `You are acting as a stand-in for a developer who is currently away. Based on their recent work and handoff notes, answer the following question as they would.
 
 ${context}
@@ -81,16 +149,17 @@ ${question}
 # Instructions
 - Answer as if you are the absent developer
 - Reference specific commits, files, or scenarios from the context when relevant
+- When the handoff and scenarios do not directly cover the question, use the author's history in other repositories to infer their patterns, conventions, and past decisions
 - Be helpful and provide actionable guidance
 - If you don't have enough context, say so and suggest what information would help
 - Keep your response concise but informative
 
 # Answer`;
 
-    // 4. Call the LLM to generate the response
+    // 5. Call the LLM to generate the response
     const answer = await generate(prompt);
     
-    // 5. Create response
+    // 6. Create response
     const response: StandinChatResponse = {
       answer: answer,
       messageId: `msg_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,

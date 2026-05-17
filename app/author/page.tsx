@@ -11,6 +11,7 @@ export default function AuthorPage() {
   const [gitActivity, setGitActivity] = useState("");
   const [developerNotes, setDeveloperNotes] = useState("");
   const [repoPath, setRepoPath] = useState("");
+  const [referenceRepos, setReferenceRepos] = useState<string[]>([]);
   const [scenarios, setScenarios] = useState<HandoffScenario[]>([]);
   const [isGenerating, setIsGenerating] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
@@ -73,9 +74,24 @@ export default function AuthorPage() {
     setGitActivity("");
     setDeveloperNotes("");
     setRepoPath("");
+    setReferenceRepos([]);
     setScenarios([]);
     setError(null);
     setEditingId(null);
+  };
+
+  const handleAddReferenceRepo = () => {
+    setReferenceRepos([...referenceRepos, ""]);
+  };
+
+  const handleRemoveReferenceRepo = (index: number) => {
+    setReferenceRepos(referenceRepos.filter((_, i) => i !== index));
+  };
+
+  const handleUpdateReferenceRepo = (index: number, value: string) => {
+    const updated = [...referenceRepos];
+    updated[index] = value;
+    setReferenceRepos(updated);
   };
 
   const handleSaveHandoff = async () => {
@@ -98,6 +114,9 @@ export default function AuthorPage() {
           metadata: {
             repoPath: repoPath.trim() || undefined,
             developerNotes,
+            referenceRepos: referenceRepos.filter(r => r.trim()).length > 0
+              ? referenceRepos.filter(r => r.trim())
+              : undefined,
           },
         }),
       });
@@ -175,6 +194,42 @@ export default function AuthorPage() {
               className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-800 dark:border-gray-700 font-mono text-sm"
               placeholder="Paste recent git commits, diffs, or activity here...&#10;&#10;Or leave empty if you provided a repository path above."
             />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium mb-2">
+              Reference Repositories (optional)
+            </label>
+            <div className="space-y-2">
+              {referenceRepos.map((repo, index) => (
+                <div key={index} className="flex gap-2">
+                  <input
+                    type="text"
+                    value={repo}
+                    onChange={(e) => handleUpdateReferenceRepo(index, e.target.value)}
+                    className="flex-1 px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-800 dark:border-gray-700"
+                    placeholder="/path/to/reference/repo"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => handleRemoveReferenceRepo(index)}
+                    className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
+                  >
+                    Remove
+                  </button>
+                </div>
+              ))}
+              <button
+                type="button"
+                onClick={handleAddReferenceRepo}
+                className="w-full px-4 py-2 border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg hover:border-blue-500 dark:hover:border-blue-400 transition-colors text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400"
+              >
+                + Add Reference Repository
+              </button>
+            </div>
+            <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+              Add paths to other repositories to help the AI understand your coding patterns and history
+            </p>
           </div>
 
           <div>

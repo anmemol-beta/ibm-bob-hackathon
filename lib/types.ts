@@ -64,6 +64,7 @@ export interface Handoff {
     branch?: string;
     commitCount?: number;
     developerNotes: string;
+    referenceRepos?: string[];
   };
   status: 'pending' | 'accepted' | 'completed';
   acceptedBy?: string;
@@ -79,6 +80,7 @@ export interface CreateHandoffRequest {
     branch?: string;
     commitCount?: number;
     developerNotes: string;
+    referenceRepos?: string[];
   };
 }
 
