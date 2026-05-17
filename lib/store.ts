@@ -1,6 +1,7 @@
 import { Handoff } from './types';
 import * as fs from 'fs';
 import * as path from 'path';
+import seedData from '../data/seed.json';
 
 /**
  * Persistence layer for handoffs backed by a JSON file
@@ -12,7 +13,6 @@ import * as path from 'path';
 // repository via git (push/pull), not a per-machine home directory.
 const DATA_DIR = process.env.ASYNCPAIR_DATA || path.join(process.cwd(), '.asyncpair');
 const DATA_FILE = path.join(DATA_DIR, 'handoffs.json');
-const SEED_FILE = path.join(process.cwd(), 'data', 'seed.json');
 
 // In-memory fallback storage
 let inMemoryHandoffs: Handoff[] = [];
@@ -46,18 +46,23 @@ function readHandoffsFromFile(): Handoff[] {
     ensureDataDir();
     
     if (!fs.existsSync(DATA_FILE)) {
-      // Try to seed from data/seed.json if it exists
-      if (fs.existsSync(SEED_FILE)) {
-        const seedData = fs.readFileSync(SEED_FILE, 'utf-8');
-        const seedHandoffs = JSON.parse(seedData);
-        
-        // Write seed data to the data file
-        fs.writeFileSync(DATA_FILE, JSON.stringify(seedHandoffs, null, 2), 'utf-8');
-        return seedHandoffs;
-      }
+      // Use statically imported seed data as fallback
+      // Convert timestamp strings to Date objects to match Handoff type
+      const seedHandoffs: Handoff[] = seedData.map((item: any) => ({
+        ...item,
+        timestamp: new Date(item.timestamp),
+        acceptedAt: item.acceptedAt ? new Date(item.acceptedAt) : undefined,
+      }));
       
-      // No seed file, return empty array
-      return [];
+      // Persist for local use. On a read-only filesystem (e.g. Vercel
+      // serverless) this write fails harmlessly — we still return the seed.
+      inMemoryHandoffs = seedHandoffs;
+      try {
+        fs.writeFileSync(DATA_FILE, JSON.stringify(seedHandoffs, null, 2), 'utf-8');
+      } catch {
+        useInMemory = true;
+      }
+      return seedHandoffs;
     }
     
     const data = fs.readFileSync(DATA_FILE, 'utf-8');

@@ -1,35 +1,141 @@
 /**
- * IBM watsonx.ai text generation wrapper
- * 
- * This module provides a simple interface to IBM watsonx.ai's text generation API.
+ * LLM text generation wrapper supporting Google Gemini and IBM watsonx.ai
+ *
+ * This module provides a simple interface to multiple LLM providers.
+ * Priority order: Gemini (if key is set) → watsonx (if keys are set) → mock fallback
  * If credentials are not configured, it falls back to a deterministic mock mode
  * that returns placeholder responses, allowing the app to run without credentials.
  */
 
 // Read environment variables
+const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 const WATSONX_API_KEY = process.env.WATSONX_API_KEY;
 const WATSONX_PROJECT_ID = process.env.WATSONX_PROJECT_ID;
 const WATSONX_URL = process.env.WATSONX_URL;
 
 /**
- * Check if watsonx.ai credentials are configured
- * @returns true if all required credentials are present
+ * Check if Gemini credentials are configured
+ * @returns true if Gemini API key is present
  */
-export function isLive(): boolean {
+function isGeminiConfigured(): boolean {
+  return !!GEMINI_API_KEY;
+}
+
+/**
+ * Check if watsonx.ai credentials are configured
+ * @returns true if all required watsonx credentials are present
+ */
+function isWatsonxConfigured(): boolean {
   return !!(WATSONX_API_KEY && WATSONX_PROJECT_ID && WATSONX_URL);
 }
 
 /**
- * Generate text using IBM watsonx.ai or mock fallback
+ * Check if any LLM provider credentials are configured
+ * @returns true if either Gemini or watsonx credentials are present
+ */
+export function isLive(): boolean {
+  return isGeminiConfigured() || isWatsonxConfigured();
+}
+
+/**
+ * Generate text using Google Gemini, IBM watsonx.ai, or mock fallback
+ * Priority: Gemini → watsonx → mock
  * @param prompt - The input prompt for text generation
  * @returns Generated text response
  */
 export async function generate(prompt: string): Promise<string> {
-  // If credentials are missing, use mock fallback
-  if (!isLive()) {
-    return generateMockResponse(prompt);
+  // Priority 1: Try Gemini if configured
+  if (isGeminiConfigured()) {
+    try {
+      return await generateWithGemini(prompt);
+    } catch (error) {
+      console.error('Gemini generation failed:', error);
+      // Fall through to try watsonx or mock
+    }
   }
 
+  // Priority 2: Try watsonx if configured
+  if (isWatsonxConfigured()) {
+    try {
+      return await generateWithWatsonx(prompt);
+    } catch (error) {
+      console.error('watsonx generation failed:', error);
+      // Fall through to mock
+    }
+  }
+
+  // Priority 3: Use mock fallback
+  return generateMockResponse(prompt);
+}
+
+/**
+ * Generate text using Google Gemini API
+ * @param prompt - The input prompt for text generation
+ * @returns Generated text response
+ */
+async function generateWithGemini(prompt: string): Promise<string> {
+  try {
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_API_KEY}`;
+    
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        contents: [{
+          parts: [{
+            text: prompt
+          }]
+        }],
+        generationConfig: {
+          temperature: 0.7,
+          maxOutputTokens: 500,
+          topP: 1,
+          topK: 50,
+        }
+      }),
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(
+        `Gemini API error (${response.status}): ${errorText || response.statusText}`
+      );
+    }
+
+    const data: any = await response.json();
+    
+    // Extract generated text from Gemini response
+    if (data.candidates &&
+        data.candidates.length > 0 &&
+        data.candidates[0].content &&
+        data.candidates[0].content.parts &&
+        data.candidates[0].content.parts.length > 0) {
+      return data.candidates[0].content.parts[0].text.trim();
+    }
+
+    throw new Error('Gemini API returned unexpected response format');
+  } catch (error) {
+    // Provide informative error messages
+    if (error instanceof Error) {
+      if (error.message.includes('fetch')) {
+        throw new Error(
+          `Network error connecting to Gemini API: ${error.message}. Please check your internet connection.`
+        );
+      }
+      throw new Error(`Gemini generation failed: ${error.message}`);
+    }
+    throw new Error('Unknown error occurred during Gemini text generation');
+  }
+}
+
+/**
+ * Generate text using IBM watsonx.ai API
+ * @param prompt - The input prompt for text generation
+ * @returns Generated text response
+ */
+async function generateWithWatsonx(prompt: string): Promise<string> {
   try {
     // Call watsonx.ai text generation API
     const response = await fetch(`${WATSONX_URL}/ml/v1/text/generation?version=2023-05-29`, {
@@ -78,16 +184,16 @@ export async function generate(prompt: string): Promise<string> {
       }
       throw new Error(`watsonx.ai generation failed: ${error.message}`);
     }
-    throw new Error('Unknown error occurred during text generation');
+    throw new Error('Unknown error occurred during watsonx text generation');
   }
 }
 
 /**
- * Mock fallback for when credentials are not configured
+ * Mock fallback for when no LLM credentials are configured
  * Returns a deterministic placeholder response based on the prompt
- * 
+ *
  * This allows the application to run and be tested without requiring
- * actual watsonx.ai credentials, useful for development and demos.
+ * actual LLM API credentials, useful for development and demos.
  */
 function generateMockResponse(prompt: string): string {
   // Create a deterministic hash-like value from the prompt
@@ -96,10 +202,10 @@ function generateMockResponse(prompt: string): string {
   }, 0);
   
   const mockResponses = [
-    'This is a mock response. Configure WATSONX_API_KEY, WATSONX_PROJECT_ID, and WATSONX_URL to use real AI generation.',
-    'Mock AI response: The system is running in demo mode without watsonx.ai credentials.',
-    'Placeholder response generated. Set up watsonx.ai environment variables for actual AI-powered responses.',
-    'Demo mode active. This is a simulated response. Configure watsonx credentials for real functionality.',
+    'This is a mock response. Configure GEMINI_API_KEY or watsonx credentials (WATSONX_API_KEY, WATSONX_PROJECT_ID, WATSONX_URL) to use real AI generation.',
+    'Mock AI response: The system is running in demo mode without LLM credentials.',
+    'Placeholder response generated. Set up Gemini or watsonx environment variables for actual AI-powered responses.',
+    'Demo mode active. This is a simulated response. Configure LLM credentials for real functionality.',
   ];
   
   // Select response deterministically based on prompt
