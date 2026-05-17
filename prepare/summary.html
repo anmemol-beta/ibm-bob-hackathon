@@ -708,7 +708,7 @@ Task: propose a concrete, minimal folder and file structure for the MVP, with a 
       <div class="warn callout">
         <b>📋 진행 현황 (팀 공유 — 중복 작업 방지)</b>
         스모크 ✅ · S0 ✅ · S1 ✅ · S2 ✅ · S3 ✅ · S4 ✅ · S4.5 ✅ · S5 ✅ · S6 ✅ · <b>S7 ✅</b> — 빌드 완료<br>
-        배포 ✅ <a href="https://ibm-bob-hackathon-two.vercel.app/">Vercel 라이브</a> · LLM 🟡 Gemini 연동 중 (아래 "배포 &amp; 후속" 카드 참조)<br>
+        배포 ✅ <a href="https://ibm-bob-hackathon-two.vercel.app/">Vercel 라이브</a> · LLM ✅ Gemini 코드 연동 (Vercel 키 입력 대기 — 아래 "배포 &amp; 후속" 카드 참조)<br>
         각 단계 시작·완료 시 여기에 표시하고 누가 맡았는지 적을 것.
       </div>
       <h3>스테이지 로그</h3>
@@ -732,8 +732,8 @@ Task: propose a concrete, minimal folder and file structure for the MVP, with a 
         <tr><th>항목</th><th>상태</th></tr>
         <tr><td>Vercel 배포</td><td>✅ 라이브 — <a href="https://ibm-bob-hackathon-two.vercel.app/">ibm-bob-hackathon-two.vercel.app</a>. 랜딩·네비 정상. <code>main</code> 브랜치 연결 — 푸시하면 자동 재배포.</td></tr>
         <tr><td>watsonx.ai</td><td>❌ 막힘 — 해커톤 IBM Cloud 계정에서 <b>멤버 권한</b>이라 프로젝트용 COS 프로비저닝 불가(<i>"Insufficient permissions to provision instances"</i>). 관리자가 resource group Editor 권한을 줘야 하는데 마감 내 불확실 → 포기.</td></tr>
-        <tr><td>LLM 전환</td><td>🟡 watsonx → <b>Google Gemini</b> (<code>gemini-2.0-flash</code>, 팀 보유 API 키). 가이드상 제품 LLM이 IBM일 필요 없음 — 감점 아님. <code>lib/llm.ts</code>에 Gemini 경로 추가 중(Bob 태스크). 키는 <code>.env</code> + Vercel 환경변수.</td></tr>
-        <tr><td>시드 로딩 버그</td><td>🟡 배포 후 <code>/api/handoff</code>가 빈 배열 반환 — <code>lib/store.ts</code>가 <code>data/seed.json</code>을 런타임 <code>fs</code>로 읽어 Vercel 함수 번들에 미포함. 수정: JSON을 <code>import</code>로 정적 포함. 위 Gemini Bob 태스크에 같이 묶음.</td></tr>
+        <tr><td>LLM 전환</td><td>✅ 코드 완료 — <code>lib/llm.ts</code>에 <b>Google Gemini</b>(<code>gemini-2.0-flash</code>) 경로. 우선순위 Gemini→watsonx→mock. 커밋 <code>f6c5274</code>. ⚠️ 남은 것: <code>GEMINI_API_KEY</code>를 <code>.env</code> + Vercel 환경변수에 입력 후 Redeploy해야 실 AI 작동(그 전엔 목 모드).</td></tr>
+        <tr><td>시드 로딩 버그</td><td>✅ 수정 — <code>data/seed.json</code>을 <code>import</code>로 정적 포함, 읽기전용 fs(Vercel)에서 쓰기 실패해도 시드를 반환하도록 보강. 읽기전용 fs 시뮬레이션에서 핸드오프 2건 정상 확인. 커밋 <code>f6c5274</code>.</td></tr>
       </table>
       <h3>남은 일 — 순서대로</h3>
       <ol>
@@ -778,7 +778,7 @@ Task: propose a concrete, minimal folder and file structure for the MVP, with a 
       <p class="pcap">S7 — 시드 + 데모 + 점검 · Code &nbsp;<span style="color:var(--ok)">✅ 완료</span> — <code>data/seed.json</code>(핸드오프 2개·시나리오 8개) + 전체 점검. tsc·build·test 통과, 타입 에러 0</p>
       <div class="prompt">Create data/seed.json with a realistic demo handoff (git activity plus 4 scenarios) so the app can be demoed without a live repo. Then review the whole project, fix any type errors, and make sure it builds and runs.</div>
 
-      <p class="pcap">S8 — Gemini 연동 + 시드 버그 수정 · Code &nbsp;<span style="color:var(--warn)">🟡 진행 중</span> — watsonx가 계정 권한으로 막혀 Gemini로 전환. <code>lib/llm.ts</code> Gemini 경로 + <code>lib/store.ts</code> 시드 <code>import</code> 수정</p>
+      <p class="pcap">S8 — Gemini 연동 + 시드 버그 수정 · Code &nbsp;<span style="color:var(--ok)">✅ 완료</span> — <code>lib/llm.ts</code> Gemini 경로(우선순위 Gemini→watsonx→mock) + <code>lib/store.ts</code> 시드 import. tsc·build·test 통과, 읽기전용 fs 시드 복원력 수정 1건. 커밋 <code>f6c5274</code></p>
       <div class="prompt">Two changes to AsyncPair's lib/ folder.<br><br>Change 1 — lib/store.ts seed loading. The store currently reads data/seed.json with fs.readFileSync at runtime. On Vercel serverless functions that file is not bundled, so the deployed app shows no handoffs. Fix it: import data/seed.json as a static module (resolveJsonModule is enabled) and use that imported array as the seed fallback when .asyncpair/handoffs.json does not exist. Keep the fs-based read/write of .asyncpair/handoffs.json for local use; only the seed fallback changes from fs.readFileSync to a static import.<br><br>Change 2 — lib/llm.ts Gemini support. Add a Google Gemini path to generate():<br>- Read GEMINI_API_KEY from environment variables.<br>- If GEMINI_API_KEY is set, call the Google Gemini REST API (generativelanguage.googleapis.com, model gemini-2.0-flash) and return the generated text.<br>- Keep the existing watsonx path and the deterministic mock fallback. Priority order: Gemini if its key is set, else watsonx if its keys are set, else mock.<br>- Update isLive() to return true if either Gemini or watsonx credentials are configured.<br><br>Handle network and API errors clearly. Never hardcode a secret — read keys from process.env only. Keep all existing pages, tests, and the production build working.</div>
     </div>
 
