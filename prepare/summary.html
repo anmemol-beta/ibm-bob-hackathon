@@ -707,7 +707,7 @@ Task: propose a concrete, minimal folder and file structure for the MVP, with a 
       <p><b>검증 결과 (2026-05-16)</b> — <code>npm install</code> + <code>npm run build</code> 통과. 라우트 10개(<code>/</code> · <code>/author</code> · <code>/handoff</code> · <code>/pairing</code> + API 3개) 전부 빌드됨. ⚠️ S0 버그 1건 수정: <code>lib/utils.ts</code>가 <code>clsx</code>를 import하는데 package.json에 누락 → <code>clsx</code> 설치로 해결. 참고: <code>next@14.2.3</code>에 알려진 보안 취약점 경고 — POC엔 무방, 여유되면 버전 업.</p>
       <div class="warn callout">
         <b>📋 진행 현황 (팀 공유 — 중복 작업 방지)</b>
-        스모크 ✅ · S0 ✅ · S1 ✅ · S2 ✅ · S3 ✅ · S4 ✅ · S4.5 ✅ · S5 ✅ · S6 ✅ · <b>S7 ✅</b> — 빌드 완료<br>
+        스모크 ✅ · S0 ✅ · S1 ✅ · S2 ✅ · S3 ✅ · S4 ✅ · S4.5 ✅ · S5 ✅ · S6 ✅ · S7 ✅ · S8 ✅ · <b>S9 ✅</b> — 빌드 완료<br>
         배포 ✅ <a href="https://ibm-bob-hackathon-two.vercel.app/">Vercel 라이브</a> · LLM ✅ Gemini 연동·키 입력 완료 (아래 "배포 &amp; 후속" 카드 참조)<br>
         각 단계 시작·완료 시 여기에 표시하고 누가 맡았는지 적을 것.
       </div>
@@ -723,6 +723,8 @@ Task: propose a concrete, minimal folder and file structure for the MVP, with a 
         <li><b>S5 — standin + /pairing</b> ✅ — <code>/api/standin</code> POST(핸드오프 컨텍스트 + 최근 커밋 diff 조립 → LLM이 "부재중 팀원이라면" 답변) + <code>/pairing</code> 채팅 UI(메시지 이력·로딩·키보드 단축) + <code>types.ts</code>에 <code>ChatMessage</code> 등 3종. tsc·build(11라우트)·test 6/6·build:cli 통과. 파일 쓰기 없음(Vercel 안전). 비용 $0.57(세션 in-file USD). 커밋 <code>d54bd99</code>.</li>
         <li><b>S6 — 페어링 UI 마무리</b> ✅ — <code>/pairing</code>에 시나리오 인라인 노출(키워드 매칭·핸드오프 선택기·채팅+사이드바 레이아웃) + 홈·author·handoff·pairing 4페이지 Tailwind 디자인 통일 + 로딩 스피너·빈 상태. tsc·build(11라우트)·test 6/6 통과. 비용 $1.34(세션 in-file USD). 커밋 <code>0822e07</code>.</li>
         <li><b>S7 — 시드 + 데모 + 점검</b> ✅ — <code>data/seed.json</code>(데모 핸드오프 2개 · 시나리오 8개, 배열 형식 — 스토어가 직접 읽음) + 전체 프로젝트 점검. tsc·build(11라우트)·test 6/6·build:cli 통과, 타입 에러 0. Bob이 dev 서버 + curl로 API·페이지 동작 확인. 비용 $2.18. 검증 중 <code>.asyncpair/handoffs.json</code> 테스트 잔재 삭제(런타임 상태). 커밋 <code>7c2b7bc</code>.</li>
+        <li><b>S8 — Gemini 연동 + 시드 버그</b> ✅ — <code>lib/llm.ts</code> Gemini 경로(<code>gemini-2.5-flash-lite</code>, 우선순위 Gemini→watsonx→mock, 429·5xx·네트워크 지수 백오프 재시도 3회) + <code>lib/store.ts</code> 시드 <code>import</code>. tsc·build·test 통과. 검증 중 직접 수정: 읽기전용 fs 시드 복원력, 모델명(2.0-flash-lite는 신규 키 404)·재시도 추가. 비용 $0.56. 커밋 <code>f6c5274</code>·<code>d36d5d6</code>.</li>
+        <li><b>S9 — 레퍼런스 리포 컨텍스트</b> ✅ (hunjun) — <code>Handoff.metadata.referenceRepos</code> 추가, standin이 핸드오프에 등록된 다른 repo들의 작성자 커밋·diff를 컨텍스트에 포함 → 시나리오에 없는 질문도 작성자 패턴으로 추론. <code>/author</code>에 레퍼런스 repo 입력 UI. tsc·build(11라우트)·test 6/6 통과, 배포 사이트 standin 실호출 정상. 비용 $5.19. 커밋 <code>fb45983</code>.</li>
       </ul>
     </div>
 
@@ -737,9 +739,9 @@ Task: propose a concrete, minimal folder and file structure for the MVP, with a 
       </table>
       <h3>남은 일 — 순서대로</h3>
       <ol>
-        <li><b>S8 Bob 태스크</b> — 아래 "단계별 Bob 프롬프트"의 <b>S8</b>(Gemini 연동 + 시드 버그) 검은 박스를 새 Bob 태스크에 붙여넣기 → 세션 검증 → <code>main</code> 푸시(Vercel 자동 재배포)</li>
-        <li><b>Gemini 키 설정</b> — 로컬 <code>ibm-bob-hackathon-main/.env</code>에 <code>GEMINI_API_KEY=...</code> 추가 + Vercel <b>Settings → Environment Variables</b>에 같은 키 추가 → Redeploy. ⚠️ 키 값은 채팅·코드에 절대 안 적음 (<code>.env</code>는 <code>.gitignore</code>·<code>.bobignore</code>에 있음)</li>
-        <li><b>배포 확인</b> — <code>/api/handoff</code>에 시드 핸드오프 2건이 뜨는지, <code>/pairing</code>에서 standin이 실제 Gemini 답변을 주는지</li>
+        <li><s><b>S8 Bob 태스크</b> — Gemini 연동 + 시드 버그</s> ✅ 완료 (커밋 <code>f6c5274</code>·<code>d36d5d6</code>)</li>
+        <li><s><b>Gemini 키 설정</b> — <code>.env</code> + Vercel 환경변수</s> ✅ 완료</li>
+        <li><s><b>배포 확인</b></s> ✅ 완료 — <code>/api/handoff</code> 시드 2건 + <code>/api/standin</code> 실제 Gemini 답변 확인 (배포 사이트)</li>
         <li><b>데모 영상</b> — 실제 시차 팀 스토리: 로컬에서 CLI 커밋 포착 → 핸드오프 → standin Q&amp;A</li>
         <li><b>슬라이드 / 서면</b> — 컨셉 + Bob 활용 + 프로덕션 로드맵(CLI·GitHub·Slack)</li>
         <li><b>세션 소비 스크린샷</b> — 각 Bob 세션의 Bobcoin 소비 화면을 <code>bob_sessions/</code>에 적재 (가이드 p18 필수 제출물)</li>
