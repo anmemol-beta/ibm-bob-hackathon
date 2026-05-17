@@ -8,6 +8,7 @@ const NAV_LINKS = [
   { href: ROUTES.AUTHOR, label: "Author" },
   { href: ROUTES.HANDOFF, label: "Handoff" },
   { href: ROUTES.PAIRING, label: "Pairing" },
+  { href: ROUTES.SETTINGS, label: "Settings" },
 ];
 
 /**

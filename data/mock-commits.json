@@ -1,0 +1,198 @@
+{
+  "sarah-chen-auth-history": [
+    {
+      "hash": "a1b2c3d4e5f6",
+      "message": "Initial auth implementation with email/password",
+      "author": "Sarah Chen",
+      "date": "2026-04-10T09:15:00.000Z",
+      "changedFiles": ["src/auth/login.ts", "src/auth/register.ts", "src/models/user.ts"],
+      "diffs": [
+        {
+          "path": "src/auth/login.ts",
+          "diff": "+export async function login(email: string, password: string) {\n+  const user = await User.findOne({ email });\n+  if (!user || !await bcrypt.compare(password, user.passwordHash)) {\n+    throw new Error('Invalid credentials');\n+  }\n+  return generateToken(user);\n+}"
+        },
+        {
+          "path": "src/models/user.ts",
+          "diff": "+interface User {\n+  id: string;\n+  email: string;\n+  passwordHash: string;\n+  createdAt: Date;\n+}"
+        }
+      ]
+    },
+    {
+      "hash": "b2c3d4e5f6g7",
+      "message": "Add JWT token generation and validation",
+      "author": "Sarah Chen",
+      "date": "2026-04-12T14:30:00.000Z",
+      "changedFiles": ["src/auth/jwt.ts", "src/middleware/auth.ts"],
+      "diffs": [
+        {
+          "path": "src/auth/jwt.ts",
+          "diff": "+import jwt from 'jsonwebtoken';\n+\n+export function generateToken(user: User): string {\n+  return jwt.sign(\n+    { userId: user.id, email: user.email },\n+    process.env.JWT_SECRET!,\n+    { expiresIn: '24h' }\n+  );\n+}"
+        },
+        {
+          "path": "src/middleware/auth.ts",
+          "diff": "+export function requireAuth(req: Request, res: Response, next: NextFunction) {\n+  const token = req.headers.authorization?.split(' ')[1];\n+  if (!token) return res.status(401).json({ error: 'No token provided' });\n+  \n+  try {\n+    const decoded = jwt.verify(token, process.env.JWT_SECRET!);\n+    req.user = decoded;\n+    next();\n+  } catch (err) {\n+    res.status(401).json({ error: 'Invalid token' });\n+  }\n+}"
+        }
+      ]
+    },
+    {
+      "hash": "c3d4e5f6g7h8",
+      "message": "Implement password reset flow with email tokens",
+      "author": "Sarah Chen",
+      "date": "2026-04-15T11:00:00.000Z",
+      "changedFiles": ["src/auth/password-reset.ts", "src/models/reset-token.ts", "src/email/templates.ts"],
+      "diffs": [
+        {
+          "path": "src/auth/password-reset.ts",
+          "diff": "+export async function requestPasswordReset(email: string) {\n+  const user = await User.findOne({ email });\n+  if (!user) return; // Don't reveal if email exists\n+  \n+  const token = crypto.randomBytes(32).toString('hex');\n+  await ResetToken.create({\n+    userId: user.id,\n+    token: hashToken(token),\n+    expiresAt: new Date(Date.now() + 3600000) // 1 hour\n+  });\n+  \n+  await sendPasswordResetEmail(user.email, token);\n+}"
+        }
+      ]
+    },
+    {
+      "hash": "d4e5f6g7h8i9",
+      "message": "Add user roles and permissions system",
+      "author": "Sarah Chen",
+      "date": "2026-04-20T16:45:00.000Z",
+      "changedFiles": ["src/models/user.ts", "src/auth/permissions.ts", "migrations/add-roles.sql"],
+      "diffs": [
+        {
+          "path": "src/models/user.ts",
+          "diff": " interface User {\n   id: string;\n   email: string;\n   passwordHash: string;\n+  role: 'user' | 'admin' | 'moderator';\n+  permissions: string[];\n   createdAt: Date;\n }"
+        },
+        {
+          "path": "src/auth/permissions.ts",
+          "diff": "+export function hasPermission(user: User, permission: string): boolean {\n+  if (user.role === 'admin') return true;\n+  return user.permissions.includes(permission);\n+}\n+\n+export function requirePermission(permission: string) {\n+  return (req: Request, res: Response, next: NextFunction) => {\n+    if (!hasPermission(req.user, permission)) {\n+      return res.status(403).json({ error: 'Insufficient permissions' });\n+    }\n+    next();\n+  };\n+}"
+        }
+      ]
+    },
+    {
+      "hash": "e5f6g7h8i9j0",
+      "message": "Implement 2FA with TOTP (Time-based One-Time Password)",
+      "author": "Sarah Chen",
+      "date": "2026-04-25T10:20:00.000Z",
+      "changedFiles": ["src/auth/two-factor.ts", "src/models/user.ts", "src/auth/login.ts"],
+      "diffs": [
+        {
+          "path": "src/auth/two-factor.ts",
+          "diff": "+import speakeasy from 'speakeasy';\n+import QRCode from 'qrcode';\n+\n+export async function enable2FA(userId: string) {\n+  const secret = speakeasy.generateSecret({\n+    name: `MyApp (${user.email})`\n+  });\n+  \n+  await User.update(userId, {\n+    twoFactorSecret: secret.base32,\n+    twoFactorEnabled: false // Enable after verification\n+  });\n+  \n+  const qrCode = await QRCode.toDataURL(secret.otpauth_url!);\n+  return { secret: secret.base32, qrCode };\n+}\n+\n+export function verify2FAToken(secret: string, token: string): boolean {\n+  return speakeasy.totp.verify({\n+    secret,\n+    encoding: 'base32',\n+    token,\n+    window: 2\n+  });\n+}"
+        },
+        {
+          "path": "src/auth/login.ts",
+          "diff": " export async function login(email: string, password: string) {\n   const user = await User.findOne({ email });\n   if (!user || !await bcrypt.compare(password, user.passwordHash)) {\n     throw new Error('Invalid credentials');\n   }\n+  \n+  if (user.twoFactorEnabled) {\n+    return { requiresTwoFactor: true, userId: user.id };\n+  }\n+  \n   return generateToken(user);\n }"
+        }
+      ]
+    },
+    {
+      "hash": "f6g7h8i9j0k1",
+      "message": "Add rate limiting to prevent brute force attacks",
+      "author": "Sarah Chen",
+      "date": "2026-04-28T13:50:00.000Z",
+      "changedFiles": ["src/middleware/rate-limit.ts", "src/auth/login.ts"],
+      "diffs": [
+        {
+          "path": "src/middleware/rate-limit.ts",
+          "diff": "+import rateLimit from 'express-rate-limit';\n+\n+export const loginRateLimiter = rateLimit({\n+  windowMs: 15 * 60 * 1000, // 15 minutes\n+  max: 5, // 5 attempts\n+  message: 'Too many login attempts, please try again later',\n+  standardHeaders: true,\n+  legacyHeaders: false,\n+  skipSuccessfulRequests: true\n+});\n+\n+export const passwordResetRateLimiter = rateLimit({\n+  windowMs: 60 * 60 * 1000, // 1 hour\n+  max: 3,\n+  message: 'Too many password reset requests'\n+});"
+        }
+      ]
+    }
+  ],
+  "marcus-rodriguez-realtime-history": [
+    {
+      "hash": "g7h8i9j0k1l2",
+      "message": "Initial WebSocket server setup with Socket.io",
+      "author": "Marcus Rodriguez",
+      "date": "2026-04-08T10:30:00.000Z",
+      "changedFiles": ["src/websocket/server.ts", "src/websocket/types.ts", "package.json"],
+      "diffs": [
+        {
+          "path": "src/websocket/server.ts",
+          "diff": "+import { Server } from 'socket.io';\n+import { createServer } from 'http';\n+\n+export function initializeWebSocket(httpServer: any) {\n+  const io = new Server(httpServer, {\n+    cors: {\n+      origin: process.env.CLIENT_URL,\n+      credentials: true\n+    }\n+  });\n+  \n+  io.on('connection', (socket) => {\n+    console.log('Client connected:', socket.id);\n+    \n+    socket.on('disconnect', () => {\n+      console.log('Client disconnected:', socket.id);\n+    });\n+  });\n+  \n+  return io;\n+}"
+        }
+      ]
+    },
+    {
+      "hash": "h8i9j0k1l2m3",
+      "message": "Add authentication middleware for WebSocket connections",
+      "author": "Marcus Rodriguez",
+      "date": "2026-04-10T15:20:00.000Z",
+      "changedFiles": ["src/websocket/auth.ts", "src/websocket/server.ts"],
+      "diffs": [
+        {
+          "path": "src/websocket/auth.ts",
+          "diff": "+import jwt from 'jsonwebtoken';\n+\n+export function authenticateSocket(socket: any, next: any) {\n+  const token = socket.handshake.auth.token;\n+  \n+  if (!token) {\n+    return next(new Error('Authentication required'));\n+  }\n+  \n+  try {\n+    const decoded = jwt.verify(token, process.env.JWT_SECRET!);\n+    socket.userId = decoded.userId;\n+    next();\n+  } catch (err) {\n+    next(new Error('Invalid token'));\n+  }\n+}"
+        },
+        {
+          "path": "src/websocket/server.ts",
+          "diff": "+import { authenticateSocket } from './auth';\n+\n export function initializeWebSocket(httpServer: any) {\n   const io = new Server(httpServer, {\n     cors: {\n       origin: process.env.CLIENT_URL,\n       credentials: true\n     }\n   });\n+  \n+  io.use(authenticateSocket);\n   \n   io.on('connection', (socket) => {\n-    console.log('Client connected:', socket.id);\n+    console.log('User connected:', socket.userId);\n"
+        }
+      ]
+    },
+    {
+      "hash": "i9j0k1l2m3n4",
+      "message": "Implement notification event system and broadcasting",
+      "author": "Marcus Rodriguez",
+      "date": "2026-04-13T11:45:00.000Z",
+      "changedFiles": ["src/notifications/events.ts", "src/websocket/handlers.ts", "src/models/notification.ts"],
+      "diffs": [
+        {
+          "path": "src/notifications/events.ts",
+          "diff": "+import { EventEmitter } from 'events';\n+\n+export const notificationEmitter = new EventEmitter();\n+\n+export function emitNotification(userId: string, notification: Notification) {\n+  notificationEmitter.emit('notification', { userId, notification });\n+}\n+\n+export function subscribeToNotifications(callback: (data: any) => void) {\n+  notificationEmitter.on('notification', callback);\n+}"
+        },
+        {
+          "path": "src/websocket/handlers.ts",
+          "diff": "+import { notificationEmitter } from '../notifications/events';\n+\n+export function setupNotificationHandlers(io: Server) {\n+  notificationEmitter.on('notification', ({ userId, notification }) => {\n+    io.to(`user:${userId}`).emit('notification', notification);\n+  });\n+}\n+\n+export function handleConnection(socket: any) {\n+  // Join user-specific room\n+  socket.join(`user:${socket.userId}`);\n+  \n+  socket.on('mark_read', async (notificationId: string) => {\n+    await Notification.update(notificationId, { read: true });\n+  });\n+}"
+        }
+      ]
+    },
+    {
+      "hash": "j0k1l2m3n4o5",
+      "message": "Add notification preferences and filtering",
+      "author": "Marcus Rodriguez",
+      "date": "2026-04-16T09:30:00.000Z",
+      "changedFiles": ["src/models/notification-preferences.ts", "src/notifications/filter.ts", "src/api/preferences.ts"],
+      "diffs": [
+        {
+          "path": "src/models/notification-preferences.ts",
+          "diff": "+export interface NotificationPreferences {\n+  userId: string;\n+  email: boolean;\n+  push: boolean;\n+  inApp: boolean;\n+  categories: {\n+    messages: boolean;\n+    mentions: boolean;\n+    updates: boolean;\n+    marketing: boolean;\n+  };\n+}"
+        },
+        {
+          "path": "src/notifications/filter.ts",
+          "diff": "+export async function shouldSendNotification(\n+  userId: string,\n+  notification: Notification\n+): Promise<boolean> {\n+  const prefs = await NotificationPreferences.findOne({ userId });\n+  if (!prefs) return true; // Default to sending\n+  \n+  if (!prefs.inApp) return false;\n+  \n+  const category = notification.category;\n+  return prefs.categories[category] !== false;\n+}"
+        }
+      ]
+    },
+    {
+      "hash": "k1l2m3n4o5p6",
+      "message": "Implement reconnection logic and missed notification sync",
+      "author": "Marcus Rodriguez",
+      "date": "2026-04-19T14:15:00.000Z",
+      "changedFiles": ["src/websocket/reconnection.ts", "src/api/notifications.ts"],
+      "diffs": [
+        {
+          "path": "src/websocket/reconnection.ts",
+          "diff": "+export function handleReconnection(socket: any) {\n+  socket.on('sync_notifications', async (lastSeenTimestamp: string) => {\n+    const missedNotifications = await Notification.find({\n+      userId: socket.userId,\n+      createdAt: { $gt: new Date(lastSeenTimestamp) },\n+      read: false\n+    });\n+    \n+    socket.emit('notifications_sync', missedNotifications);\n+  });\n+}"
+        },
+        {
+          "path": "src/api/notifications.ts",
+          "diff": "+export async function getMissedNotifications(req: Request, res: Response) {\n+  const { lastSeen } = req.query;\n+  const userId = req.user.userId;\n+  \n+  const notifications = await Notification.find({\n+    userId,\n+    createdAt: { $gt: new Date(lastSeen as string) },\n+    read: false\n+  }).sort({ createdAt: -1 });\n+  \n+  res.json({ notifications });\n+}"
+        }
+      ]
+    },
+    {
+      "hash": "l2m3n4o5p6q7",
+      "message": "Add horizontal scaling support with Redis adapter",
+      "author": "Marcus Rodriguez",
+      "date": "2026-04-23T16:00:00.000Z",
+      "changedFiles": ["src/websocket/redis-adapter.ts", "src/websocket/server.ts", "docker-compose.yml"],
+      "diffs": [
+        {
+          "path": "src/websocket/redis-adapter.ts",
+          "diff": "+import { createAdapter } from '@socket.io/redis-adapter';\n+import { createClient } from 'redis';\n+\n+export async function setupRedisAdapter(io: Server) {\n+  const pubClient = createClient({ url: process.env.REDIS_URL });\n+  const subClient = pubClient.duplicate();\n+  \n+  await Promise.all([pubClient.connect(), subClient.connect()]);\n+  \n+  io.adapter(createAdapter(pubClient, subClient));\n+  \n+  console.log('Redis adapter configured for Socket.io');\n+}"
+        },
+        {
+          "path": "src/websocket/server.ts",
+          "diff": "+import { setupRedisAdapter } from './redis-adapter';\n+\n-export function initializeWebSocket(httpServer: any) {\n+export async function initializeWebSocket(httpServer: any) {\n   const io = new Server(httpServer, {\n     cors: {\n       origin: process.env.CLIENT_URL,\n       credentials: true\n     }\n   });\n+  \n+  await setupRedisAdapter(io);\n   \n   io.use(authenticateSocket);"
+        }
+      ]
+    }
+  ]
+}

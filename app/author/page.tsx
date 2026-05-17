@@ -1,8 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { API_ROUTES, ROUTES } from "@/lib/constants";
+import { API_ROUTES, ROUTES, STORAGE_KEYS, DEFAULT_MOCK_REPOS } from "@/lib/constants";
 import { HandoffScenario } from "@/lib/types";
 
 export default function AuthorPage() {
@@ -17,6 +17,27 @@ export default function AuthorPage() {
   const [isSaving, setIsSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [editingId, setEditingId] = useState<string | null>(null);
+
+  // Load default reference repos from localStorage on mount
+  useEffect(() => {
+    const stored = localStorage.getItem(STORAGE_KEYS.DEFAULT_REFERENCE_REPOS);
+    if (stored) {
+      try {
+        const parsed = JSON.parse(stored);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          setReferenceRepos(parsed);
+        } else {
+          setReferenceRepos([...DEFAULT_MOCK_REPOS]);
+        }
+      } catch (error) {
+        console.error("Failed to parse stored reference repos:", error);
+        setReferenceRepos([...DEFAULT_MOCK_REPOS]);
+      }
+    } else {
+      // Default to mock repos for zero-setup demo
+      setReferenceRepos([...DEFAULT_MOCK_REPOS]);
+    }
+  }, []);
 
   const handleGenerate = async (e: React.FormEvent) => {
     e.preventDefault();

@@ -20,6 +20,7 @@ export const ROUTES = {
   AUTHOR: '/author',
   HANDOFF: '/handoff',
   PAIRING: '/pairing',
+  SETTINGS: '/settings',
 } as const;
 
 export const API_ROUTES = {
@@ -34,5 +35,16 @@ export const HANDOFF_STATUSES = {
   ACCEPTED: 'accepted',
   COMPLETED: 'completed',
 } as const;
+
+// LocalStorage keys
+export const STORAGE_KEYS = {
+  DEFAULT_REFERENCE_REPOS: 'asyncpair:defaultReferenceRepos',
+} as const;
+
+// Default mock repository identifiers
+export const DEFAULT_MOCK_REPOS = [
+  'sarah-chen-auth-history',
+  'marcus-rodriguez-realtime-history',
+] as const;
 
 // Made with Bob

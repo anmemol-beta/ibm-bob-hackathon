@@ -1,8 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import { generate } from "@/lib/llm";
-import { getRecentCommits } from "@/lib/git";
+import { getRecentCommits, type CommitInfo } from "@/lib/git";
 import { getHandoff } from "@/lib/store";
 import type { StandinChatRequest, StandinChatResponse } from "@/lib/types";
+import mockCommitsData from "@/data/mock-commits.json";
 
 /**
  * POST /api/standin
@@ -82,16 +83,30 @@ export async function POST(request: NextRequest) {
         
         for (const refRepoPath of handoff.metadata.referenceRepos) {
           try {
-            const { commits, error } = await getRecentCommits(refRepoPath, 10);
+            let commits: CommitInfo[] = [];
+            let usedMockData = false;
             
-            if (error) {
-              console.warn(`Failed to fetch commits from reference repo ${refRepoPath}:`, error);
-              continue;
-            }
+            // Try to get real git commits first
+            const { commits: gitCommits, error } = await getRecentCommits(refRepoPath, 10);
             
-            if (commits.length === 0) {
-              console.warn(`No commits found in reference repo: ${refRepoPath}`);
-              continue;
+            if (error || gitCommits.length === 0) {
+              // Fall back to mock commits if real git fails
+              const mockCommits = (mockCommitsData as Record<string, CommitInfo[]>)[refRepoPath];
+              
+              if (mockCommits && mockCommits.length > 0) {
+                commits = mockCommits;
+                usedMockData = true;
+                console.log(`Using mock commits for reference repo: ${refRepoPath}`);
+              } else {
+                if (error) {
+                  console.warn(`Failed to fetch commits from reference repo ${refRepoPath}:`, error);
+                } else {
+                  console.warn(`No commits found in reference repo: ${refRepoPath}`);
+                }
+                continue;
+              }
+            } else {
+              commits = gitCommits;
             }
             
             // Filter commits by handoff author, fallback to recent commits
@@ -103,10 +118,10 @@ export async function POST(request: NextRequest) {
             // If no commits by author, use most recent commits
             if (relevantCommits.length === 0) {
               relevantCommits = commits;
-              context += `## Repository: ${refRepoPath}\n`;
+              context += `## Repository: ${refRepoPath}${usedMockData ? ' (mock data)' : ''}\n`;
               context += `*Note: No commits by ${handoff.author} found, showing recent commits instead*\n\n`;
             } else {
-              context += `## Repository: ${refRepoPath}\n`;
+              context += `## Repository: ${refRepoPath}${usedMockData ? ' (mock data)' : ''}\n`;
               context += `*Commits by ${handoff.author}*\n\n`;
             }
             

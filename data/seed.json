@@ -30,7 +30,8 @@
       "repoPath": "/projects/user-auth-service",
       "branch": "feature/auth-implementation",
       "commitCount": 12,
-      "developerNotes": "I've completed the core authentication functionality including login, registration, and password reset. The JWT implementation is working well, but we need to add refresh tokens for better UX. The role-based access control schema is ready but needs to be wired up to the actual routes. I started on email templates but ran out of time - they're currently just plain text. All the database migrations are in place and tested locally. The next person should focus on the refresh token flow and getting the admin dashboard protected properly."
+      "developerNotes": "I've completed the core authentication functionality including login, registration, and password reset. The JWT implementation is working well, but we need to add refresh tokens for better UX. The role-based access control schema is ready but needs to be wired up to the actual routes. I started on email templates but ran out of time - they're currently just plain text. All the database migrations are in place and tested locally. The next person should focus on the refresh token flow and getting the admin dashboard protected properly.",
+      "referenceRepos": ["sarah-chen-auth-history"]
     },
     "status": "pending"
   },
@@ -65,7 +66,8 @@
       "repoPath": "/projects/notification-service",
       "branch": "feature/websocket-notifications",
       "commitCount": 8,
-      "developerNotes": "The WebSocket infrastructure is solid and working well in testing. I used Socket.io for the implementation which handles a lot of the complexity. The notification preferences UI is complete and looks good. However, I noticed the preferences aren't being respected by the server - that's a critical bug to fix. The reconnection logic is basic right now and needs to be more robust for production. I also think we should add some kind of notification grouping to prevent spam. The database schema supports marking notifications as read/unread which is working correctly."
+      "developerNotes": "The WebSocket infrastructure is solid and working well in testing. I used Socket.io for the implementation which handles a lot of the complexity. The notification preferences UI is complete and looks good. However, I noticed the preferences aren't being respected by the server - that's a critical bug to fix. The reconnection logic is basic right now and needs to be more robust for production. I also think we should add some kind of notification grouping to prevent spam. The database schema supports marking notifications as read/unread which is working correctly.",
+      "referenceRepos": ["marcus-rodriguez-realtime-history"]
     },
     "status": "pending"
   }
