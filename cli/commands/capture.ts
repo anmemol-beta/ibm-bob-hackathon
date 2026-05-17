@@ -178,8 +178,8 @@ export async function captureCommand(options: CaptureOptions): Promise<void> {
       console.log('');
 
       // Question 1 surfaces hidden risk; question 2 pins down the next task.
-      contextNotes = await askQuestion(`${question1} [Enter to skip]: `, 15000);
-      developerNotes = await askQuestion(`${question2} [Enter to skip]: `, 15000);
+      contextNotes = await askQuestion(`${question1} [Enter to skip]: `, 60000);
+      developerNotes = await askQuestion(`${question2} [Enter to skip]: `, 60000);
     }
     
     // Combine notes
